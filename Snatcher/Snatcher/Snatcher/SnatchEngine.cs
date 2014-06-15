@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Drawing;
+using Microsoft.Office.Interop.Excel;
 
 namespace Snatcher
 {
@@ -16,70 +18,60 @@ namespace Snatcher
 
         public List<ProductDescriptor> Process()
         {
-
-            var URL = "http://geotea.ru/catalog/dishes/ceremony";
-
-            var catalogDocument = GetPageFromURL(SnatchSettings.catalogURL);
+            var catalogDocument = Helper.GetPageFromUrl(SnatchSettings.catalogURL);
 
 
             var linksList = catalogDocument.DocumentNode.SelectNodes("//a[@href]");
 
             var filteredLinkList = linksList.Where(lr => lr.OuterHtml.Contains(SnatchSettings.categoryContains));
             var listOfProductUrls = new List<string>();
-            foreach (var link in filteredLinkList)
-            {
-                var attrib = link.Attributes["href"];
-                var rawLinkUrl = attrib.Value;
-                listOfProductUrls.Add( AppendSiteName(rawLinkUrl));
-           
+            //foreach (var link in filteredLinkList)
+            //{
+            //    var attrib = link.Attributes["href"];
+            //    var rawLinkUrl = attrib.Value;
+            //    listOfProductUrls.Add( AppendSiteName(rawLinkUrl));
+            //}
+            var attrib = filteredLinkList.First().Attributes["href"];
+            var rawLinkUrl = attrib.Value;
+            listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+            var productList = GetDataFromLinks(listOfProductUrls);
+            ExportToExcel(productList);
+            return null;
 
-            }
+        }
+
+        private List<ProductDescriptor> GetDataFromLinks(IEnumerable<string> listOfProductUrls)
+        {
             var listOfProductDescr = new List<ProductDescriptor>();
             foreach (var prodUrl in listOfProductUrls)
             {
-                var productDocument = GetPageFromURL(prodUrl);
+                var productDocument = Helper.GetPageFromUrl(prodUrl);
                 var product = new ProductDescriptor();
 
                 product.product_name = productDocument.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/h1[1]").LastChild.OuterHtml.Replace(" &rarr;", "").Trim();
 
                 product.description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='product-page-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']").InnerHtml;
-                product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена:")).InnerText.Replace("Цена:","").Trim();
-                var imgNode =productDocument.DocumentNode.SelectSingleNode("//div[@class='product-top clear']/div[@class='big-img']/img[@class='main-img']/@src");
+                product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена:")).InnerText.Replace("Цена:", "").Trim();
+                var imgNode = productDocument.DocumentNode.SelectSingleNode("//div[@class='product-top clear']/div[@class='big-img']/img[@class='main-img']/@src");
                 if (imgNode != null)
                 {
                     var imgRawURL = imgNode.Attributes["src"].Value;
 
                     var filePathCount = imgRawURL.Reverse().SkipWhile(str => str != '/').Count();
-                    var imgFileName = imgRawURL.Substring( filePathCount);
+                    var imgFileName = imgRawURL.Substring(filePathCount);
 
-                   if(imgNode.Attributes["alt"]!=null)
+                    if (imgNode.Attributes["alt"] != null)
                     {
                         product.image_label = imgNode.Attributes["alt"].Value;
-                        
+
                     }
-                    string localFilename = @"D:\Snatches\"+imgFileName;
+                    string localFilename = @"D:\Snatches\" + imgFileName;
                     using (WebClient client = new WebClient())
                     {
-                        client.DownloadFile(new Uri(AppendSiteName(imgRawURL)) , localFilename);
+                        client.DownloadFile(new Uri(AppendSiteName(imgRawURL)), localFilename);
                     }
                 }
 
-                //WebRequest req = WebRequest.Create("https://appharbor.com/assets/images/stackoverflow-logo.png");
-                //WebResponse response = req.GetResponse();
-                //Stream stream = response.GetResponseStream();
-                //System.Drawing.Image image = System.Drawing.Image.FromStream(stream);
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                //    ms.WriteTo(Response.OutputStream);
-                //}
-                //string localFilename = @"c:\localpath\tofile.jpg";
-                //using (WebClient client = new WebClient())
-                //{
-                //    client.DownloadFile("http://www.example.com/image.jpg", localFilename);
-                //}
-                
-                
                 #region meta
                 var descNode = productDocument.DocumentNode.SelectSingleNode("//meta[@name='description']");
 
@@ -107,14 +99,7 @@ namespace Snatcher
                 listOfProductDescr.Add(product);
                 #endregion
             }
-
-            //foreach (var VARIABLE in COLLECTION)
-            //{
-
-            //}
-
-            return null;
-
+            return listOfProductDescr;
         }
 
         private string AppendSiteName(string rawLinkUrl)
@@ -127,26 +112,73 @@ namespace Snatcher
             return (SnatchSettings.BaseWebSiteURL + rawLinkUrl);
         }
 
-        private HtmlDocument GetPageFromURL(string URL)
+        public static Worksheet ExportToExcel(List<ProductDescriptor> snatchedProducts)
         {
-            var htmlWeb = new HtmlWeb();
-
-            HtmlDocument doc;
-
-            try
             {
-                doc = htmlWeb.Load(URL);
-                if (doc.ParseErrors.Any(error => error.Code == HtmlParseErrorCode.CharsetMismatch))
+                var xlApp = new Application {Visible = true};
+                var wb = xlApp.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+                var ws = (Worksheet) wb.Worksheets[1];
+
+                if (ws == null)
                 {
-                    doc = Helper.GetDocumentCustomMode(doc.Encoding, URL);
+                    Console.WriteLine(
+                        "Worksheet could not be created. Check that your office installation and project references are correct.");
+                    return null;
                 }
-            }
-            catch (Exception)
-            {
-                doc = Helper.GetDocumentCustomMode(Encoding.GetEncoding("windows-1251"), URL);
-            }
 
-            return doc;
+                var aRange = ws.Range["C1", "C7"];
+                if (aRange == null)
+                {
+                    Console.WriteLine(
+                        "Could not get a range. Check to be sure you have the correct versions of the office DLLs.");
+                    return null;
+                }
+
+
+                const int firstColumn = 2;
+
+                const int verticalPosition = 1;
+
+                var productAtributes = typeof (ProductDescriptor).GetMembers().Skip(5).ToList();
+                var attribCount = productAtributes.Count();
+
+                var startingLevelCell = ws.Cells[verticalPosition + 1, firstColumn - 1];
+                var endingLevelCell =
+                    ws.Cells[verticalPosition + +1 + snatchedProducts.Count, attribCount + firstColumn ];
+
+                var levelRange = ws.Range[startingLevelCell, endingLevelCell];
+                var levelData = new object[snatchedProducts.Count+1, attribCount];
+
+                for (var i = 0; i < attribCount; i++)
+                {
+                    levelData[0, i] = productAtributes[i].Name;
+                    for (var j = 0; j < snatchedProducts.Count; j++)
+                    {
+                        var myobject = snatchedProducts[j];
+                        levelData[j + 1, i] = myobject.GetType().GetField(productAtributes[i].Name).GetValue(myobject);
+                       //var reflectedValue =  myobject.GetType().GetField(productAtributes[i].Name).GetValue(myobject);
+                       // if (reflectedValue == null)
+                       // {
+                       //     levelData[j+1, i] = string.Empty;
+                       // }
+                       // else
+                       // {
+                       //     levelData[j+1, i] = reflectedValue.ToString();
+                       // }
+                      
+                    }
+
+
+                }
+
+
+                levelRange.Value2 = levelData;
+                levelRange.AutoFormat();
+
+                return ws;
+            }
         }
     }
+
+
 }

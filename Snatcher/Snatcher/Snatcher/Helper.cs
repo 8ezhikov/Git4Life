@@ -72,5 +72,27 @@ namespace Snatcher
                 return new HtmlDocument();
             }
         }
+
+        public static HtmlDocument GetPageFromUrl(string url)
+        {
+            var htmlWeb = new HtmlWeb();
+
+            HtmlDocument doc;
+
+            try
+            {
+                doc = htmlWeb.Load(url);
+                if (doc.ParseErrors.Any(error => error.Code == HtmlParseErrorCode.CharsetMismatch))
+                {
+                    doc = GetDocumentCustomMode(doc.Encoding, url);
+                }
+            }
+            catch (Exception)
+            {
+                doc = GetDocumentCustomMode(Encoding.GetEncoding("windows-1251"), url);
+            }
+
+            return doc;
+        }
     }
 }
