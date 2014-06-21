@@ -43,15 +43,17 @@ namespace Snatcher
         private List<ProductDescriptor> GetDataFromLinks(IEnumerable<string> listOfProductUrls)
         {
             var listOfProductDescr = new List<ProductDescriptor>();
+            int counter = 1;
             foreach (var prodUrl in listOfProductUrls)
             {
                 var productDocument = Helper.GetPageFromUrl(prodUrl);
                 var product = new ProductDescriptor();
 
                 product.product_name = productDocument.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/h1[1]").LastChild.OuterHtml.Replace(" &rarr;", "").Trim();
-
+                product.name = product.product_name;
+                product.sku = SnatchSettings.SKUStarter + counter.ToString("D4");
                 product.description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='product-page-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']").InnerHtml;
-                product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена:")).InnerText.Replace("Цена:", "").Trim();
+                product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена:")).InnerText.Replace("Цена:", "").Replace("руб.","").Trim();
                 var imgNode = productDocument.DocumentNode.SelectSingleNode("//div[@class='product-top clear']/div[@class='big-img']/img[@class='main-img']/@src");
                 if (imgNode != null)
                 {
@@ -98,6 +100,8 @@ namespace Snatcher
                 }
                 listOfProductDescr.Add(product);
                 #endregion
+
+                counter++;
             }
             return listOfProductDescr;
         }

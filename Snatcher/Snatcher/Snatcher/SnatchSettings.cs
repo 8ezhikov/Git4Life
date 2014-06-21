@@ -11,6 +11,7 @@ namespace Snatcher
         public static string catalogURL = "http://geotea.ru/catalog/dishes/ceremony";
         public static string categoryContains = "product";
         public static string BaseWebSiteURL = "http://geotea.ru";
+        public static string SKUStarter = "GCER";
 
     }
 }
