@@ -11,7 +11,7 @@ namespace Snatcher
     {
         public string store = "admin";
         public string websites= "base";
-        public string attribute_set = "Aксессуары"; //CHANGE
+        public string attribute_set = "Аксессуары"; //CHANGE
         public string type = "simple";
         public string category_ids = "51";//
         public string sku = "";//
@@ -48,10 +48,10 @@ namespace Snatcher
         public string special_price;
         public string weight="100";
         public string msrp;
-        public string gs_product_volume = "100";
-        public string gs_product_size_x="1";
-        public string gs_product_size_y = "1";
-        public string gs_product_size_z = "1";
+        public string gs_product_volume = "0.1";
+        public string gs_product_size_x="0.2";
+        public string gs_product_size_y = "0.1";
+        public string gs_product_size_z = "0.1";
         public string manufacturer;
         public string color;
         public string status="Включено";

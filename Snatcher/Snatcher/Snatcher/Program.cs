@@ -11,8 +11,9 @@ namespace Snatcher
     {
         static void Main(string[] args)
         {
-            var Engine = new SnatchEngine();
-            var productList = Engine.Process();
+            var engine = new SnatchEngine();
+            var productList = engine.Process();
+            engine.ExportToExcel(productList);
         }
     }
 }

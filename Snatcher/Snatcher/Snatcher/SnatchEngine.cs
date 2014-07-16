@@ -25,18 +25,26 @@ namespace Snatcher
 
             var filteredLinkList = linksList.Where(lr => lr.OuterHtml.Contains(SnatchSettings.categoryContains));
             var listOfProductUrls = new List<string>();
-            //foreach (var link in filteredLinkList)
-            //{
-            //    var attrib = link.Attributes["href"];
-            //    var rawLinkUrl = attrib.Value;
-            //    listOfProductUrls.Add( AppendSiteName(rawLinkUrl));
-            //}
-            var attrib = filteredLinkList.First().Attributes["href"];
-            var rawLinkUrl = attrib.Value;
-            listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+            if (!SnatchSettings.singleProduct)
+            {
+                foreach (var link in filteredLinkList)
+                {
+                    var attrib = link.Attributes["href"];
+                    var rawLinkUrl = attrib.Value;
+                    listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+                }
+            }
+            else
+            {
+                var attrib = filteredLinkList.First().Attributes["href"];
+                var rawLinkUrl = attrib.Value;
+                listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+            }
+        
+           
             var productList = GetDataFromLinks(listOfProductUrls);
-            ExportToExcel(productList);
-            return null;
+
+            return productList;
 
         }
 
@@ -53,6 +61,8 @@ namespace Snatcher
                 product.name = product.product_name;
                 product.sku = SnatchSettings.SKUStarter + counter.ToString("D4");
                 product.description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='product-page-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']").InnerHtml;
+                product.short_description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='product-page-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
+               
                 product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена:")).InnerText.Replace("Цена:", "").Replace("руб.","").Trim();
                 var imgNode = productDocument.DocumentNode.SelectSingleNode("//div[@class='product-top clear']/div[@class='big-img']/img[@class='main-img']/@src");
                 if (imgNode != null)
@@ -72,6 +82,8 @@ namespace Snatcher
                     {
                         client.DownloadFile(new Uri(AppendSiteName(imgRawURL)), localFilename);
                     }
+                   // var imgname = prodUrl.in
+                    //product.image = "/images/" + imgFileName;
                 }
 
                 #region meta
@@ -116,7 +128,7 @@ namespace Snatcher
             return (SnatchSettings.BaseWebSiteURL + rawLinkUrl);
         }
 
-        public static Worksheet ExportToExcel(List<ProductDescriptor> snatchedProducts)
+        public Worksheet ExportToExcel(List<ProductDescriptor> snatchedProducts)
         {
             {
                 var xlApp = new Application {Visible = true};
@@ -177,7 +189,7 @@ namespace Snatcher
 
 
                 levelRange.Value2 = levelData;
-                levelRange.AutoFormat();
+               // levelRange.AutoFormat();
 
                 return ws;
             }
