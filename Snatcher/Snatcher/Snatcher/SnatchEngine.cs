@@ -60,30 +60,46 @@ namespace Snatcher
                 product.product_name = productDocument.DocumentNode.SelectSingleNode("/html[1]/body[1]/div[2]/div[1]/div[1]/div[1]/h1[1]").LastChild.OuterHtml.Replace(" &rarr;", "").Trim();
                 product.name = product.product_name;
                 product.sku = SnatchSettings.SKUStarter + counter.ToString("D4");
-                product.description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='product-page-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']").InnerHtml;
-                product.short_description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='product-page-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
-               
-                product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена:")).InnerText.Replace("Цена:", "").Replace("руб.","").Trim();
+                product.description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']").InnerHtml;
+                product.short_description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[3]").InnerHtml;
+
+                try
+                {
+                    product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена")).InnerText.Replace("Цена:", "").Replace("руб.", "").Trim();
+
+                }
+                catch (Exception)
+                {
+                    product.price = 500.ToString();
+                }
                 var imgNode = productDocument.DocumentNode.SelectSingleNode("//div[@class='product-top clear']/div[@class='big-img']/img[@class='main-img']/@src");
                 if (imgNode != null)
                 {
                     var imgRawURL = imgNode.Attributes["src"].Value;
 
-                    var filePathCount = imgRawURL.Reverse().SkipWhile(str => str != '/').Count();
-                    var imgFileName = imgRawURL.Substring(filePathCount);
+                    //var filePathCount = imgRawURL.Reverse().SkipWhile(str => str != '/').Count();
+                    //var imgFileName = imgRawURL.Substring(filePathCount);
 
                     if (imgNode.Attributes["alt"] != null)
                     {
                         product.image_label = imgNode.Attributes["alt"].Value;
 
                     }
-                    string localFilename = @"D:\Snatches\" + imgFileName;
+                    var extension = imgRawURL.Substring(imgRawURL.LastIndexOf('.'));
+                    var imgname = prodUrl.Substring(prodUrl.LastIndexOf('/') + 1);
+                    var imgWithExtension = imgname+ extension;
+
+                    string localFilename = @"D:\Snatches\" + imgWithExtension;
                     using (WebClient client = new WebClient())
                     {
                         client.DownloadFile(new Uri(AppendSiteName(imgRawURL)), localFilename);
                     }
-                   // var imgname = prodUrl.in
-                    //product.image = "/images/" + imgFileName;
+                    product.image = "/images/" + imgWithExtension;
+                    product.small_image = "/images/" + imgWithExtension;
+                    product.thumbnail = "/images/" + imgWithExtension;
+                    product.image_label = product.product_name;
+                    product.small_image_label =product.product_name;
+                    product.thumbnail_label = product.product_name;
                 }
 
                 #region meta
@@ -153,14 +169,14 @@ namespace Snatcher
 
                 const int firstColumn = 2;
 
-                const int verticalPosition = 1;
+                const int verticalPosition = 0;
 
                 var productAtributes = typeof (ProductDescriptor).GetMembers().Skip(5).ToList();
                 var attribCount = productAtributes.Count();
 
                 var startingLevelCell = ws.Cells[verticalPosition + 1, firstColumn - 1];
                 var endingLevelCell =
-                    ws.Cells[verticalPosition + +1 + snatchedProducts.Count, attribCount + firstColumn ];
+                    ws.Cells[verticalPosition  +1 + snatchedProducts.Count, attribCount + firstColumn ];
 
                 var levelRange = ws.Range[startingLevelCell, endingLevelCell];
                 var levelData = new object[snatchedProducts.Count+1, attribCount];
