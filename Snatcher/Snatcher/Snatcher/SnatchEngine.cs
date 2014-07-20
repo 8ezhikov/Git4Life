@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
-using HtmlAgilityPack;
-using System.Drawing;
 using Microsoft.Office.Interop.Excel;
 
 namespace Snatcher
@@ -47,6 +41,18 @@ namespace Snatcher
             return productList;
 
         }
+        public static string RemoveSpecialCharacters(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ')' || c == '(' || c == '№' || c == '!' || (c >= 'А' && c <= 'Я') || (c >= 'а' && c <= 'я'))
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
 
         private List<ProductDescriptor> GetDataFromLinks(List<string> listOfProductUrls)
         {
@@ -60,10 +66,12 @@ namespace Snatcher
                 var product = new ProductDescriptor();
 
                 product.product_name = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block']/div[@class='twocol-content-wrapper']/div[@class='content']/h1").LastChild.OuterHtml.Replace(" &rarr;", "").Trim();
+                product.product_name =  WebUtility.HtmlDecode(product.product_name);
                 product.name = product.product_name;
-                product.sku = SnatchSettings.SKUStarter + counter.ToString("D4");
+                //product.sku = SnatchSettings.SKUStarter + counter.ToString("D4");
                 product.description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
-                product.short_description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
+                product.description = WebUtility.HtmlDecode(product.description);
+                //product.short_description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
 
                 try
                 {
