@@ -8,9 +8,9 @@ namespace Snatcher
 {
     public static class SnatchSettings
     {
-        public static string catalogURL = "http://geotea.ru/tea/china/kudin/";
-        public static string categoryContains = "/tea/china/kudin/";
-        public static string BaseWebSiteURL = "http://geotea.ru";
+        public static string catalogURL = "http://xn--h1aakblg5d.xn--p1ai/store/142340/142343/?page=3";
+        public static string categoryContains = "/142340/142343/?pos";
+        public static string BaseWebSiteURL = "http://xn--h1aakblg5d.xn--p1ai/store/";
         public static string SKUStarter = "GCER";
         public static bool singleProduct = false;
 

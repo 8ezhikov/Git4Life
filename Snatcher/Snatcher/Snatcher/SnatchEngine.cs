@@ -10,7 +10,7 @@ namespace Snatcher
     class SnatchEngine
     {
 
-        public List<ProductDescriptor> Process()
+        public List<MakeuploveProductDescriptor> Process()
         {
             var catalogDocument = Helper.GetPageFromUrl(SnatchSettings.catalogURL);
 
@@ -54,35 +54,35 @@ namespace Snatcher
             return sb.ToString();
         }
 
-        private List<ProductDescriptor> GetDataFromLinks(List<string> listOfProductUrls)
+        private List<MakeuploveProductDescriptor> GetDataFromLinks(List<string> listOfProductUrls)
         {
-            var listOfProductDescr = new List<ProductDescriptor>();
+            var listOfProductDescr = new List<MakeuploveProductDescriptor>();
             int counter = 1;
-            listOfProductUrls.RemoveAll(str => str.Contains('?'));
+          //listOfProductUrls.RemoveAll(str => str.Contains('?'));
             listOfProductUrls = listOfProductUrls.Distinct().ToList();
             foreach (var prodUrl in listOfProductUrls)
             {
                 var productDocument = Helper.GetPageFromUrl(prodUrl);
-                var product = new ProductDescriptor();
+                var product = new MakeuploveProductDescriptor();
 
-                product.product_name = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block']/div[@class='twocol-content-wrapper']/div[@class='content']/h1").LastChild.OuterHtml.Replace(" &rarr;", "").Trim();
+                product.product_name = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='l-page l-page-rubber']/div[@class='l-page-holder']/div[@class='l-wrapper g-center-width']/div[@class='l-page-content']/div[@class='l-content']/div[@class='name']").LastChild.OuterHtml.Replace(" &rarr;", "").Trim();
                 product.product_name =  WebUtility.HtmlDecode(product.product_name);
                 product.name = product.product_name;
                 //product.sku = SnatchSettings.SKUStarter + counter.ToString("D4");
-                product.description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
+                product.description = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='l-page l-page-rubber']/div[@class='l-page-holder']/div[@class='l-wrapper g-center-width']/div[@class='l-page-content']/div[@class='l-content']/div[@class='content']/div[@class='uss_shop_detail']/div[@class='uss_shop_full_description']").InnerHtml;
                 product.description = WebUtility.HtmlDecode(product.description);
                 //product.short_description = productDocument.DocumentNode.SelectSingleNode("/html/body[@class='china']/div[@class='theme-wrapper']/div[@class='block clear']/div[@class='twocol-content-wrapper']/div[@class='content']/dl[@class='tea-options']/dd[1]").InnerHtml;
 
                 try
                 {
-                    product.price = productDocument.DocumentNode.SelectNodes("//p[1]").First(t => t.InnerText.Contains("Цена")).InnerText.Replace("Цена:", "").Replace("руб.", "").Trim();
+                    product.price = productDocument.DocumentNode.SelectNodes("//span[@class='price']").First().InnerText.Replace("руб.", "").Trim();
 
                 }
                 catch (Exception)
                 {
                     product.price = 500.ToString();
                 }
-                var imgNode = productDocument.DocumentNode.SelectSingleNode("//div[@class='product-top clear']/div[@class='big-img']/img[@class='main-img']/@src");
+                var imgNode = productDocument.DocumentNode.SelectSingleNode("/html/body/div[@class='l-page l-page-rubber']/div[@class='l-page-holder']/div[@class='l-wrapper g-center-width']/div[@class='l-page-content']/div[@class='l-content']/div[@class='content']/div[@class='uss_shop_detail']/div[@class='uss_img']/img[@class='big_image']/@src");
                 if (imgNode != null)
                 {
                     var imgRawURL = imgNode.Attributes["src"].Value;
@@ -97,9 +97,10 @@ namespace Snatcher
                     }
                     var extension = imgRawURL.Substring(imgRawURL.LastIndexOf('.'));
                     var imgname = prodUrl.Substring(prodUrl.LastIndexOf('/') + 1);
+                    imgname = imgname.Replace("?pos=", "");
                     var imgWithExtension = imgname+ extension;
 
-                    string localFilename = @"D:\Snatches\" + imgWithExtension;
+                    string localFilename = @"D:\MimiSnatches\" + imgWithExtension;
                     using (WebClient client = new WebClient())
                     {
                         client.DownloadFile(new Uri(AppendSiteName(imgRawURL)), localFilename);
@@ -154,7 +155,7 @@ namespace Snatcher
             return (SnatchSettings.BaseWebSiteURL + rawLinkUrl);
         }
 
-        public Worksheet ExportToExcel(List<ProductDescriptor> snatchedProducts)
+        public Worksheet ExportToExcel(List<MakeuploveProductDescriptor> snatchedProducts)
         {
             {
                 var xlApp = new Application {Visible = true};
@@ -181,7 +182,7 @@ namespace Snatcher
 
                 const int verticalPosition = 0;
 
-                var productAtributes = typeof (ProductDescriptor).GetMembers().Skip(5).ToList();
+                var productAtributes = typeof(MakeuploveProductDescriptor).GetMembers().Skip(5).ToList();
                 var attribCount = productAtributes.Count();
 
                 var startingLevelCell = ws.Cells[verticalPosition + 1, firstColumn - 1];
