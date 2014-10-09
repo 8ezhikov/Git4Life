@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using Microsoft.Office.Interop.Excel;
 
@@ -25,7 +26,10 @@ namespace Snatcher
                 {
                     var attrib = link.Attributes["href"];
                     var rawLinkUrl = attrib.Value;
-                    listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+                    if (!rawLinkUrl.Contains("BASKET"))
+                    {
+                        listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+                    }
                 }
             }
             else
@@ -34,8 +38,11 @@ namespace Snatcher
                 var rawLinkUrl = attrib.Value;
                 listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
             }
-        
-           
+
+            listOfProductUrls = listOfProductUrls.Distinct().ToList();
+            listOfProductUrls.RemoveAt(0);
+            listOfProductUrls.RemoveAt(listOfProductUrls.Count-1);
+
             var productList = GetDataFromLinks(listOfProductUrls);
 
             return productList;
