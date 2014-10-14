@@ -1,25 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Configuration;
 
 namespace Honeycomb
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         ServiceHost host;
 
@@ -30,8 +19,8 @@ namespace Honeycomb
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Uri uri = new Uri("http://localhost:22222/chatservice");
-            host = new ServiceHost(typeof(Chatters.ChatService), uri);
+            Uri uri = new Uri( ConfigurationManager.AppSettings["addr"]);
+            host = new ServiceHost(typeof(ChatService), uri);
             host.Open();
             //Console.WriteLine("Chat service listen on endpoint {0}", uri.ToString());
             //Console.WriteLine("Press ENTER to stop chat service...");
