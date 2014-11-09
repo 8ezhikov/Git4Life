@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ServiceModel;
-using System.Runtime.Serialization;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace Common
+namespace Honeycomb
 {
     #region Person class
     /// <summary>
