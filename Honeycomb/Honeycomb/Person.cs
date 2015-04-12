@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Honeycomb
 {
@@ -11,12 +12,12 @@ namespace Honeycomb
     /// [DataContract] specifies that the type defines or implements a data contract
     /// and is serializable by a serializer, such as the DataContractSerializer
     /// </summary>
-  //  [DataContract]
+    [DataContract]
     public class Person : INotifyPropertyChanged
     {
         #region Instance Fields
-        private string imageURL;
-        private string name;
+        private string serverIP;
+        private string clientName;
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
         #region Ctors
@@ -30,42 +31,42 @@ namespace Honeycomb
         /// <summary>
         /// Assign constructor
         /// </summary>
-        /// <param name="imageURL">Image url to allow a picture to be created for this chatter</param>
-        /// <param name="name">The name to use for this chatter</param>
-        public Person(string imageURL, string name)
+        /// <param ClientName="serverIp">Image url to allow a picture to be created for this chatter</param>
+        /// <param ClientName="clientName">The ClientName to use for this chatter</param>
+        public Person(string serverIp, string clientName)
         {
-            this.imageURL = imageURL;
-            this.name = name;
+             ServerIP = serverIp;
+             ClientName = clientName;
         }
         #endregion
         #region Public Properties
         /// <summary>
         /// The chatters image url
         /// </summary>
-      //  [DataMember]
-        public string ImageURL
+        [DataMember]
+        public string ServerIP
         {
-            get { return imageURL; }
+            get { return serverIP; }
             set
             {
-                imageURL = value;
+                serverIP = value;
                 // Call OnPropertyChanged whenever the property is updated
-                OnPropertyChanged("ImageURL");
+                OnPropertyChanged("serverIP");
             }
         }
 
         /// <summary>
-        /// The chatters Name
+        /// The chatters ClientName
         /// </summary>
-    //    [DataMember]
-        public string Name
+        [DataMember]
+        public string ClientName
         {
-            get { return name; }
+            get { return clientName; }
             set
             {
-                name = value;
+                clientName = value;
                 // Call OnPropertyChanged whenever the property is updated
-                OnPropertyChanged("Name");
+                OnPropertyChanged("ClientName");
             }
         }
         #endregion
@@ -74,7 +75,7 @@ namespace Honeycomb
         /// Notifies the parent bindings (if any) that a property
         /// value changed and that the binding needs updating
         /// </summary>
-        /// <param name="propValue">The property which changed</param>
+        /// <param ClientName="propValue">The property which changed</param>
         protected void OnPropertyChanged(string propValue)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Windows;
-using Common;
+using Honeycomb;
 
 namespace CrawlerClient
 {
@@ -42,10 +42,10 @@ namespace CrawlerClient
     public sealed class ConnectionSingleton : IChatCallback
     {
         #region Instance Fields
-        private static ConnectionSingleton singleton;
-        private static readonly object singletonLock = new object();
+        private static readonly Lazy<ConnectionSingleton> lazySingleton =
+        new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
+        
         private ChatClient proxy;
-        private Person myPerson;
 
         //main proxy event
         public delegate void ProxyEventHandler(object sender, ProxyEventArgs e);
@@ -160,10 +160,10 @@ namespace CrawlerClient
         /// <param name="p">The <see cref="Common.Person">chatter</see> to try and join with</param>
         public  void Connect(Person p)
         {
-            InstanceContext site = new InstanceContext(this);
+            var site = new InstanceContext(this);
             proxy = new ChatClient(site);
 
-               Person[] list =  proxy.Join(p);
+               var list =  proxy.Join(p);
                 HandleEndJoin(list);
             //IAsyncResult ee = proxy.JoinAsync(p);
             //ee.AsyncWaitHandle = await 
@@ -241,17 +241,11 @@ namespace CrawlerClient
         /// Returns a singleton <see cref="ConnectionSingleton">ConnectionSingleton</see>
         /// </summary>
         /// <returns>a singleton <see cref="ConnectionSingleton">ConnectionSingleton</see></returns>
-        public static ConnectionSingleton GetInstance()
+        public static ConnectionSingleton Instance
         {
-            //critical section, which ensures the singleton
-            //is thread safe
-            lock (singletonLock)
+            get
             {
-                if (singleton == null)
-                {
-                    singleton = new ConnectionSingleton();
-                }
-                return singleton;
+                return lazySingleton.Value;
             }
         }
 

@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<!--<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+  --><!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -58,60 +58,60 @@
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
-    -->
+    --><!--
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:element name="root" msdata:IsDataSet="true">
+    <xsd:element ClientName="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
+          <xsd:element ClientName="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element ClientName="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ClientName="ClientName" type="xsd:string" />
+              <xsd:attribute ClientName="type" type="xsd:string" />
+              <xsd:attribute ClientName="mimetype" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
-          <xsd:element name="assembly">
+          <xsd:element ClientName="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute ClientName="alias" type="xsd:string" />
+              <xsd:attribute ClientName="ClientName" type="xsd:string" />
             </xsd:complexType>
           </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
+          <xsd:element ClientName="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element ClientName="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element ClientName="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute ClientName="ClientName" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute ClientName="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute ClientName="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element ClientName="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ClientName="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute ClientName="ClientName" type="xsd:string" use="required" />
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
       </xsd:complexType>
     </xsd:element>
   </xsd:schema>
-  <resheader name="resmimetype">
+  <resheader ClientName="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
-  <resheader name="version">
+  <resheader ClientName="version">
     <value>2.0</value>
   </resheader>
-  <resheader name="reader">
+  <resheader ClientName="reader">
     <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <resheader name="writer">
+  <resheader ClientName="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-</root>
+</root>-->

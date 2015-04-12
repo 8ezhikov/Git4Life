@@ -111,14 +111,14 @@ namespace Honeycomb
         /// Searches the intenal list of chatters for a particular person, and returns
         /// true if the person could be found
         /// </summary>
-        /// <param name="name">the name of the <see cref="Common.Person">Person</see> to find</param>
+        /// <param ClientName="name">the ClientName of the <see cref="Common.Person">Person</see> to find</param>
         /// <returns>True if the <see cref="Common.Person">Person</see> was found in the
         /// internal list of chatters</returns>
         private bool checkIfPersonExists(string name)
         {
             foreach (Person p in chatters.Keys)
             {
-                if (p.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -131,14 +131,14 @@ namespace Honeycomb
         /// the individual chatters ChatEventHandler delegate in order that it can be
         /// invoked
         /// </summary>
-        /// <param name="name">the name of the <see cref="Common.Person">Person</see> to find</param>
+        /// <param ClientName="name">the ClientName of the <see cref="Common.Person">Person</see> to find</param>
         /// <returns>The True ChatEventHandler delegate for the <see cref="Common.Person">Person</see> who matched
-        /// the name input parameter</returns>
+        /// the ClientName input parameter</returns>
         private ChatEventHandler getPersonHandler(string name)
         {
             foreach (Person p in chatters.Keys)
             {
-                if (p.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     ChatEventHandler chatTo = null;
                     chatters.TryGetValue(p, out chatTo);
@@ -150,17 +150,17 @@ namespace Honeycomb
 
         /// <summary>
         /// Searches the intenal list of chatters for a particular person, and returns
-        /// the actual <see cref="Common.Person">Person</see> whos name matches
-        /// the name input parameter
+        /// the actual <see cref="Common.Person">Person</see> whos ClientName matches
+        /// the ClientName input parameter
         /// </summary>
-        /// <param name="name">the name of the <see cref="Common.Person">Person</see> to find</param>
-        /// <returns>The actual <see cref="Common.Person">Person</see> whos name matches
-        /// the name input parameter</returns>
+        /// <param ClientName="name">the ClientName of the <see cref="Common.Person">Person</see> to find</param>
+        /// <returns>The actual <see cref="Common.Person">Person</see> whos ClientName matches
+        /// the ClientName input parameter</returns>
         private Person getPerson(string name)
         {
             foreach (Person p in chatters.Keys)
             {
-                if (p.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return p;
                 }
@@ -173,9 +173,9 @@ namespace Honeycomb
         /// <summary>
         /// Takes a <see cref="Common.Person">Person</see> and allows them
         /// to join the chat room, if there is not already a chatter with
-        /// the same name
+        /// the same ClientName
         /// </summary>
-        /// <param name="person"><see cref="Common.Person">Person</see> joining</param>
+        /// <param ClientName="person"><see cref="Common.Person">Person</see> joining</param>
         /// <returns>An array of <see cref="Common.Person">Person</see> objects</returns>
         public Person[] Join(Person person)
         {
@@ -184,13 +184,13 @@ namespace Honeycomb
             myEventHandler = new ChatEventHandler(MyEventHandler);
 
             //carry out a critical section that checks to see if the new chatter
-            //name is already in use, if its not allow the new chatter to be
+            //ClientName is already in use, if its not allow the new chatter to be
             //added to the list of chatters, using the person as the key, and the
             //ChatEventHandler delegate as the value, for later invocation
             lock (syncObj)
             {
-                if (!checkIfPersonExists(person.Name) && person != null)
-                {
+                if (!checkIfPersonExists(person.ClientName) && person != null)
+                { 
                     this.person = person;
                     chatters.Add(person, MyEventHandler);
                     userAdded = true;
@@ -211,7 +211,7 @@ namespace Honeycomb
                 //add this newly joined chatters ChatEventHandler delegate, to the global
                 //multicast delegate for invocation
                 ChatEvent += myEventHandler;
-                Person[] list = new Person[chatters.Count];
+                var list = new Person[chatters.Count];
                 //carry out a critical section that copy all chatters to a new list
                 lock (syncObj)
                 {
@@ -229,7 +229,7 @@ namespace Honeycomb
         /// Broadcasts the input msg parameter to all connected chatters
         /// by using the BroadcastMessage() method
         /// </summary>
-        /// <param name="msg">The message to broadcast to all chatters</param>
+        /// <param ClientName="msg">The message to broadcast to all chatters</param>
         public void Say(string msg)
         {
             ChatEventArgs e = new ChatEventArgs();
@@ -241,14 +241,14 @@ namespace Honeycomb
 
         /// <summary>
         /// Broadcasts the input msg parameter to all the <see cref="Common.Person">
-        /// Person</see> whos name matches the to input parameter
+        /// Person</see> whos ClientName matches the to input parameter
         /// by looking up the person from the internal list of chatters
         /// and invoking their ChatEventHandler delegate asynchronously.
         /// Where the MyEventHandler() method is called at the start of the
         /// asynch call, and the EndAsync() method at the end of the asynch call
         /// </summary>
-        /// <param name="to">The persons name to send the message to</param>
-        /// <param name="msg">The message to broadcast to all chatters</param>
+        /// <param ClientName="to">The persons ClientName to send the message to</param>
+        /// <param ClientName="msg">The message to broadcast to all chatters</param>
         public void Whisper(string to, string msg)
         {
             ChatEventArgs e = new ChatEventArgs();
@@ -267,7 +267,7 @@ namespace Honeycomb
                     chatterTo = getPersonHandler(to);
                     if (chatterTo == null)
                     {
-                        throw new KeyNotFoundException("The person whos name is " + to +
+                        throw new KeyNotFoundException("The person whos ClientName is " + to +
                                                         " could not be found");
                     }
                 }
@@ -293,7 +293,7 @@ namespace Honeycomb
                 return;
 
             //get the chatters ChatEventHandler delegate
-            ChatEventHandler chatterToRemove = getPersonHandler(this.person.Name);
+            ChatEventHandler chatterToRemove = getPersonHandler(this.person.ClientName);
 
             //carry out a critical section, that removes the chatter from the
             //internal list of chatters
@@ -322,8 +322,8 @@ namespace Honeycomb
         /// what type of message is being broadcast, and will then
         /// call the correspoding method on the clients callback interface
         /// </summary>
-        /// <param name="sender">the sender, which is not used</param>
-        /// <param name="e">The ChatEventArgs</param>
+        /// <param ClientName="sender">the sender, which is not used</param>
+        /// <param ClientName="e">The ChatEventArgs</param>
         private void MyEventHandler(object sender, ChatEventArgs e)
         {
             try
@@ -356,7 +356,7 @@ namespace Honeycomb
         ///the MyEventHandler() method and will allow a asynch callback to call
         ///the EndAsync() method on completion of the initial call
         /// </summary>
-        /// <param name="e">The ChatEventArgs to use to send to all connected chatters</param>
+        /// <param ClientName="e">The ChatEventArgs to use to send to all connected chatters</param>
         private void BroadcastMessage(ChatEventArgs e)
         {
 
@@ -381,7 +381,7 @@ namespace Honeycomb
         /// delegate and do an EndInvoke on it, to signal the asynchronous call is
         /// now completed
         /// </summary>
-        /// <param name="ar">The asnch result</param>
+        /// <param ClientName="ar">The asnch result</param>
         private void EndAsync(IAsyncResult ar)
         {
             ChatEventHandler d = null;
@@ -404,3 +404,4 @@ namespace Honeycomb
     #endregion
 }
 
+ 

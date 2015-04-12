@@ -24,11 +24,13 @@ namespace Snatcher
             {
                 foreach (var link in filteredLinkList)
                 {
-                    var attrib = link.Attributes["href"];
-                    var rawLinkUrl = attrib.Value;
-                    if (!rawLinkUrl.Contains("BASKET"))
+                    //var attrib = link.Attributes["href"];
+                    //var rawLinkUrl = attrib.Value;
+                   var linkURL= link.Attributes["href"].Value;
+                   if (!link.InnerHtml.Contains("img") && !linkURL.Contains("page") && linkURL != SnatchSettings.catalogURL
+                       && !linkURL.Contains("sort") && linkURL != SnatchSettings.BadURL)
                     {
-                        listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
+                        listOfProductUrls.Add(AppendSiteName(linkURL));
                     }
                 }
             }
@@ -39,9 +41,9 @@ namespace Snatcher
                 listOfProductUrls.Add(AppendSiteName(rawLinkUrl));
             }
 
-            listOfProductUrls = listOfProductUrls.Distinct().ToList();
-            listOfProductUrls.RemoveAt(0);
-            listOfProductUrls.RemoveAt(listOfProductUrls.Count-1);
+            //listOfProductUrls = listOfProductUrls.Distinct().ToList();
+            //listOfProductUrls.RemoveAt(0);
+            //listOfProductUrls.RemoveAt(listOfProductUrls.Count-1);
 
             var productList = GetDataFromLinks(listOfProductUrls);
 
@@ -120,7 +122,7 @@ namespace Snatcher
                     product.thumbnail_label = product.product_name;
                 }
 
-                #region meta
+                #region meta 
                 var descNode = productDocument.DocumentNode.SelectSingleNode("//meta[@name='description']");
 
                 if (descNode != null)

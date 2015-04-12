@@ -27,12 +27,5 @@ namespace Honeycomb
             //Console.ReadLine();
      
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            host.Abort();
-            host.Close(); 
-
-        }
     }
 }

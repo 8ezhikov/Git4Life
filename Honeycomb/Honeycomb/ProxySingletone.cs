@@ -94,8 +94,8 @@
 //        /// and the <see cref="CallBackType">CallBackType.Receive</see>
 //        /// type
 //        /// </summary>
-//        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-//        /// <param name="message">The message</param>
+//        /// <param ClientName="sender">The <see cref="Common.Person">current chatter</see></param>
+//        /// <param ClientName="message">The message</param>
 //        public void Receive(Person sender, string message)
 //        {
 //            Receive(sender, message, CallBackType.Receive);
@@ -107,8 +107,8 @@
 //        /// and the <see cref="CallBackType">CallBackType.ReceiveWhisper</see>
 //        /// type
 //        /// </summary>
-//        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-//        /// <param name="message">The message</param>
+//        /// <param ClientName="sender">The <see cref="Common.Person">current chatter</see></param>
+//        /// <param ClientName="message">The message</param>
 //        public void ReceiveWhisper(Person sender, string message)
 //        {
 //            Receive(sender, message, CallBackType.ReceiveWhisper);
@@ -119,9 +119,9 @@
 //        /// method implementations, and simply raises the OnProxyCallBackEvent() event
 //        /// to any subscribers
 //        /// </summary>
-//        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-//        /// <param name="message">The message</param>
-//        /// <param name="callbackType">Could be <see cref="CallBackType">CallBackType.Receive</see> or
+//        /// <param ClientName="sender">The <see cref="Common.Person">current chatter</see></param>
+//        /// <param ClientName="message">The message</param>
+//        /// <param ClientName="callbackType">Could be <see cref="CallBackType">CallBackType.Receive</see> or
 //        /// <see cref="CallBackType">CallBackType.ReceiveWhisper</see></param>
 //        private void Receive(Person sender, string message, CallBackType callbackType)
 //        {
@@ -138,8 +138,8 @@
 //        /// and the <see cref="CallBackType">CallBackType.UserEnter</see>
 //        /// type
 //        /// </summary>
-//        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-//        /// <param name="message">The message</param>
+//        /// <param ClientName="sender">The <see cref="Common.Person">current chatter</see></param>
+//        /// <param ClientName="message">The message</param>
 //        public void UserEnter(Person person)
 //        {
 //            UserEnterLeave(person, CallBackType.UserEnter);
@@ -151,8 +151,8 @@
 //        /// and the <see cref="CallBackType">CallBackType.UserLeave</see>
 //        /// type
 //        /// </summary>
-//        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-//        /// <param name="message">The message</param>
+//        /// <param ClientName="sender">The <see cref="Common.Person">current chatter</see></param>
+//        /// <param ClientName="message">The message</param>
 //        public void UserLeave(Person person)
 //        {
 //            UserEnterLeave(person, CallBackType.UserLeave);
@@ -163,9 +163,9 @@
 //        /// method implementations, and simply raises the OnProxyCallBackEvent() event
 //        /// to any subscribers
 //        /// </summary>
-//        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-//        /// <param name="message">The message</param>
-//        /// <param name="callbackType">Could be <see cref="CallBackType">CallBackType.UserEnter</see> or
+//        /// <param ClientName="sender">The <see cref="Common.Person">current chatter</see></param>
+//        /// <param ClientName="message">The message</param>
+//        /// <param ClientName="callbackType">Could be <see cref="CallBackType">CallBackType.UserEnter</see> or
 //        /// <see cref="CallBackType">CallBackType.UserLeave</see></param>
 //        private void UserEnterLeave(Person person, CallBackType callbackType)
 //        {
@@ -179,7 +179,7 @@
 //        /// Begins an asynchronous join operation on the underlying <see cref="ChatProxy">ChatProxy</see>
 //        /// which will call the OnEndJoin() method on completion
 //        /// </summary>
-//        /// <param name="p">The <see cref="Common.Person">chatter</see> to try and join with</param>
+//        /// <param ClientName="p">The <see cref="Common.Person">chatter</see> to try and join with</param>
 //        public void Connect(Person p)
 //        {
 //            InstanceContext site = new InstanceContext(this);
@@ -193,7 +193,7 @@
 //        /// list of <see cref="Common.Person">Chatters</see> that will
 //        /// be yielded as part of the Asynch Join call
 //        /// </summary>
-//        /// <param name="iar">The asnch result</param>
+//        /// <param ClientName="iar">The asnch result</param>
 //        //private void OnEndJoin(IAsyncResult iar)
 //        //{
 //        //    try
@@ -212,7 +212,7 @@
 //        /// If the input list is not empty, then call the 
 //        /// OnProxyEvent() event, to raise the event for subscribers
 //        /// </summary>
-//        /// <param name="list">The list of <see cref="Common.Person">Chatters</see> </param>
+//        /// <param ClientName="list">The list of <see cref="Common.Person">Chatters</see> </param>
 //        private void HandleEndJoin(Person[] list)
 //        {
 
@@ -233,7 +233,7 @@
 //        /// <summary>
 //        /// Raises the event for connected subscribers
 //        /// </summary>
-//        /// <param name="e"><see cref="ProxyCallBackEventArgs">ProxyCallBackEventArgs</see> event args</param>
+//        /// <param ClientName="e"><see cref="ProxyCallBackEventArgs">ProxyCallBackEventArgs</see> event args</param>
 //        protected void OnProxyCallBackEvent(ProxyCallBackEventArgs e)
 //        {
 //            if (ProxyCallBackEvent != null)
@@ -246,7 +246,7 @@
 //        /// <summary>
 //        /// Raises the event for connected subscribers
 //        /// </summary>
-//        /// <param name="e"><see cref="ProxyEventArgs">ProxyEventArgs</see> event args</param>
+//        /// <param ClientName="e"><see cref="ProxyEventArgs">ProxyEventArgs</see> event args</param>
 //        protected void OnProxyEvent(ProxyEventArgs e)
 //        {
 //            if (ProxyEvent != null)
@@ -278,10 +278,10 @@
 //        /// Will either call the Whisper/Say ChatProxy methods
 //        /// passing in the required parameters.
 //        /// </summary>
-//        /// <param name="to">The chatters name who the message
+//        /// <param ClientName="to">The chatters ClientName who the message
 //        /// is for</param>
-//        /// <param name="msg">The message</param>
-//        /// <param name="pvt">If true will call the ChatProxy.Whisper()
+//        /// <param ClientName="msg">The message</param>
+//        /// <param ClientName="pvt">If true will call the ChatProxy.Whisper()
 //        /// method, otherwise will call the ChatProxy.Say() method</param>
 //        public void SayAndClear(string to, string msg, bool pvt)
 //        {
