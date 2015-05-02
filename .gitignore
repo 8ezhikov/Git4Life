@@ -1,3 +1,5 @@
 Debug
 /Chatters/ChatService/bin/Release
 /Chatters/*.suo
+*.suo
+/Honeycomb/*.suo

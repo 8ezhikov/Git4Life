@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Honeycomb
 {
-    #region Person class
+    #region ClientCrawlerInfo class
     /// <summary>
     /// This class represnts a single chat user that can participate in this chat application
     /// This class implements INotifyPropertyChanged to support one-way and two-way
@@ -13,27 +13,27 @@ namespace Honeycomb
     /// and is serializable by a serializer, such as the DataContractSerializer
     /// </summary>
     [DataContract]
-    public class Person : INotifyPropertyChanged
+    public class ClientCrawlerInfo : INotifyPropertyChanged
     {
         #region Instance Fields
-        private string serverIP;
-        private string clientName;
+        private string _serverIP;
+        private string _clientName;
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
         #region Ctors
-        /// <summary>
-        /// Blank constructor
-        /// </summary>
-        public Person()
-        {
-        }
+        ///// <summary>
+        ///// Blank constructor
+        ///// </summary>
+        //public ClientCrawlerInfo()
+        //{
+        //}
 
         /// <summary>
         /// Assign constructor
         /// </summary>
-        /// <param ClientName="serverIp">Image url to allow a picture to be created for this chatter</param>
-        /// <param ClientName="clientName">The ClientName to use for this chatter</param>
-        public Person(string serverIp, string clientName)
+        /// <param name="serverIp">Image url to allow a picture to be created for this chatter</param>
+        /// <param name="clientName">The ClientName to use for this chatter</param>
+        public ClientCrawlerInfo(string serverIp, string clientName)
         {
              ServerIP = serverIp;
              ClientName = clientName;
@@ -46,10 +46,10 @@ namespace Honeycomb
         [DataMember]
         public string ServerIP
         {
-            get { return serverIP; }
+            get { return _serverIP; }
             set
             {
-                serverIP = value;
+                _serverIP = value;
                 // Call OnPropertyChanged whenever the property is updated
                 OnPropertyChanged("serverIP");
             }
@@ -61,10 +61,10 @@ namespace Honeycomb
         [DataMember]
         public string ClientName
         {
-            get { return clientName; }
+            get { return _clientName; }
             set
             {
-                clientName = value;
+                _clientName = value;
                 // Call OnPropertyChanged whenever the property is updated
                 OnPropertyChanged("ClientName");
             }
@@ -75,7 +75,7 @@ namespace Honeycomb
         /// Notifies the parent bindings (if any) that a property
         /// value changed and that the binding needs updating
         /// </summary>
-        /// <param ClientName="propValue">The property which changed</param>
+        /// <param name="propValue">The property which changed</param>
         protected void OnPropertyChanged(string propValue)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

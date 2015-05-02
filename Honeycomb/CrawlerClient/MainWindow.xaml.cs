@@ -17,9 +17,14 @@ namespace CrawlerClient
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var singleTone = ConnectionSingleton.Instance;
-            InstanceContext site = new InstanceContext(singleTone);
-            var newPerson = new Person();
+           // InstanceContext site = new InstanceContext(singleTone);
+            var newPerson = new ClientCrawlerInfo();
             newPerson.ClientName = "Denis Crawler";
+            var localIP = ClientHelper.GetLocalIP();
+            var globalIP = ClientHelper.GetPublicIP();
+
+
+          //  newPerson.ServerIP = DataFormat;
           //  newPerson.ImageURL = "3434";
             singleTone.Connect(newPerson);
             singleTone.SayAndClear("HUE","MOE", false);
@@ -27,6 +32,11 @@ namespace CrawlerClient
            //System.Threading.Thread.Sleep(3242);
            // proxy.Join()
            // proxy.Say("HUI PIZDA JIGUR DA");
+        }
+
+        private void StartCrawlerButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

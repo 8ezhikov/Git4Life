@@ -15,8 +15,8 @@ namespace Honeycomb
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name = "Person", Namespace = "http://schemas.datacontract.org/2004/07/Honeycomb")]
-    public partial class Person : object, System.Runtime.Serialization.IExtensibleDataObject
+    [System.Runtime.Serialization.DataContractAttribute(Name = "ClientCrawlerInfo", Namespace = "http://schemas.datacontract.org/2004/07/Honeycomb")]
+    public partial class ClientCrawlerInfo : object, System.Runtime.Serialization.IExtensibleDataObject
     {
 
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -84,10 +84,10 @@ public interface IChat
     System.Threading.Tasks.Task WhisperAsync(string to, string msg);
 
     [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IChat/Join", ReplyAction = "http://tempuri.org/IChat/JoinResponse")]
-    Honeycomb.Person[] Join(Honeycomb.Person name);
+    Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 
     [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IChat/Join", ReplyAction = "http://tempuri.org/IChat/JoinResponse")]
-    System.Threading.Tasks.Task<Honeycomb.Person[]> JoinAsync(Honeycomb.Person name);
+    System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Leave")]
     void Leave();
@@ -101,16 +101,16 @@ public interface IChatCallback
 {
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/Receive")]
-    void Receive(Honeycomb.Person sender, string message);
+    void Receive(Honeycomb.ClientCrawlerInfo sender, string message);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/ReceiveWhisper")]
-    void ReceiveWhisper(Honeycomb.Person sender, string message);
+    void ReceiveWhisper(Honeycomb.ClientCrawlerInfo sender, string message);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/UserEnter")]
-    void UserEnter(Honeycomb.Person person);
+    void UserEnter(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/UserLeave")]
-    void UserLeave(Honeycomb.Person person);
+    void UserLeave(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -168,14 +168,14 @@ public partial class ChatClient : System.ServiceModel.DuplexClientBase<IChat>, I
         return base.Channel.WhisperAsync(to, msg);
     }
 
-    public Honeycomb.Person[] Join(Honeycomb.Person name)
+    public Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo)
     {
-        return base.Channel.Join(name);
+        return base.Channel.Join(clientCrawlerInfo);
     }
 
-    public System.Threading.Tasks.Task<Honeycomb.Person[]> JoinAsync(Honeycomb.Person name)
+    public System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo)
     {
-        return base.Channel.JoinAsync(name);
+        return base.Channel.JoinAsync(clientCrawlerInfo);
     }
 
     public void Leave()

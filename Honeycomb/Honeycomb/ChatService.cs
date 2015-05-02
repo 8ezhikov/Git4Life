@@ -28,7 +28,7 @@ namespace Honeycomb
         void Whisper(string to, string msg);
 
         [OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
-        Person[] Join(Person name);
+        ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = true)]
         void Leave();
@@ -49,16 +49,16 @@ namespace Honeycomb
     interface IChatCallback
     {
         [OperationContract(IsOneWay = true)]
-        void Receive(Person sender, string message);
+        void Receive(ClientCrawlerInfo sender, string message);
 
         [OperationContract(IsOneWay = true)]
-        void ReceiveWhisper(Person sender, string message);
+        void ReceiveWhisper(ClientCrawlerInfo sender, string message);
 
         [OperationContract(IsOneWay = true)]
-        void UserEnter(Person person);
+        void UserEnter(ClientCrawlerInfo clientCrawlerInfo);
 
         [OperationContract(IsOneWay = true)]
-        void UserLeave(Person person);
+        void UserLeave(ClientCrawlerInfo clientCrawlerInfo);
     }
     #endregion
     #region Public enums/event args
@@ -75,7 +75,7 @@ namespace Honeycomb
     public class ChatEventArgs : EventArgs
     {
         public MessageType msgType;
-        public Person person;
+        public ClientCrawlerInfo clientCrawlerInfo;
         public string message;
     }
     #endregion
@@ -102,21 +102,21 @@ namespace Honeycomb
         private ChatEventHandler myEventHandler = null;
         //holds a list of chatters, and a delegate to allow the BroadcastEvent to work
         //out which chatter delegate to invoke
-        static Dictionary<Person, ChatEventHandler> chatters = new Dictionary<Person, ChatEventHandler>();
-        //current person 
-        private Person person;
+        static Dictionary<ClientCrawlerInfo, ChatEventHandler> chatters = new Dictionary<ClientCrawlerInfo, ChatEventHandler>();
+        //current ClientCrawlerInfo 
+        private ClientCrawlerInfo clientCrawlerInfo;
         #endregion
         #region Helpers
         /// <summary>
-        /// Searches the intenal list of chatters for a particular person, and returns
-        /// true if the person could be found
+        /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
+        /// true if the ClientCrawlerInfo could be found
         /// </summary>
-        /// <param ClientName="name">the ClientName of the <see cref="Common.Person">Person</see> to find</param>
-        /// <returns>True if the <see cref="Common.Person">Person</see> was found in the
+        /// <param ClientName="ClientCrawlerInfo">the ClientName of the <see cref="Common.Person">ClientCrawlerInfo</see> to find</param>
+        /// <returns>True if the <see cref="Common.Person">ClientCrawlerInfo</see> was found in the
         /// internal list of chatters</returns>
         private bool checkIfPersonExists(string name)
         {
-            foreach (Person p in chatters.Keys)
+            foreach (ClientCrawlerInfo p in chatters.Keys)
             {
                 if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -127,16 +127,16 @@ namespace Honeycomb
         }
 
         /// <summary>
-        /// Searches the intenal list of chatters for a particular person, and returns
+        /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
         /// the individual chatters ChatEventHandler delegate in order that it can be
         /// invoked
         /// </summary>
-        /// <param ClientName="name">the ClientName of the <see cref="Common.Person">Person</see> to find</param>
-        /// <returns>The True ChatEventHandler delegate for the <see cref="Common.Person">Person</see> who matched
+        /// <param ClientName="ClientCrawlerInfo">the ClientName of the <see cref="Common.Person">ClientCrawlerInfo</see> to find</param>
+        /// <returns>The True ChatEventHandler delegate for the <see cref="Common.Person">ClientCrawlerInfo</see> who matched
         /// the ClientName input parameter</returns>
         private ChatEventHandler getPersonHandler(string name)
         {
-            foreach (Person p in chatters.Keys)
+            foreach (ClientCrawlerInfo p in chatters.Keys)
             {
                 if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -149,16 +149,16 @@ namespace Honeycomb
         }
 
         /// <summary>
-        /// Searches the intenal list of chatters for a particular person, and returns
-        /// the actual <see cref="Common.Person">Person</see> whos ClientName matches
+        /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
+        /// the actual <see cref="Common.Person">ClientCrawlerInfo</see> whos ClientName matches
         /// the ClientName input parameter
         /// </summary>
-        /// <param ClientName="name">the ClientName of the <see cref="Common.Person">Person</see> to find</param>
-        /// <returns>The actual <see cref="Common.Person">Person</see> whos ClientName matches
+        /// <param ClientName="ClientCrawlerInfo">the ClientName of the <see cref="Common.Person">ClientCrawlerInfo</see> to find</param>
+        /// <returns>The actual <see cref="Common.Person">ClientCrawlerInfo</see> whos ClientName matches
         /// the ClientName input parameter</returns>
-        private Person getPerson(string name)
+        private ClientCrawlerInfo getPerson(string name)
         {
-            foreach (Person p in chatters.Keys)
+            foreach (ClientCrawlerInfo p in chatters.Keys)
             {
                 if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
@@ -171,13 +171,13 @@ namespace Honeycomb
         #region IChat implementation
 
         /// <summary>
-        /// Takes a <see cref="Common.Person">Person</see> and allows them
+        /// Takes a <see cref="Common.Person">ClientCrawlerInfo</see> and allows them
         /// to join the chat room, if there is not already a chatter with
         /// the same ClientName
         /// </summary>
-        /// <param ClientName="person"><see cref="Common.Person">Person</see> joining</param>
-        /// <returns>An array of <see cref="Common.Person">Person</see> objects</returns>
-        public Person[] Join(Person person)
+        /// <param ClientName="ClientCrawlerInfo"><see cref="Common.Person">ClientCrawlerInfo</see> joining</param>
+        /// <returns>An array of <see cref="Common.Person">ClientCrawlerInfo</see> objects</returns>
+        public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo)
         {
             bool userAdded = false;
             //create a new ChatEventHandler delegate, pointing to the MyEventHandler() method
@@ -185,14 +185,14 @@ namespace Honeycomb
 
             //carry out a critical section that checks to see if the new chatter
             //ClientName is already in use, if its not allow the new chatter to be
-            //added to the list of chatters, using the person as the key, and the
+            //added to the list of chatters, using the ClientCrawlerInfo as the key, and the
             //ChatEventHandler delegate as the value, for later invocation
             lock (syncObj)
             {
-                if (!checkIfPersonExists(person.ClientName) && person != null)
+                if (!checkIfPersonExists(clientCrawlerInfo.ClientName) && clientCrawlerInfo != null)
                 { 
-                    this.person = person;
-                    chatters.Add(person, MyEventHandler);
+                    this.clientCrawlerInfo = clientCrawlerInfo;
+                    chatters.Add(clientCrawlerInfo, MyEventHandler);
                     userAdded = true;
                 }
             }
@@ -206,12 +206,12 @@ namespace Honeycomb
                 callback = OperationContext.Current.GetCallbackChannel<IChatCallback>();
                 ChatEventArgs e = new ChatEventArgs();
                 e.msgType = MessageType.UserEnter;
-                e.person = this.person;
+                e.clientCrawlerInfo = this.clientCrawlerInfo;
                 BroadcastMessage(e);
                 //add this newly joined chatters ChatEventHandler delegate, to the global
                 //multicast delegate for invocation
                 ChatEvent += myEventHandler;
-                var list = new Person[chatters.Count];
+                var list = new ClientCrawlerInfo[chatters.Count];
                 //carry out a critical section that copy all chatters to a new list
                 lock (syncObj)
                 {
@@ -234,15 +234,15 @@ namespace Honeycomb
         {
             ChatEventArgs e = new ChatEventArgs();
             e.msgType = MessageType.Receive;
-            e.person = this.person;
+            e.clientCrawlerInfo = this.clientCrawlerInfo;
             e.message = msg;
             BroadcastMessage(e);
         }
 
         /// <summary>
         /// Broadcasts the input msg parameter to all the <see cref="Common.Person">
-        /// Person</see> whos ClientName matches the to input parameter
-        /// by looking up the person from the internal list of chatters
+        /// ClientCrawlerInfo</see> whos ClientName matches the to input parameter
+        /// by looking up the ClientCrawlerInfo from the internal list of chatters
         /// and invoking their ChatEventHandler delegate asynchronously.
         /// Where the MyEventHandler() method is called at the start of the
         /// asynch call, and the EndAsync() method at the end of the asynch call
@@ -253,21 +253,21 @@ namespace Honeycomb
         {
             ChatEventArgs e = new ChatEventArgs();
             e.msgType = MessageType.ReceiveWhisper;
-            e.person = this.person;
+            e.clientCrawlerInfo = this.clientCrawlerInfo;
             e.message = msg;
             try
             {
                 ChatEventHandler chatterTo;
                 //carry out a critical section, that attempts to find the 
-                //correct Person in the list of chatters.
-                //if a person match is found, the matched chatters 
+                //correct ClientCrawlerInfo in the list of chatters.
+                //if a ClientCrawlerInfo match is found, the matched chatters 
                 //ChatEventHandler delegate is invoked asynchronously
                 lock (syncObj)
                 {
                     chatterTo = getPersonHandler(to);
                     if (chatterTo == null)
                     {
-                        throw new KeyNotFoundException("The person whos ClientName is " + to +
+                        throw new KeyNotFoundException("The ClientCrawlerInfo whos ClientName is " + to +
                                                         " could not be found");
                     }
                 }
@@ -282,32 +282,32 @@ namespace Honeycomb
 
         /// <summary>
         /// A request has been made by a client to leave the chat room,
-        /// so remove the <see cref="Common.Person">Person </see>from
+        /// so remove the <see cref="Common.Person">ClientCrawlerInfo </see>from
         /// the internal list of chatters, and unwire the chatters
         /// delegate from the multicast delegate, so that it no longer
         /// gets invokes by globally broadcasted methods
         /// </summary>
         public void Leave()
         {
-            if (this.person == null)
+            if (this.clientCrawlerInfo == null)
                 return;
 
             //get the chatters ChatEventHandler delegate
-            ChatEventHandler chatterToRemove = getPersonHandler(this.person.ClientName);
+            ChatEventHandler chatterToRemove = getPersonHandler(this.clientCrawlerInfo.ClientName);
 
             //carry out a critical section, that removes the chatter from the
             //internal list of chatters
             lock (syncObj)
             {
-                chatters.Remove(this.person);
+                chatters.Remove(this.clientCrawlerInfo);
             }
             //unwire the chatters delegate from the multicast delegate, so that 
             //it no longer gets invokes by globally broadcasted methods
             ChatEvent -= chatterToRemove;
             ChatEventArgs e = new ChatEventArgs();
             e.msgType = MessageType.UserLeave;
-            e.person = this.person;
-            this.person = null;
+            e.clientCrawlerInfo = this.clientCrawlerInfo;
+            this.clientCrawlerInfo = null;
             //broadcast this leave message to all other remaining connected
             //chatters
             BroadcastMessage(e);
@@ -331,16 +331,16 @@ namespace Honeycomb
                 switch (e.msgType)
                 {
                     case MessageType.Receive:
-                        callback.Receive(e.person, e.message);
+                        callback.Receive(e.clientCrawlerInfo, e.message);
                         break;
                     case MessageType.ReceiveWhisper:
-                        callback.ReceiveWhisper(e.person, e.message);
+                        callback.ReceiveWhisper(e.clientCrawlerInfo, e.message);
                         break;
                     case MessageType.UserEnter:
-                        callback.UserEnter(e.person);
+                        callback.UserEnter(e.clientCrawlerInfo);
                         break;
                     case MessageType.UserLeave:
-                        callback.UserLeave(e.person);
+                        callback.UserLeave(e.clientCrawlerInfo);
                         break;
                 }
             }

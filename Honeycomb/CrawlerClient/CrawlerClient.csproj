@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClientHelper.cs" />
     <Compile Include="HoneyсombProxy.cs" />
     <Compile Include="ProxySingletone.cs" />
     <Page Include="MainWindow.xaml">

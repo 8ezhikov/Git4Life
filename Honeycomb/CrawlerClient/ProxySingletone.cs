@@ -10,7 +10,7 @@ namespace CrawlerClient
 
     public class ProxyEventArgs : EventArgs
     {
-        public Person[] list;
+        public ClientCrawlerInfo[] list;
     }
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace CrawlerClient
         /// The incoming message
         /// </summary>
         public string message = "";
-        public Person person = null;
+        public ClientCrawlerInfo person = null;
 
     }
     #endregion
@@ -74,7 +74,7 @@ namespace CrawlerClient
         /// </summary>
         /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
         /// <param name="message">The message</param>
-        public void Receive(Person sender, string message)
+        public void Receive(ClientCrawlerInfo sender, string message)
         {
             Receive(sender, message, CallBackType.Receive);
         }
@@ -87,7 +87,7 @@ namespace CrawlerClient
         /// </summary>
         /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
         /// <param name="message">The message</param>
-        public void ReceiveWhisper(Person sender, string message)
+        public void ReceiveWhisper(ClientCrawlerInfo sender, string message)
         {
             Receive(sender, message, CallBackType.ReceiveWhisper);
         }
@@ -101,7 +101,7 @@ namespace CrawlerClient
         /// <param name="message">The message</param>
         /// <param name="callbackType">Could be <see cref="CallBackType">CallBackType.Receive</see> or
         /// <see cref="CallBackType">CallBackType.ReceiveWhisper</see></param>
-        private void Receive(Person sender, string message, CallBackType callbackType)
+        private void Receive(ClientCrawlerInfo sender, string message, CallBackType callbackType)
         {
             var e = new ProxyCallBackEventArgs();
             e.message = message;
@@ -118,7 +118,7 @@ namespace CrawlerClient
         /// </summary>
         /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
         /// <param name="message">The message</param>
-        public void UserEnter(Person person)
+        public void UserEnter(ClientCrawlerInfo person)
         {
             UserEnterLeave(person, CallBackType.UserEnter);
         }
@@ -131,7 +131,7 @@ namespace CrawlerClient
         /// </summary>
         /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
         /// <param name="message">The message</param>
-        public void UserLeave(Person person)
+        public void UserLeave(ClientCrawlerInfo person)
         {
             UserEnterLeave(person, CallBackType.UserLeave);
         }
@@ -145,7 +145,7 @@ namespace CrawlerClient
         /// <param name="message">The message</param>
         /// <param name="callbackType">Could be <see cref="CallBackType">CallBackType.UserEnter</see> or
         /// <see cref="CallBackType">CallBackType.UserLeave</see></param>
-        private void UserEnterLeave(Person person, CallBackType callbackType)
+        private void UserEnterLeave(ClientCrawlerInfo person, CallBackType callbackType)
         {
             ProxyCallBackEventArgs e = new ProxyCallBackEventArgs();
             e.person = person;
@@ -158,7 +158,7 @@ namespace CrawlerClient
         /// which will call the OnEndJoin() method on completion
         /// </summary>
         /// <param name="p">The <see cref="Common.Person">chatter</see> to try and join with</param>
-        public  void Connect(Person p)
+        public void Connect(ClientCrawlerInfo p)
         {
             var site = new InstanceContext(this);
             proxy = new ChatClient(site);
@@ -195,7 +195,7 @@ namespace CrawlerClient
         /// OnProxyEvent() event, to raise the event for subscribers
         /// </summary>
         /// <param name="list">The list of <see cref="Common.Person">Chatters</see> </param>
-        private void HandleEndJoin(Person[] list)
+        private void HandleEndJoin(ClientCrawlerInfo[] list)
         {
 
             if (list == null)
@@ -260,7 +260,7 @@ namespace CrawlerClient
         /// method, otherwise will call the ChatProxy.Say() method</param>
         public void SayAndClear(string to, string msg, bool pvt)
         {
-            if (!pvt)
+            if (!pvt) 
                 proxy.Say(msg);
             else
                 proxy.Whisper(to, msg);
