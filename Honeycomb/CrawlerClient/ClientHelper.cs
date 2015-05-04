@@ -1,17 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CrawlerClient
 {
-    class ClientHelper
+    internal class ClientHelper
     {
         public static string GetLocalIP()
         {
@@ -27,14 +20,13 @@ namespace CrawlerClient
             }
             return localIP;
         }
+
         public static string GetPublicIP()
         {
-            var start = Stopwatch.StartNew();
+            Stopwatch start = Stopwatch.StartNew();
 
 
-
-
-            WebClient webClient = new WebClient();
+            var webClient = new WebClient();
 
             string IP = webClient.DownloadString("http://icanhazip.com/");
             start.Stop();

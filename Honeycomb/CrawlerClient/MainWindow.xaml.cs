@@ -1,11 +1,10 @@
-﻿using System.ServiceModel;
-using System.Windows;
+﻿using System.Windows;
 using Honeycomb;
 
 namespace CrawlerClient
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
@@ -16,27 +15,26 @@ namespace CrawlerClient
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var singleTone = ConnectionSingleton.Instance;
-           // InstanceContext site = new InstanceContext(singleTone);
+            ConnectionSingleton singleTone = ConnectionSingleton.Instance;
+            // InstanceContext site = new InstanceContext(singleTone);
             var newPerson = new ClientCrawlerInfo();
             newPerson.ClientName = "Denis Crawler";
-            var localIP = ClientHelper.GetLocalIP();
-            var globalIP = ClientHelper.GetPublicIP();
+            string localIP = ClientHelper.GetLocalIP();
+            string globalIP = ClientHelper.GetPublicIP();
 
 
-          //  newPerson.ServerIP = DataFormat;
-          //  newPerson.ImageURL = "3434";
+            //  newPerson.ServerIP = DataFormat;
+            //  newPerson.ImageURL = "3434";
             singleTone.Connect(newPerson);
-            singleTone.SayAndClear("HUE","MOE", false);
-           // var proxy = new ChatClient(site);
-           //System.Threading.Thread.Sleep(3242);
-           // proxy.Join()
-           // proxy.Say("HUI PIZDA JIGUR DA");
+            singleTone.SayAndClear("HUE", "MOE", false);
+            // var proxy = new ChatClient(site);
+            //System.Threading.Thread.Sleep(3242);
+            // proxy.Join()
+            // proxy.Say("HUI PIZDA JIGUR DA");
         }
 
         private void StartCrawlerButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }
