@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.Windows;
 using System.Configuration;
+using System.Windows.Controls;
 
 namespace Honeycomb
 {
@@ -15,15 +16,17 @@ namespace Honeycomb
         public MainWindow()
         {
             InitializeComponent();
+            OutputTextBox.AppendText("Starting Server...\n");
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Uri uri = new Uri( ConfigurationManager.AppSettings["addr"]);
-            host = new ServiceHost(typeof(ChatService), uri);
+            host = new ServiceHost(typeof(RemoteCrawlerService), uri);
             host.Open();
-            //Console.WriteLine("Chat service listen on endpoint {0}", uri.ToString());
-            //Console.WriteLine("Press ENTER to stop chat service...");
+            OutputTextBox.AppendText("Chat service listen on endpoint " + uri + "\n");
+            OutputTextBox.AppendText("Press ENTER to stop chat service... \n");
             //Console.ReadLine();
      
         }

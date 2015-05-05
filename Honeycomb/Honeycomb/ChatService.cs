@@ -4,7 +4,7 @@ using System.ServiceModel;
 
 namespace Honeycomb
 {
-    #region IChat interface
+    #region IRemoteCrawler interface
     /// <summary>
     /// This interface provides 4 methods that may be used in order to clients
     /// to carry out specific actions in the chat room. This interface
@@ -19,7 +19,7 @@ namespace Honeycomb
     /// Leave : leave the chat room
     /// </summary>
     [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(IChatCallback))]
-    interface IChat
+    interface IRemoteCrawler
     {
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void Say(string msg);
@@ -79,17 +79,17 @@ namespace Honeycomb
         public string message;
     }
     #endregion
-    #region ChatService
+    #region RemoteCrawlerService
     /// <summary>
     /// This class provides the service that is used by all clients. This class
     /// uses the bindings as specified in the App.Config, to allow a true peer-2-peer
     /// chat to be perfomed.
     /// 
-    /// This class also implements the <see cref="IChat">IChat</see> interface in order
+    /// This class also implements the <see cref="IRemoteCrawler">IRemoteCrawler</see> interface in order
     /// to facilitate a common chat interface for all chat clients
     /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
-    public class ChatService : IChat
+    public class RemoteCrawlerService : IRemoteCrawler
     {
         #region Instance fields
         //thread sync lock object
@@ -168,7 +168,7 @@ namespace Honeycomb
             return null;
         }
         #endregion
-        #region IChat implementation
+        #region IRemoteCrawler implementation
 
         /// <summary>
         /// Takes a <see cref="Common.Person">ClientCrawlerInfo</see> and allows them
