@@ -51,7 +51,7 @@ namespace CrawlerClient
     ///     This class also provides 2 events for subscribers to hook to, namely
     ///     OnProxyCallBackEvent / OnProxyEvent.
     /// </summary>
-    public sealed class ConnectionSingleton : IChatCallback
+    public sealed class ConnectionSingleton : IRemoteCrawlerCallback
     {
         #region Instance Fields
 
@@ -62,7 +62,7 @@ namespace CrawlerClient
         private static readonly Lazy<ConnectionSingleton> lazySingleton =
             new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
 
-        private ChatClient proxy;
+        private RemoteCrawlerClient proxy;
 
         //main proxy event
 
@@ -94,8 +94,6 @@ namespace CrawlerClient
         ///     and the <see cref="CallBackType">CallBackType.Receive</see>
         ///     type
         /// </summary>
-        /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
-        /// <param name="message">The message</param>
         public void Receive(ClientCrawlerInfo sender, string message)
         {
             Receive(sender, message, CallBackType.Receive);
@@ -109,8 +107,12 @@ namespace CrawlerClient
         /// </summary>
         /// <param name="sender">The <see cref="Common.Person">current chatter</see></param>
         /// <param name="message">The message</param>
-        public void ReceiveWhisper(ClientCrawlerInfo sender, string message)
+        public void StartCrawling(ClientCrawlerInfo sender, string message)
         {
+            //Here we crawl. Crawl and crawl.
+
+
+           //And then we want to return results
             Receive(sender, message, CallBackType.ReceiveWhisper);
         }
 
@@ -198,7 +200,7 @@ namespace CrawlerClient
         public void Connect(ClientCrawlerInfo p)
         {
             var site = new InstanceContext(this);
-            proxy = new ChatClient(site);
+            proxy = new RemoteCrawlerClient(site);
 
             ClientCrawlerInfo[] list = proxy.Join(p);
             HandleEndJoin(list);

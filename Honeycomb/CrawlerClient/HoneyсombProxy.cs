@@ -67,83 +67,83 @@ namespace Honeycomb
 
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IChat", CallbackContract = typeof(IChatCallback), SessionMode = System.ServiceModel.SessionMode.Required)]
-public interface IChat
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IRemoteCrawler", CallbackContract = typeof(IRemoteCrawlerCallback), SessionMode = System.ServiceModel.SessionMode.Required)]
+public interface IRemoteCrawler
 {
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Say")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Say")]
     void Say(string msg);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Say")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Say")]
     System.Threading.Tasks.Task SayAsync(string msg);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Whisper")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Whisper")]
     void Whisper(string to, string msg);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Whisper")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Whisper")]
     System.Threading.Tasks.Task WhisperAsync(string to, string msg);
 
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IChat/Join", ReplyAction = "http://tempuri.org/IChat/JoinResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
     Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 
-    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IChat/Join", ReplyAction = "http://tempuri.org/IChat/JoinResponse")]
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
     System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Leave")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Leave")]
     void Leave();
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IChat/Leave")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Leave")]
     System.Threading.Tasks.Task LeaveAsync();
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public interface IChatCallback
+public interface IRemoteCrawlerCallback
 {
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/Receive")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/Receive")]
     void Receive(Honeycomb.ClientCrawlerInfo sender, string message);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/ReceiveWhisper")]
-    void ReceiveWhisper(Honeycomb.ClientCrawlerInfo sender, string message);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/StartCrawling")]
+    void StartCrawling(Honeycomb.ClientCrawlerInfo sender, string message);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/UserEnter")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/UserEnter")]
     void UserEnter(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IChat/UserLeave")]
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/UserLeave")]
     void UserLeave(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public interface IChatChannel : IChat, System.ServiceModel.IClientChannel
+public interface IRemoteCrawlerChannel : IRemoteCrawler, System.ServiceModel.IClientChannel
 {
 }
 
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-public partial class ChatClient : System.ServiceModel.DuplexClientBase<IChat>, IChat
+public partial class RemoteCrawlerClient : System.ServiceModel.DuplexClientBase<IRemoteCrawler>, IRemoteCrawler
 {
 
-    public ChatClient(System.ServiceModel.InstanceContext callbackInstance) :
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance) :
         base(callbackInstance)
     {
     }
 
-    public ChatClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) :
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) :
         base(callbackInstance, endpointConfigurationName)
     {
     }
 
-    public ChatClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) :
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) :
         base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
 
-    public ChatClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
         base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
 
-    public ChatClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
         base(callbackInstance, binding, remoteAddress)
     {
     }
