@@ -6,33 +6,7 @@ using Honeycomb.Interfaces;
 namespace Honeycomb
 {
    
-    #region ICrawlerClientCallback interface
-    /// <summary>
-    /// This interface provides 4 methods that may be used in order to carry 
-    /// out a callback to the client. The methods are 1 way (back to the client).
-    /// 
-    /// There are methods for 
-    /// 
-    /// Receive : receive a globally broadcasted message
-    /// StartCrawling : receive a personal message
-    /// UserEnter : recieve notification a new user has entered the chat room
-    /// UserLeave : recieve notification a existing user has left the chat room
-    /// </summary>
-    interface ICrawlerClientCallback
-    {
-        [OperationContract(IsOneWay = true)]
-        void Receive(ClientCrawlerInfo sender, string message);
-
-        [OperationContract(IsOneWay = true)]
-        void StartCrawling(ClientCrawlerInfo sender, string message);
-
-        [OperationContract(IsOneWay = true)]
-        void UserEnter(ClientCrawlerInfo clientCrawlerInfo);
-
-        [OperationContract(IsOneWay = true)]
-        void UserLeave(ClientCrawlerInfo clientCrawlerInfo);
-    }
-    #endregion
+   
     #region Public enums/event args
     /// <summary>
     /// A simple enumeration for dealing with the chat message types
@@ -221,7 +195,7 @@ namespace Honeycomb
         /// </summary>
         /// <param ClientName="to">The persons ClientName to send the message to</param>
         /// <param ClientName="msg">The message to broadcast to all chatters</param>
-        public void Whisper(string to, string msg)
+        public void ReturnCrawlingResults(string to, string msg)
         {
             CrawlEventArgs e = new CrawlEventArgs();
             e.msgType = MessageType.ReceiveWhisper;
@@ -308,12 +282,12 @@ namespace Honeycomb
                     case MessageType.ReceiveWhisper:
                         callback.StartCrawling(e.clientCrawlerInfo, e.message);
                         break;
-                    case MessageType.UserEnter:
-                        callback.UserEnter(e.clientCrawlerInfo);
-                        break;
-                    case MessageType.UserLeave:
-                        callback.UserLeave(e.clientCrawlerInfo);
-                        break;
+                    //case MessageType.UserEnter:
+                    //    callback.UserEnter(e.clientCrawlerInfo);
+                    //    break;
+                    //case MessageType.UserLeave:
+                    //    callback.UserLeave(e.clientCrawlerInfo);
+                    //    break;
                 }
             }
             catch
@@ -362,7 +336,7 @@ namespace Honeycomb
             {
                 //get the standard System.Runtime.Remoting.Messaging.AsyncResult,and then
                 //cast it to the correct delegate type, and do an end invoke
-                System.Runtime.Remoting.Messaging.AsyncResult asres = (System.Runtime.Remoting.Messaging.AsyncResult)ar;
+                var asres = (System.Runtime.Remoting.Messaging.AsyncResult)ar;
                 d = ((CrawlerClientEventHandler)asres.AsyncDelegate);
                 d.EndInvoke(ar);
             }

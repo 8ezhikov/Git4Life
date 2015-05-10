@@ -71,17 +71,17 @@ namespace Honeycomb
 public interface IRemoteCrawler
 {
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Say")]
-    void Say(string msg);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnIntermediateResults")]
+    void ReturnIntermediateResults(string msg);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Say")]
-    System.Threading.Tasks.Task SayAsync(string msg);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnIntermediateResults")]
+    System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Whisper")]
-    void Whisper(string to, string msg);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
+    void ReturnCrawlingResults(string to, string msg);
 
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Whisper")]
-    System.Threading.Tasks.Task WhisperAsync(string to, string msg);
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
+    System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg);
 
     [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
     Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
@@ -105,12 +105,6 @@ public interface IRemoteCrawlerCallback
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/StartCrawling")]
     void StartCrawling(Honeycomb.ClientCrawlerInfo sender, string message);
-
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/UserEnter")]
-    void UserEnter(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
-
-    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/UserLeave")]
-    void UserLeave(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -148,24 +142,24 @@ public partial class RemoteCrawlerClient : System.ServiceModel.DuplexClientBase<
     {
     }
 
-    public void Say(string msg)
+    public void ReturnIntermediateResults(string msg)
     {
-        base.Channel.Say(msg);
+        base.Channel.ReturnIntermediateResults(msg);
     }
 
-    public System.Threading.Tasks.Task SayAsync(string msg)
+    public System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg)
     {
-        return base.Channel.SayAsync(msg);
+        return base.Channel.ReturnIntermediateResultsAsync(msg);
     }
 
-    public void Whisper(string to, string msg)
+    public void ReturnCrawlingResults(string to, string msg)
     {
-        base.Channel.Whisper(to, msg);
+        base.Channel.ReturnCrawlingResults(to, msg);
     }
 
-    public System.Threading.Tasks.Task WhisperAsync(string to, string msg)
+    public System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg)
     {
-        return base.Channel.WhisperAsync(to, msg);
+        return base.Channel.ReturnCrawlingResultsAsync(to, msg);
     }
 
     public Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo)

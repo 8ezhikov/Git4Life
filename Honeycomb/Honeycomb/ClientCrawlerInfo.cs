@@ -21,12 +21,7 @@ namespace Honeycomb
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
         #region Ctors
-        ///// <summary>
-        ///// Blank constructor
-        ///// </summary>
-        //public ClientCrawlerInfo()
-        //{
-        //}
+  
 
         /// <summary>
         /// Assign constructor
