@@ -23,30 +23,11 @@ namespace CrawlerClient
 
         public static string GetPublicIP()
         {
-            Stopwatch start = Stopwatch.StartNew();
-
-
             var webClient = new WebClient();
 
-            string IP = webClient.DownloadString("http://icanhazip.com/");
-            start.Stop();
+            var ip = webClient.DownloadString("http://icanhazip.com/");
 
-            return IP;
-            //String direction = "";
-            //WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
-            //using (WebResponse response = request.GetResponse())
-            //using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-            //{
-            //    direction = stream.ReadToEnd();
-            //}
-
-            ////Search for the ip in the html
-            //int first = direction.IndexOf("Address: ") + 9;
-            //int last = direction.LastIndexOf("</body>");
-            //start.Stop();
-            //direction = direction.Substring(first, last - first);
-
-            //return direction;
+            return ip;
         }
     }
 }

@@ -8,8 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Honeycomb.Shared
+namespace Honeycomb
 {
+    using System.Runtime.Serialization;
+
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name = "ClientCrawlerInfo", Namespace = "http://schemas.datacontract.org/2004/07/Honeycomb")]
@@ -60,122 +63,122 @@ namespace Honeycomb.Shared
             }
         }
     }
+}
 
 
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IRemoteCrawler", CallbackContract = typeof(IRemoteCrawlerCallback), SessionMode = System.ServiceModel.SessionMode.Required)]
-    public interface IRemoteCrawler
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+[System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IRemoteCrawler", CallbackContract = typeof(IRemoteCrawlerCallback), SessionMode = System.ServiceModel.SessionMode.Required)]
+public interface IRemoteCrawler
+{
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnIntermediateResults")]
+    void ReturnIntermediateResults(string msg);
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnIntermediateResults")]
+    System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg);
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
+    void ReturnCrawlingResults(string to, string msg);
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
+    System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg);
+
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
+    Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
+
+    [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
+    System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Leave")]
+    void Leave();
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Leave")]
+    System.Threading.Tasks.Task LeaveAsync();
+}
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+public interface IRemoteCrawlerCallback
+{
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/Receive")]
+    void Receive(Honeycomb.ClientCrawlerInfo sender, string message);
+
+    [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/StartCrawling")]
+    void StartCrawling(string urlToCrawl);
+}
+
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+public interface IRemoteCrawlerChannel : IRemoteCrawler, System.ServiceModel.IClientChannel
+{
+}
+
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+public partial class RemoteCrawlerClient : System.ServiceModel.DuplexClientBase<IRemoteCrawler>, IRemoteCrawler
+{
+
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance) :
+        base(callbackInstance)
     {
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnIntermediateResults")]
-        void ReturnIntermediateResults(string msg);
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnIntermediateResults")]
-        System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg);
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
-        void ReturnCrawlingResults(string to, string msg);
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
-        System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
-        ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo);
-
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
-        System.Threading.Tasks.Task<ClientCrawlerInfo[]> JoinAsync(ClientCrawlerInfo clientCrawlerInfo);
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Leave")]
-        void Leave();
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsTerminating = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/Leave")]
-        System.Threading.Tasks.Task LeaveAsync();
     }
 
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IRemoteCrawlerCallback
-    {
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/Receive")]
-        void Receive(ClientCrawlerInfo sender, string message);
-
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/StartCrawling")]
-        void StartCrawling(ClientCrawlerInfo sender, string message);
-    }
-
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IRemoteCrawlerChannel : IRemoteCrawler, System.ServiceModel.IClientChannel
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) :
+        base(callbackInstance, endpointConfigurationName)
     {
     }
 
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class RemoteCrawlerClient : System.ServiceModel.DuplexClientBase<IRemoteCrawler>, IRemoteCrawler
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) :
+        base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
+    }
 
-        public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance) :
-            base(callbackInstance)
-        {
-        }
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
+        base(callbackInstance, endpointConfigurationName, remoteAddress)
+    {
+    }
 
-        public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) :
-            base(callbackInstance, endpointConfigurationName)
-        {
-        }
+    public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
+        base(callbackInstance, binding, remoteAddress)
+    {
+    }
 
-        public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) :
-            base(callbackInstance, endpointConfigurationName, remoteAddress)
-        {
-        }
+    public void ReturnIntermediateResults(string msg)
+    {
+        base.Channel.ReturnIntermediateResults(msg);
+    }
 
-        public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
-            base(callbackInstance, endpointConfigurationName, remoteAddress)
-        {
-        }
+    public System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg)
+    {
+        return base.Channel.ReturnIntermediateResultsAsync(msg);
+    }
 
-        public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
-            base(callbackInstance, binding, remoteAddress)
-        {
-        }
+    public void ReturnCrawlingResults(string to, string msg)
+    {
+        base.Channel.ReturnCrawlingResults(to, msg);
+    }
 
-        public void ReturnIntermediateResults(string msg)
-        {
-            base.Channel.ReturnIntermediateResults(msg);
-        }
+    public System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg)
+    {
+        return base.Channel.ReturnCrawlingResultsAsync(to, msg);
+    }
 
-        public System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg)
-        {
-            return base.Channel.ReturnIntermediateResultsAsync(msg);
-        }
+    public Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo)
+    {
+        return base.Channel.Join(clientCrawlerInfo);
+    }
 
-        public void ReturnCrawlingResults(string to, string msg)
-        {
-            base.Channel.ReturnCrawlingResults(to, msg);
-        }
+    public System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo)
+    {
+        return base.Channel.JoinAsync(clientCrawlerInfo);
+    }
 
-        public System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg)
-        {
-            return base.Channel.ReturnCrawlingResultsAsync(to, msg);
-        }
+    public void Leave()
+    {
+        base.Channel.Leave();
+    }
 
-        public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo)
-        {
-            return base.Channel.Join(clientCrawlerInfo);
-        }
-
-        public System.Threading.Tasks.Task<ClientCrawlerInfo[]> JoinAsync(ClientCrawlerInfo clientCrawlerInfo)
-        {
-            return base.Channel.JoinAsync(clientCrawlerInfo);
-        }
-
-        public void Leave()
-        {
-            base.Channel.Leave();
-        }
-
-        public System.Threading.Tasks.Task LeaveAsync()
-        {
-            return base.Channel.LeaveAsync();
-        }
+    public System.Threading.Tasks.Task LeaveAsync()
+    {
+        return base.Channel.LeaveAsync();
     }
 }

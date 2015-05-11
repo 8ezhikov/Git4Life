@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Windows;
-using Honeycomb.Shared;
+using Honeycomb;
 
 namespace CrawlerClient
 {
@@ -78,13 +78,16 @@ namespace CrawlerClient
             Receive(sender, message, CallBackType.Receive);
         }
 
-        public void StartCrawling(ClientCrawlerInfo sender, string message)
+        public void StartCrawling( string urlToCrawl)
         {
+            
+            
+            
             //Here we crawl. Crawl and crawl.
 
 
            //And then we want to return results
-            Receive(sender, message, CallBackType.ReceiveWhisper);
+         //   Receive(sender, message, CallBackType.ReceiveWhisper);
         }
         
         public void UserEnter(ClientCrawlerInfo person)

@@ -34,7 +34,7 @@ namespace Honeycomb
     /// This class also implements the <see cref="IRemoteCrawler">IRemoteCrawler</see> interface in order
     /// to facilitate a common chat interface for all chat clients
     /// </summary>
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession, ConcurrencyMode = ConcurrencyMode.Multiple)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class RemoteCrawlerService : IRemoteCrawler
     {
         #region Instance fields
@@ -72,9 +72,17 @@ namespace Honeycomb
             return false;
         }
 
-        public void StartCrawling()
+        public bool StartCrawling()
         {
-            callback.StartCrawling(null,"Hey Ju");
+            if (callback != null)
+            {
+                callback.StartCrawling("http://webometrics.krc.karelia.ru/");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         /// <summary>
         /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
@@ -284,7 +292,7 @@ namespace Honeycomb
                         callback.Receive(e.clientCrawlerInfo, e.message);
                         break;
                     case MessageType.ReceiveWhisper:
-                        callback.StartCrawling(e.clientCrawlerInfo, e.message);
+                        callback.StartCrawling( e.message);
                         break;
                     //case MessageType.UserEnter:
                     //    callback.UserEnter(e.clientCrawlerInfo);

@@ -8,7 +8,7 @@ namespace Honeycomb
         void Receive(ClientCrawlerInfo sender, string message);
 
         [OperationContract(IsOneWay = true)]
-        void StartCrawling(ClientCrawlerInfo sender, string message);
+        void StartCrawling(string siteURL);
 
     }
 }
