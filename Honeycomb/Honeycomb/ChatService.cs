@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ServiceModel;
-using Honeycomb.Interfaces;
 
 namespace Honeycomb
 {
@@ -48,7 +48,7 @@ namespace Honeycomb
         private CrawlerClientEventHandler myEventHandler = null;
         //holds a list of chatters, and a delegate to allow the BroadcastEvent to work
         //out which chatter delegate to invoke
-        static Dictionary<ClientCrawlerInfo, CrawlerClientEventHandler> chatters = new Dictionary<ClientCrawlerInfo, CrawlerClientEventHandler>();
+        static ConcurrentDictionary<ClientCrawlerInfo, CrawlerClientEventHandler> chatters = new ConcurrentDictionary<ClientCrawlerInfo, CrawlerClientEventHandler>();
         //current ClientCrawlerInfo 
         private ClientCrawlerInfo clientCrawlerInfo;
         #endregion
@@ -72,6 +72,10 @@ namespace Honeycomb
             return false;
         }
 
+        public void StartCrawling()
+        {
+            callback.StartCrawling(null,"Hey Ju");
+        }
         /// <summary>
         /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
         /// the individual chatters CrawlerClientEventHandler delegate in order that it can be
@@ -123,26 +127,26 @@ namespace Honeycomb
         /// </summary>
         /// <param ClientName="ClientCrawlerInfo"><see cref="Common.Person">ClientCrawlerInfo</see> joining</param>
         /// <returns>An array of <see cref="Common.Person">ClientCrawlerInfo</see> objects</returns>
-        public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo)
+        public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
         {
             bool userAdded = false;
             //create a new CrawlerClientEventHandler delegate, pointing to the MyEventHandler() method
-            myEventHandler = new CrawlerClientEventHandler(MyEventHandler);
+           // myEventHandler = MyEventHandler;
 
             //carry out a critical section that checks to see if the new chatter
             //ClientName is already in use, if its not allow the new chatter to be
             //added to the list of chatters, using the ClientCrawlerInfo as the key, and the
             //CrawlerClientEventHandler delegate as the value, for later invocation
-            lock (syncObj)
-            {
-                if (!checkIfPersonExists(clientCrawlerInfo.ClientName) && clientCrawlerInfo != null)
-                { 
-                    this.clientCrawlerInfo = clientCrawlerInfo;
-                    chatters.Add(clientCrawlerInfo, MyEventHandler);
-                    userAdded = true;
-                }
-            }
-
+            //lock (syncObj)
+            //{
+                //if (!checkIfPersonExists(clientCrawlerInfo.ClientName) && clientCrawlerInfo != null)
+                //{
+                    
+                //    userAdded = true;
+                //}
+                this.clientCrawlerInfo = clientCrawlerNewInfo;
+                //}
+                userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
             //if the new chatter could be successfully added, get a callback instance
             //create a new message, and broadcast it to all other chatters, and then 
             //return the list of al chatters such that connected clients may show a
@@ -243,10 +247,10 @@ namespace Honeycomb
 
             //carry out a critical section, that removes the chatter from the
             //internal list of chatters
-            lock (syncObj)
-            {
-                chatters.Remove(this.clientCrawlerInfo);
-            }
+            //lock (syncObj)
+            //{
+            //    chatters.TryRemove(this.clientCrawlerInfo, chatterToRemove);
+            //}
             //unwire the chatters delegate from the multicast delegate, so that 
             //it no longer gets invokes by globally broadcasted methods
             ChatEvent -= chatterToRemove;

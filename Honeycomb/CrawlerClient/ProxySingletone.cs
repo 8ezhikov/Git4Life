@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Windows;
-using Honeycomb;
+using Honeycomb.Shared;
 
 namespace CrawlerClient
 {
@@ -128,7 +128,8 @@ namespace CrawlerClient
             proxy = new RemoteCrawlerClient(site);
 
             ClientCrawlerInfo[] list = proxy.Join(p);
-            HandleEndJoin(list);
+
+          // HandleEndJoin(list);
             //IAsyncResult ee = proxy.JoinAsync(p);
             //ee.AsyncWaitHandle = await 
             //IAsyncResult iar = proxy.BeginJoin(p, new AsyncCallback(OnEndJoin), null);

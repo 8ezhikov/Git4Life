@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel;
 
-namespace Honeycomb.Interfaces
+namespace Honeycomb
 {
     [ServiceContract(SessionMode = SessionMode.Required, CallbackContract = typeof(ICrawlerClientCallback))]
     interface IRemoteCrawler

@@ -7,7 +7,8 @@
         <StackPanel HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center"  Width="977" Height="490">
             <Grid  HorizontalAlignment="Left" Height="271"  VerticalAlignment="Top" Width="967">
       
-                <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click" Grid.ColumnSpan="2" Margin="10,31,0,0" />
+                <Button Content="Start Server" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click" Grid.ColumnSpan="2" Margin="10,31,0,0" />
+                <Button Content="Start Crawling" HorizontalAlignment="Left" Margin="132,31,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
             </Grid>
             <TextBox x:Name="OutputTextBox" Height="220" TextWrapping="Wrap" Text="" IsReadOnly="True" MinHeight="218" HorizontalScrollBarVisibility="Auto"/>
 

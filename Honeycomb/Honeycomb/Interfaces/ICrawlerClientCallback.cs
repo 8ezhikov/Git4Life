@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel;
 
-namespace Honeycomb.Interfaces
+namespace Honeycomb
 {
     interface ICrawlerClientCallback
     {

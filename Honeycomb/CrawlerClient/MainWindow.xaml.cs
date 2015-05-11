@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Honeycomb;
+using Honeycomb.Shared;
 
 namespace CrawlerClient
 {

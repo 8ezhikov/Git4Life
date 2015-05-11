@@ -56,7 +56,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClientHelper.cs" />
-    <Compile Include="HoneyсombProxy.cs" />
     <Compile Include="ProxySingletone.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -102,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Honeycomb.Shared\Honeycomb.Shared.csproj">
+      <Project>{4af188a2-a6f3-4c44-9e2b-5f1cbd6adf27}</Project>
+      <Name>Honeycomb.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
