@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Honeycomb.Shared;
 namespace CrawlerClient
 {
     class CrawlerEngine
@@ -18,7 +18,7 @@ namespace CrawlerClient
         private string _runingTime;
         private int _internalLinksCounter = 1;
         private const string StartingPageName = "Starting Page";
-
+        private const int MaxLevel = 5;
         // Declare the event
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -62,10 +62,12 @@ namespace CrawlerClient
         public void StartDaWork()
         {
             var startingTime = DateTime.Now;
-            _maxPageLevel = DbEntities.Crawler_Settings.First().MaxLevel;
+            _maxPageLevel = MaxLevel;
             Status = CrawlerStatus.Working;
             ForceStop = false;
-            var seedCollection = DbEntities.Seeds.ToList();
+            var testSeed = new Seed();
+            testSeed.SeedDomainName = "http://webometrics.krc.karelia.ru/";
+            var seedCollection = new List<Seed> {testSeed};
             foreach (var seed in seedCollection)
             {
                 var startingAdress = seed.SeedDomainName;
