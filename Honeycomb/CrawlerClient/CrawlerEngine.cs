@@ -2,16 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using Honeycomb.Shared;
+using HtmlAgilityPack;
+
 namespace CrawlerClient
 {
     class CrawlerEngine
     {
          private int _maxPageLevel;
-        public Crawler_DBEntities DbEntities;
         private readonly Hashtable _allLinks = new Hashtable();
         public bool ForceStop;
         private CrawlerStatus _status;
@@ -19,6 +22,11 @@ namespace CrawlerClient
         private int _internalLinksCounter = 1;
         private const string StartingPageName = "Starting Page";
         private const int MaxLevel = 5;
+        private List<InternalLink> InternalLinksList = new List<InternalLink>();
+        private List<ExternalLink> ExternalLinksList = new List<ExternalLink>();
+        private List<BadLink> BadLinksList = new List<BadLink>();
+
+
         // Declare the event
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -55,7 +63,6 @@ namespace CrawlerClient
 
         public CrawlerEngine()
         {
-            DbEntities = new Crawler_DBEntities();
             Status = CrawlerStatus.Wating;
         }
 
@@ -65,16 +72,14 @@ namespace CrawlerClient
             _maxPageLevel = MaxLevel;
             Status = CrawlerStatus.Working;
             ForceStop = false;
-            var testSeed = new Seed();
-            testSeed.SeedDomainName = "http://webometrics.krc.karelia.ru/";
+            var testSeed = new Seed { SeedDomainName = "http://mathem.krc.karelia.ru/" };
             var seedCollection = new List<Seed> {testSeed};
             foreach (var seed in seedCollection)
             {
                 var startingAdress = seed.SeedDomainName;
-
-                if (DbEntities.InternalLinks.Count(lin => lin.PageSeedLink == startingAdress) > 0)
+                if (InternalLinksList.Count(lin => lin.PageSeedLink == startingAdress) > 0)
                 {
-                    _internalLinksCounter = DbEntities.InternalLinks.Where(lin => lin.PageSeedLink == startingAdress).Max(
+                    _internalLinksCounter = InternalLinksList.Where(lin => lin.PageSeedLink == startingAdress).Max(
                       l => l.PageIdSeedSpecific) + 1;
 
                 }
@@ -92,8 +97,7 @@ namespace CrawlerClient
                     }
 
                     ScrapLinks(startingAdress, 0, startingAdress);
-                    DbEntities.SaveChanges();
-                    var unporcessedLinks = DbEntities.InternalLinks.Where(
+                    var unporcessedLinks = InternalLinksList.Where(
                             link => link.PageSeedLink == startingAdress && link.IsProcessed == false).OrderBy(p => p.PageLevel).Take(2);
                     while (unporcessedLinks.Any() & ForceStop != true)
                     {
@@ -102,7 +106,6 @@ namespace CrawlerClient
                         if (selectedLink != null)
                         {
                             selectedLink.IsProcessed = true;
-                            DbEntities.SaveChanges();
                             ScrapLinks(selectedLink.PageLink, selectedLink.PageLevel, startingAdress);
                         }
                     }
@@ -122,20 +125,20 @@ namespace CrawlerClient
             }
 
             RuningTime = (DateTime.Now - startingTime).ToString();
-
+            MessageBox.Show(RuningTime);
 
         }
         void FillAllLinks(string seedName)
         {
             var allCollectedInternalLinksForDomain =
-                DbEntities.InternalLinks.Where(link => link.PageSeedLink == seedName);
+                InternalLinksList.Where(link => link.PageSeedLink == seedName);
             foreach (var internalLink in allCollectedInternalLinksForDomain)
             {
                 _allLinks.Add(internalLink.PageLink, true);
             }
 
             var allCollectedExternalLinksForDomain =
-               DbEntities.ExternalLinks.Where(link => link.PageSeedLink == seedName);
+               InternalLinksList.Where(link => link.PageSeedLink == seedName);
             foreach (var internalLink in allCollectedExternalLinksForDomain)
             {
                 _allLinks.Add(internalLink.LinkPath, true);
@@ -149,7 +152,7 @@ namespace CrawlerClient
             {
                 if (ForceStop)
                     return;
-                var currentPageLevel = pageLevel + 1;
+                  var currentPageLevel = pageLevel + 1;
 
                 if (currentPageLevel >= _maxPageLevel)
                     return;
@@ -163,13 +166,13 @@ namespace CrawlerClient
                     
                     if (doc.ParseErrors.Any(error => error.Code == HtmlParseErrorCode.CharsetMismatch))
                     {
-                        doc = BeeBot.Shared.Helpers.GetDocumentCustomMode(doc.Encoding, startingAdress);
+                        doc = GetDocumentCustomMode(doc.Encoding, startingAdress);
                     }
                     //doc = BeeBot.Shared.Helpers.GetDocumentCustomMode(Encoding.UTF8, startingAdress);
                 }
                 catch (Exception)
                 {
-                    doc = BeeBot.Shared.Helpers.GetDocumentCustomMode(Encoding.GetEncoding("windows-1251"), startingAdress);
+                    doc = GetDocumentCustomMode(Encoding.GetEncoding("windows-1251"), startingAdress);
                 }
 
                 if (pageLevel == 0)
@@ -210,13 +213,11 @@ namespace CrawlerClient
                         }
                     }
                 }
-                DbEntities.SaveChanges();
                 var linksList = doc.DocumentNode.SelectNodes("//a[@href]");
                 if (linksList != null)
                 {
                     FilterLinks(linksList, startingAdressUri, currentPageLevel, seedLink);
                 }
-                DbEntities.SaveChanges();
                 var framesList = doc.DocumentNode.SelectNodes("//frame");
                 if (framesList != null)
                 {
@@ -247,7 +248,6 @@ namespace CrawlerClient
                         }
                     }
                 }
-                DbEntities.SaveChanges();
 
             }
             catch (Exception)
@@ -266,7 +266,35 @@ namespace CrawlerClient
 
             return normalizedUrl;
         }
+        public static string TestLink(string url, string startingAddress)
+        {
 
+            if (url == "" || url[0] == '/')
+                url = "http://" + startingAddress + url;
+
+            if (url.Length > 7 && url.Substring(0, 7) == "mailto:")
+                return null;
+            if (url.Contains("javascript:"))
+                return null;
+            try
+            {
+                var uri = new Uri(url);
+                return uri.AbsoluteUri;
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    url = "http://" + startingAddress + "/" + url;
+                    var uri = new Uri(url);
+                    return uri.AbsoluteUri;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
         void FilterLinks(IEnumerable<HtmlNode> linksList, Uri startingAdressUri, int currentPageLevel, string seedLink)
         {
             try
@@ -277,7 +305,7 @@ namespace CrawlerClient
                     var attrib = link.Attributes["href"];
                     var rawLinkUrl = attrib.Value;
 
-                    var safeLink = BeeBot.Shared.Helpers.TestLink(rawLinkUrl, startingAdressUri.DnsSafeHost);
+                    var safeLink = TestLink(rawLinkUrl, startingAdressUri.DnsSafeHost);
                     if (safeLink != null)
                     {
                         if (safeLink.Substring(0, 6) == "mailto")
@@ -315,8 +343,7 @@ namespace CrawlerClient
                                                        PageSeedLink = seedLink,
                                                        OriginalPageLevel = currentPageLevel - 1
                                                    };
-
-                                DbEntities.AddToExternalLinks(linkPage);
+                                ExternalLinksList.Add(linkPage);
                                 _allLinks.Add(linkPage.LinkPath, true);
                             }
                             else
@@ -333,8 +360,7 @@ namespace CrawlerClient
                             LinkPath = rawLinkUrl,
                             OriginalPageLink = startingAdressUri.AbsoluteUri
                         };
-
-                        DbEntities.AddToBadLinks(linkPage);
+                        BadLinksList.Add(linkPage);
                     }
                 }
             }
@@ -361,21 +387,20 @@ namespace CrawlerClient
 
             };
             _internalLinksCounter++;
-            DbEntities.AddToInternalLinks(linkPage);
+            InternalLinksList.Add(linkPage);
             _allLinks.Add(linkPage.PageLink, true);
 
         }
 
         private void IncrementInternalLink(string linkUrl)
         {
-            DbEntities.SaveChanges();
-            var selectedLink = DbEntities.InternalLinks.First(lk => lk.PageLink == linkUrl);
+            var selectedLink = InternalLinksList.First(lk => lk.PageLink == linkUrl);
             selectedLink.LinkCount++;
         }
 
         private void IncrementExternalLink(string linkUrl)
         {
-            var selectedLink = DbEntities.ExternalLinks.First(lk => lk.LinkPath == linkUrl);
+            var selectedLink = ExternalLinksList.First(lk => lk.LinkPath == linkUrl);
             selectedLink.LinkCount++;
         }
 
@@ -386,6 +411,68 @@ namespace CrawlerClient
             Stopped = 2,
             Finished = 3
         }
+        public static HtmlDocument GetDocumentCustomMode(Encoding encoding, string url)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:x.x.x) Gecko/20041107 Firefox/x.x";
+            var resultingDocument = new HtmlDocument();
+
+            Stream resultingStream = new MemoryStream();
+            try
+            {
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    if (response.Headers["transfer-encoding"] == "chunked")
+                    {
+                        var sb = new StringBuilder();
+                        var buf = new byte[8192];
+                        var resStream = response.GetResponseStream();
+                        var count = 0;
+                        do
+                        {
+                            if (resStream != null) count = resStream.Read(buf, 0, buf.Length);
+                            if (count != 0)
+                            {
+                                var tmpString = encoding.GetString(buf, 0, count);
+                                sb.Append(tmpString);
+                            }
+                        } while (count > 0);
+                        var resultingString = sb.ToString();
+                        if (Equals(encoding, Encoding.GetEncoding("windows-1251")))
+                        {
+                            resultingString = resultingString.Replace("win-1251", "UTF-8");
+                        }
+                        resultingDocument.LoadHtml(resultingString);
+
+                    }
+                    else
+                    {
+                        using (var responseStream = response.GetResponseStream())
+                        {
+                            var buffer = new byte[0x1000];
+                            int bytes;
+                            while (responseStream != null && (bytes = responseStream.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                resultingStream.Write(buffer, 0, bytes);
+                            }
+                        }
+
+                        resultingStream.Seek(0, SeekOrigin.Begin);
+                        using (var sr = new StreamReader(resultingStream, encoding))
+                        {
+                            resultingDocument.LoadHtml(sr.ReadToEnd());
+                        }
+
+                    }
+                }
+                return resultingDocument;
+            }
+            catch (Exception)
+            {
+                return new HtmlDocument();
+            }
+        }
     }
+ 
     }
-}
+
