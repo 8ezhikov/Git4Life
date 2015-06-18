@@ -7,13 +7,13 @@ using System.Windows.Controls;
 namespace Honeycomb
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ServerMainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class ServerMainWindow
     {
         ServiceHost host;
         private RemoteCrawlerService instance;
-        public MainWindow()
+        public ServerMainWindow()
         {
             InitializeComponent();
             OutputTextBox.AppendText("Starting Server...\n");

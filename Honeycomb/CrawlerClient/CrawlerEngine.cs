@@ -14,7 +14,7 @@ namespace CrawlerClient
 {
     class CrawlerEngine
     {
-         private int _maxPageLevel;
+        private int _maxPageLevel;
         private readonly Hashtable _allLinks = new Hashtable();
         public bool ForceStop;
         private CrawlerStatus _status;
@@ -25,6 +25,7 @@ namespace CrawlerClient
         private List<InternalLink> InternalLinksList = new List<InternalLink>();
         private List<ExternalLink> ExternalLinksList = new List<ExternalLink>();
         private List<BadLink> BadLinksList = new List<BadLink>();
+        private Stack<InternalLink> InternalUnprocessedLinks = new Stack<InternalLink>();
 
 
         // Declare the event
@@ -66,27 +67,27 @@ namespace CrawlerClient
             Status = CrawlerStatus.Wating;
         }
 
-        public void StartDaWork()
+        public void StartDaWork(string startingSeedName)
         {
             var startingTime = DateTime.Now;
             _maxPageLevel = MaxLevel;
             Status = CrawlerStatus.Working;
             ForceStop = false;
-            var testSeed = new Seed { SeedDomainName = "http://mathem.krc.karelia.ru/" };
-            var seedCollection = new List<Seed> {testSeed};
+            var testSeed = new Seed { SeedDomainName = startingSeedName };
+            var seedCollection = new List<Seed> { testSeed };
             foreach (var seed in seedCollection)
             {
                 var startingAdress = seed.SeedDomainName;
-                if (InternalLinksList.Count(lin => lin.PageSeedLink == startingAdress) > 0)
-                {
-                    _internalLinksCounter = InternalLinksList.Where(lin => lin.PageSeedLink == startingAdress).Max(
-                      l => l.PageIdSeedSpecific) + 1;
+                //if (InternalLinksList.Count(lin => lin.PageSeedLink == startingAdress) > 0)
+                //{
+                //    _internalLinksCounter = InternalLinksList.Where(lin => lin.PageSeedLink == startingAdress).Max(
+                //      l => l.PageIdSeedSpecific) + 1;
 
-                }
-                else
-                {
-                    _internalLinksCounter = 1;
-                }
+                //}
+                //else
+                //{
+                _internalLinksCounter = 1;
+                //}
                 if (startingAdress != string.Empty)
                 {
                     FillAllLinks(startingAdress);
@@ -97,11 +98,11 @@ namespace CrawlerClient
                     }
 
                     ScrapLinks(startingAdress, 0, startingAdress);
-                    var unporcessedLinks = InternalLinksList.Where(
-                            link => link.PageSeedLink == startingAdress && link.IsProcessed == false).OrderBy(p => p.PageLevel).Take(2);
-                    while (unporcessedLinks.Any() & ForceStop != true)
+                    //var unporcessedLinks = InternalLinksList.Where(
+                    //        link => link.PageSeedLink == startingAdress && link.IsProcessed == false).OrderBy(p => p.PageLevel).Take(2);
+                    while (InternalUnprocessedLinks.Count > 0 & ForceStop != true)
                     {
-                        var selectedLink = unporcessedLinks.FirstOrDefault();
+                        var selectedLink = InternalUnprocessedLinks.Pop();
 
                         if (selectedLink != null)
                         {
@@ -152,7 +153,7 @@ namespace CrawlerClient
             {
                 if (ForceStop)
                     return;
-                  var currentPageLevel = pageLevel + 1;
+                var currentPageLevel = pageLevel + 1;
 
                 if (currentPageLevel >= _maxPageLevel)
                     return;
@@ -163,7 +164,7 @@ namespace CrawlerClient
                 try
                 {
                     doc = htmlWeb.Load(startingAdress);
-                    
+
                     if (doc.ParseErrors.Any(error => error.Code == HtmlParseErrorCode.CharsetMismatch))
                     {
                         doc = GetDocumentCustomMode(doc.Encoding, startingAdress);
@@ -250,8 +251,9 @@ namespace CrawlerClient
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogException(e);
                 //throw;
             }
         }
@@ -289,8 +291,9 @@ namespace CrawlerClient
                     var uri = new Uri(url);
                     return uri.AbsoluteUri;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    LogException(e);
                     return null;
                 }
             }
@@ -366,6 +369,7 @@ namespace CrawlerClient
             }
             catch (Exception e)
             {
+                LogException(e);
                 //throw;
             }
         }
@@ -387,6 +391,7 @@ namespace CrawlerClient
 
             };
             _internalLinksCounter++;
+            InternalUnprocessedLinks.Push(linkPage);
             InternalLinksList.Add(linkPage);
             _allLinks.Add(linkPage.PageLink, true);
 
@@ -462,17 +467,21 @@ namespace CrawlerClient
                         {
                             resultingDocument.LoadHtml(sr.ReadToEnd());
                         }
-
                     }
                 }
                 return resultingDocument;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LogException(e);
                 return new HtmlDocument();
             }
         }
+
+        public static void LogException(Exception e)
+        {
+            MessageBox.Show(e.Message);
+        }
     }
- 
-    }
+}
 

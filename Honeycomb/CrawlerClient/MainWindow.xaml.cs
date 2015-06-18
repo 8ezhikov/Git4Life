@@ -36,7 +36,7 @@ namespace CrawlerClient
         private void StartCrawlerButton_Click(object sender, RoutedEventArgs e)
         {
             var crawlerInstance = new CrawlerEngine();
-            crawlerInstance.StartDaWork();
+            crawlerInstance.StartDaWork("http://mathem.krc.karelia.ru/");
         }
     }
 }
