@@ -80,9 +80,13 @@ namespace CrawlerClient
 
         public void StartCrawling( string urlToCrawl)
         {
+
+            var crawlerInstance = new CrawlerEngine();
+          var result  =   crawlerInstance.StartCrawlingProcess("http://mathem.krc.karelia.ru/");
             
-            
-            
+
+
+
             //Here we crawl. Crawl and crawl.
 
 

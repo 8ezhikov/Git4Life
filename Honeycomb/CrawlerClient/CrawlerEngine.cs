@@ -67,7 +67,7 @@ namespace CrawlerClient
             Status = CrawlerStatus.Wating;
         }
 
-        public void StartDaWork(string startingSeedName)
+        public CrawlerResults StartCrawlingProcess(string startingSeedName)
         {
             var startingTime = DateTime.Now;
             _maxPageLevel = MaxLevel;
@@ -78,16 +78,8 @@ namespace CrawlerClient
             foreach (var seed in seedCollection)
             {
                 var startingAdress = seed.SeedDomainName;
-                //if (InternalLinksList.Count(lin => lin.PageSeedLink == startingAdress) > 0)
-                //{
-                //    _internalLinksCounter = InternalLinksList.Where(lin => lin.PageSeedLink == startingAdress).Max(
-                //      l => l.PageIdSeedSpecific) + 1;
-
-                //}
-                //else
-                //{
+              
                 _internalLinksCounter = 1;
-                //}
                 if (startingAdress != string.Empty)
                 {
                     FillAllLinks(startingAdress);
@@ -98,8 +90,7 @@ namespace CrawlerClient
                     }
 
                     ScrapLinks(startingAdress, 0, startingAdress);
-                    //var unporcessedLinks = InternalLinksList.Where(
-                    //        link => link.PageSeedLink == startingAdress && link.IsProcessed == false).OrderBy(p => p.PageLevel).Take(2);
+              
                     while (InternalUnprocessedLinks.Count > 0 & ForceStop != true)
                     {
                         var selectedLink = InternalUnprocessedLinks.Pop();
@@ -128,6 +119,12 @@ namespace CrawlerClient
             RuningTime = (DateTime.Now - startingTime).ToString();
             MessageBox.Show(RuningTime);
 
+            var result = new CrawlerResults();
+            result.BadLinksList = BadLinksList;
+            result.ExternalLinksList = ExternalLinksList;
+            result.InternalLinksList = InternalLinksList;
+
+            return result;
         }
         void FillAllLinks(string seedName)
         {
