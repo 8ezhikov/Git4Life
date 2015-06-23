@@ -26,7 +26,7 @@ namespace CrawlerClient
             //  newPerson.ImageURL = "3434";
             singleTone.Connect(newPerson);
 
-            singleTone.SayAndClear("HUE", "MOE", false);
+           // singleTone.SayAndClear("HUE", "MOE", false);
             // var proxy = new ChatClient(site);
             //System.Threading.Thread.Sleep(3242);
             // proxy.Join()
@@ -36,7 +36,7 @@ namespace CrawlerClient
         private void StartCrawlerButton_Click(object sender, RoutedEventArgs e)
         {
             var crawlerInstance = new CrawlerEngine();
-            crawlerInstance.StartCrawlingProcess("http://mathem.krc.karelia.ru/");
+            crawlerInstance.StartCrawlingProcess("http://webometrics.krc.karelia.ru/");
         }
     }
 }

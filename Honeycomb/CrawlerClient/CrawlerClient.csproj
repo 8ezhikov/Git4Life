@@ -105,9 +105,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Honeycomb.Shared\Honeycomb.Shared.csproj">
       <Project>{4af188a2-a6f3-4c44-9e2b-5f1cbd6adf27}</Project>
       <Name>Honeycomb.Shared</Name>

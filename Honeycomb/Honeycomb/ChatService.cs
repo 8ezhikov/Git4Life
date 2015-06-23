@@ -183,6 +183,11 @@ namespace Honeycomb
             }
         }
 
+        public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLink bl, Shared.InternalLink il, Shared.ExternalLink el, Shared.Seed sd)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Broadcasts the input msg parameter to all connected chatters
         /// by using the BroadcastMessage() method
@@ -207,35 +212,38 @@ namespace Honeycomb
         /// </summary>
         /// <param ClientName="to">The persons ClientName to send the message to</param>
         /// <param ClientName="msg">The message to broadcast to all chatters</param>
-        public void ReturnCrawlingResults(string to, string msg)
+        public void ReturnCrawlingResults(Shared.CrawlerResults results)
         {
-            CrawlEventArgs e = new CrawlEventArgs();
-            e.msgType = MessageType.ReceiveWhisper;
-            e.clientCrawlerInfo = this.clientCrawlerInfo;
-            e.message = msg;
-            try
-            {
-                CrawlerClientEventHandler chatterTo;
-                //carry out a critical section, that attempts to find the 
-                //correct ClientCrawlerInfo in the list of chatters.
-                //if a ClientCrawlerInfo match is found, the matched chatters 
-                //CrawlerClientEventHandler delegate is invoked asynchronously
-                lock (syncObj)
-                {
-                    chatterTo = getPersonHandler(to);
-                    if (chatterTo == null)
-                    {
-                        throw new KeyNotFoundException("The ClientCrawlerInfo whos ClientName is " + to +
-                                                        " could not be found");
-                    }
-                }
-                //do a async invoke on the chatter (call the MyEventHandler() method, and the
-                //EndAsync() method at the end of the asynch call
-                chatterTo.BeginInvoke(this, e, new AsyncCallback(EndAsync), null);
-            }
-            catch (KeyNotFoundException)
-            {
-            }
+
+
+            var res = 34;
+            //CrawlEventArgs e = new CrawlEventArgs();
+            //e.msgType = MessageType.ReceiveWhisper;
+            //e.clientCrawlerInfo = this.clientCrawlerInfo;
+            //e.message = msg;
+            //try
+            //{
+            //    CrawlerClientEventHandler chatterTo;
+            //    //carry out a critical section, that attempts to find the 
+            //    //correct ClientCrawlerInfo in the list of chatters.
+            //    //if a ClientCrawlerInfo match is found, the matched chatters 
+            //    //CrawlerClientEventHandler delegate is invoked asynchronously
+            //    lock (syncObj)
+            //    {
+            //        chatterTo = getPersonHandler(to);
+            //        if (chatterTo == null)
+            //        {
+            //            throw new KeyNotFoundException("The ClientCrawlerInfo whos ClientName is " + to +
+            //                                            " could not be found");
+            //        }
+            //    }
+            //    //do a async invoke on the chatter (call the MyEventHandler() method, and the
+            //    //EndAsync() method at the end of the asynch call
+            //    chatterTo.BeginInvoke(this, e, new AsyncCallback(EndAsync), null);
+            //}
+            //catch (KeyNotFoundException)
+            //{
+            //}
         }
 
         /// <summary>

@@ -82,9 +82,9 @@ namespace CrawlerClient
         {
 
             var crawlerInstance = new CrawlerEngine();
-          var result  =   crawlerInstance.StartCrawlingProcess("http://mathem.krc.karelia.ru/");
-            
+            var result = crawlerInstance.StartCrawlingProcess(urlToCrawl);
 
+          proxy.ReturnCrawlingResults(result);
 
 
             //Here we crawl. Crawl and crawl.
@@ -185,8 +185,8 @@ namespace CrawlerClient
      
         public void SayAndClear(string to, string msg, bool pvt)
         {
-            if (!pvt)
-                proxy.ReturnCrawlingResults(msg,msg);
+            //if (!pvt)
+            //    //proxy.ReturnCrawlingResults(msg,msg);
         }
 
         public void ExitChatSession()

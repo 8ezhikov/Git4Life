@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+
+
 namespace Honeycomb
 {
     using System.Runtime.Serialization;
@@ -78,10 +80,10 @@ public interface IRemoteCrawler
     System.Threading.Tasks.Task ReturnIntermediateResultsAsync(string msg);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
-    void ReturnCrawlingResults(string to, string msg);
+    void ReturnCrawlingResults(Honeycomb.Shared.CrawlerResults results);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, IsInitiating = false, Action = "http://tempuri.org/IRemoteCrawler/ReturnCrawlingResults")]
-    System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg);
+    System.Threading.Tasks.Task ReturnCrawlingResultsAsync(Honeycomb.Shared.CrawlerResults results);
 
     [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IRemoteCrawler/Join", ReplyAction = "http://tempuri.org/IRemoteCrawler/JoinResponse")]
     Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
@@ -104,7 +106,7 @@ public interface IRemoteCrawlerCallback
     void Receive(Honeycomb.ClientCrawlerInfo sender, string message);
 
     [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IRemoteCrawler/StartCrawling")]
-    void StartCrawling(string urlToCrawl);
+    void StartCrawling(string siteURL);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -152,14 +154,14 @@ public partial class RemoteCrawlerClient : System.ServiceModel.DuplexClientBase<
         return base.Channel.ReturnIntermediateResultsAsync(msg);
     }
 
-    public void ReturnCrawlingResults(string to, string msg)
+    public void ReturnCrawlingResults(Honeycomb.Shared.CrawlerResults results)
     {
-        base.Channel.ReturnCrawlingResults(to, msg);
+        base.Channel.ReturnCrawlingResults(results);
     }
 
-    public System.Threading.Tasks.Task ReturnCrawlingResultsAsync(string to, string msg)
+    public System.Threading.Tasks.Task ReturnCrawlingResultsAsync(Honeycomb.Shared.CrawlerResults results)
     {
-        return base.Channel.ReturnCrawlingResultsAsync(to, msg);
+        return base.Channel.ReturnCrawlingResultsAsync(results);
     }
 
     public Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo)
