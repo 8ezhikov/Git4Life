@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Crawler DB" Class="QuickModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ZOLTAN\SQLEXPRESS;Initial Catalog=&quot;Crawler DB&quot;;Integrated Security=True" SettingsObjectName="Honeycomb.Properties.Settings" SettingsPropertyName="Crawler_DBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BadLinks" Member="BadLinks">
+    <Type Name="BadLink">
+      <Column Name="LinkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LinkPath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="OriginalPageLink" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Seeds" Member="Seeds">
+    <Type Name="Seed">
+      <Column Name="SeedIndex" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SeedDomainName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="SeedShortName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeedFullName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="IsProcessed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Crawler Settings]" Member="Crawler_Settings">
+    <Type Name="Crawler_Setting">
+      <Column Name="PageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MaxLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ExternalLinks" Member="ExternalLinks">
+    <Type Name="ExternalLink">
+      <Column Name="LinkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LinkPath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkAnchor" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PageSeedLink" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="OriginalPageLink" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkWeight" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="OriginalPageLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LinkCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InternalLinks" Member="InternalLinks">
+    <Type Name="InternalLink">
+      <Column Name="PageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PageIdSeedSpecific" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageLink" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PageSeedLink" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="OriginalPageLink" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PageLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsProcessed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsAvailable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsHtml" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LinkCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

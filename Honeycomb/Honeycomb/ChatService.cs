@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Honeycomb.Shared;
 
 namespace Honeycomb
 {
@@ -106,59 +107,14 @@ namespace Honeycomb
             return null;
         }
 
-        ///// <summary>
-        ///// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
-        ///// the actual <see cref="Common.Person">ClientCrawlerInfo</see> whos ClientName matches
-        ///// the ClientName input parameter
-        ///// </summary>
-        ///// <param ClientName="ClientCrawlerInfo">the ClientName of the <see cref="Common.Person">ClientCrawlerInfo</see> to find</param>
-        ///// <returns>The actual <see cref="Common.Person">ClientCrawlerInfo</see> whos ClientName matches
-        ///// the ClientName input parameter</returns>
-        //private ClientCrawlerInfo getPerson(string name)
-        //{
-        //    foreach (ClientCrawlerInfo p in chatters.Keys)
-        //    {
-        //        if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            return p;
-        //        }
-        //    }
-        //    return null;
-        //}
         #endregion
         #region IRemoteCrawler implementation
 
-        /// <summary>
-        /// Takes a <see cref="Common.Person">ClientCrawlerInfo</see> and allows them
-        /// to join the chat room, if there is not already a chatter with
-        /// the same ClientName
-        /// </summary>
-        /// <param ClientName="ClientCrawlerInfo"><see cref="Common.Person">ClientCrawlerInfo</see> joining</param>
-        /// <returns>An array of <see cref="Common.Person">ClientCrawlerInfo</see> objects</returns>
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
         {
             bool userAdded = false;
-            //create a new CrawlerClientEventHandler delegate, pointing to the MyEventHandler() method
-           // myEventHandler = MyEventHandler;
-
-            //carry out a critical section that checks to see if the new chatter
-            //ClientName is already in use, if its not allow the new chatter to be
-            //added to the list of chatters, using the ClientCrawlerInfo as the key, and the
-            //CrawlerClientEventHandler delegate as the value, for later invocation
-            //lock (syncObj)
-            //{
-                //if (!checkIfPersonExists(clientCrawlerInfo.ClientName) && clientCrawlerInfo != null)
-                //{
-                    
-                //    userAdded = true;
-                //}
                 this.clientCrawlerInfo = clientCrawlerNewInfo;
-                //}
                 userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
-            //if the new chatter could be successfully added, get a callback instance
-            //create a new message, and broadcast it to all other chatters, and then 
-            //return the list of al chatters such that connected clients may show a
-            //list of all the chatters
             if (userAdded)
             {
                 callback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
@@ -202,57 +158,22 @@ namespace Honeycomb
             BroadcastMessage(e);
         }
 
-        /// <summary>
-        /// Broadcasts the input msg parameter to all the <see cref="Common.Person">
-        /// ClientCrawlerInfo</see> whos ClientName matches the to input parameter
-        /// by looking up the ClientCrawlerInfo from the internal list of chatters
-        /// and invoking their CrawlerClientEventHandler delegate asynchronously.
-        /// Where the MyEventHandler() method is called at the start of the
-        /// asynch call, and the EndAsync() method at the end of the asynch call
-        /// </summary>
-        /// <param ClientName="to">The persons ClientName to send the message to</param>
-        /// <param ClientName="msg">The message to broadcast to all chatters</param>
-        public void ReturnCrawlingResults(Shared.CrawlerResults results)
+        public void ReturnCrawlingResults(CrawlerResults results)
         {
-
-
-            var res = 34;
-            //CrawlEventArgs e = new CrawlEventArgs();
-            //e.msgType = MessageType.ReceiveWhisper;
-            //e.clientCrawlerInfo = this.clientCrawlerInfo;
-            //e.message = msg;
-            //try
-            //{
-            //    CrawlerClientEventHandler chatterTo;
-            //    //carry out a critical section, that attempts to find the 
-            //    //correct ClientCrawlerInfo in the list of chatters.
-            //    //if a ClientCrawlerInfo match is found, the matched chatters 
-            //    //CrawlerClientEventHandler delegate is invoked asynchronously
-            //    lock (syncObj)
-            //    {
-            //        chatterTo = getPersonHandler(to);
-            //        if (chatterTo == null)
-            //        {
-            //            throw new KeyNotFoundException("The ClientCrawlerInfo whos ClientName is " + to +
-            //                                            " could not be found");
-            //        }
-            //    }
-            //    //do a async invoke on the chatter (call the MyEventHandler() method, and the
-            //    //EndAsync() method at the end of the asynch call
-            //    chatterTo.BeginInvoke(this, e, new AsyncCallback(EndAsync), null);
-            //}
-            //catch (KeyNotFoundException)
-            //{
-            //}
+            SaveClientResultsToDatabase(results);
+            var dbModel = new QuickModelDataContext();
         }
 
-        /// <summary>
-        /// A request has been made by a client to leave the chat room,
-        /// so remove the <see cref="Common.Person">ClientCrawlerInfo </see>from
-        /// the internal list of chatters, and unwire the chatters
-        /// delegate from the multicast delegate, so that it no longer
-        /// gets invokes by globally broadcasted methods
-        /// </summary>
+        private void SaveClientResultsToDatabase(CrawlerResults results)
+        {
+
+            var dbModel = new QuickModelDataContext();
+            foreach (var internalLink in results.InternalLinksList)
+            {
+                InternalLink
+            }
+        }
+      
         public void Leave()
         {
             if (this.clientCrawlerInfo == null)

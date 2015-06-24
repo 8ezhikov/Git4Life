@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
@@ -67,6 +68,11 @@
     <Compile Include="ChatService.cs" />
     <Compile Include="Interfaces\ICrawlerClientCallback.cs" />
     <Compile Include="Interfaces\IRemoteCrawler.cs" />
+    <Compile Include="QuickModel.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuickModel.dbml</DependentUpon>
+    </Compile>
     <Compile Include="ServerMainWindow.xaml.cs">
       <DependentUpon>ServerMainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -87,6 +93,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="QuickModel.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>QuickModel.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -96,6 +107,14 @@
       <Project>{4af188a2-a6f3-4c44-9e2b-5f1cbd6adf27}</Project>
       <Name>Honeycomb.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QuickModel.dbml.layout">
+      <DependentUpon>QuickModel.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

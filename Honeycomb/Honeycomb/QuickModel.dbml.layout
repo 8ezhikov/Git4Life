@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="QuickModel">
+  <DataContextMoniker Name="/QuickModelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="a7e14e7b-d76c-429d-bb92-75894603badd" absoluteBounds="0.75, 0.75, 2, 1.3862939453125">
+      <DataClassMoniker Name="/QuickModelDataContext/BadLink" />
+      <nestedChildShapes>
+        <elementListCompartment Id="24bbe6a7-47fe-4302-a6d7-ec42a83960fc" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3f34068d-4701-47b6-9ab6-994f9649c8be" absoluteBounds="3.75, 0.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/QuickModelDataContext/Seed" />
+      <nestedChildShapes>
+        <elementListCompartment Id="239419e1-0cec-4728-9bd4-786072d9c21a" absoluteBounds="3.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e541d13e-abbf-4c88-965c-55ec7e4be0af" absoluteBounds="0.75, 3.75, 2, 1.193992513020834">
+      <DataClassMoniker Name="/QuickModelDataContext/Crawler_Setting" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3279b0e6-6539-4b09-a412-e5fad935d2b8" absoluteBounds="0.765, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="53414f90-e6b5-4efa-bad0-fc8d35eaae4d" absoluteBounds="3.75, 3.75, 2, 2.347801106770834">
+      <DataClassMoniker Name="/QuickModelDataContext/ExternalLink" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6964ea33-9ce9-42ae-85f1-e89f5dc888f3" absoluteBounds="3.765, 4.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c680b530-9d45-4b54-bc86-afb25140c138" absoluteBounds="6.75, 0.75, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/QuickModelDataContext/InternalLink" />
+      <nestedChildShapes>
+        <elementListCompartment Id="41250936-6083-49e7-8782-a4aa56e985f7" absoluteBounds="6.765, 1.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
