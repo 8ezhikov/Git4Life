@@ -170,7 +170,7 @@ namespace Honeycomb
             var dbModel = new QuickModelDataContext();
             foreach (var internalLink in resultsDto.InternalLinksList)
             {
-                InternalLink
+            //    InternalLink
             }
         }
       
