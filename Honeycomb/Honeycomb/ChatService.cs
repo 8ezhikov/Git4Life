@@ -139,7 +139,7 @@ namespace Honeycomb
             }
         }
 
-        public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLink bl, Shared.InternalLink il, Shared.ExternalLink el, Shared.Seed sd)
+        public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl, Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd)
         {
             throw new NotImplementedException();
         }
@@ -158,17 +158,17 @@ namespace Honeycomb
             BroadcastMessage(e);
         }
 
-        public void ReturnCrawlingResults(CrawlerResults results)
+        public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
         {
-            SaveClientResultsToDatabase(results);
+            SaveClientResultsToDatabase(resultsDto);
             var dbModel = new QuickModelDataContext();
         }
 
-        private void SaveClientResultsToDatabase(CrawlerResults results)
+        private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
         {
 
             var dbModel = new QuickModelDataContext();
-            foreach (var internalLink in results.InternalLinksList)
+            foreach (var internalLink in resultsDto.InternalLinksList)
             {
                 InternalLink
             }

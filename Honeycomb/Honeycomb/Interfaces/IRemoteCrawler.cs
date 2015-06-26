@@ -9,13 +9,13 @@ namespace Honeycomb
         void ReturnIntermediateResults(string msg);
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
-        void ReturnCrawlingResults(Shared.CrawlerResults results);
+        void ReturnCrawlingResults(Shared.CrawlerResultsDTO resultsDto);
 
         [OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
         ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo);
 
         //[OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
-        //ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLink bl,Shared.InternalLink il, Shared.ExternalLink el, Shared.Seed sd);
+        //ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl,Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd);
 
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = true)]

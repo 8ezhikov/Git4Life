@@ -22,10 +22,10 @@ namespace CrawlerClient
         private int _internalLinksCounter = 1;
         private const string StartingPageName = "Starting Page";
         private const int MaxLevel = 5;
-        private List<InternalLink> InternalLinksList = new List<InternalLink>();
-        private List<ExternalLink> ExternalLinksList = new List<ExternalLink>();
-        private List<BadLink> BadLinksList = new List<BadLink>();
-        private Stack<InternalLink> InternalUnprocessedLinks = new Stack<InternalLink>();
+        private List<InternalLinkDTO> InternalLinksList = new List<InternalLinkDTO>();
+        private List<ExternalLinkDTO> ExternalLinksList = new List<ExternalLinkDTO>();
+        private List<BadLinkDTO> BadLinksList = new List<BadLinkDTO>();
+        private Stack<InternalLinkDTO> InternalUnprocessedLinks = new Stack<InternalLinkDTO>();
 
 
         // Declare the event
@@ -67,14 +67,14 @@ namespace CrawlerClient
             Status = CrawlerStatus.Wating;
         }
 
-        public CrawlerResults StartCrawlingProcess(string startingSeedName)
+        public CrawlerResultsDTO StartCrawlingProcess(string startingSeedName)
         {
             var startingTime = DateTime.Now;
             _maxPageLevel = MaxLevel;
             Status = CrawlerStatus.Working;
             ForceStop = false;
-            var testSeed = new Seed { SeedDomainName = startingSeedName };
-            var seedCollection = new List<Seed> { testSeed };
+            var testSeed = new SeedDTO { SeedDomainName = startingSeedName };
+            var seedCollection = new List<SeedDTO> { testSeed };
             foreach (var seed in seedCollection)
             {
                 var startingAdress = seed.SeedDomainName;
@@ -119,7 +119,7 @@ namespace CrawlerClient
             RuningTime = (DateTime.Now - startingTime).ToString();
             MessageBox.Show(RuningTime);
 
-            var result = new CrawlerResults();
+            var result = new CrawlerResultsDTO();
             result.BadLinksList = BadLinksList;
             result.ExternalLinksList = ExternalLinksList;
             result.InternalLinksList = InternalLinksList;
@@ -334,7 +334,7 @@ namespace CrawlerClient
                             var isUrLexisting = _allLinks[linkUrl];
                             if (isUrLexisting == null)
                             {
-                                var linkPage = new ExternalLink
+                                var linkPage = new ExternalLinkDTO
                                                    {
                                                        LinkAnchor = link.InnerText,
                                                        LinkPath = linkUrl,
@@ -355,7 +355,7 @@ namespace CrawlerClient
                     }
                     else
                     {
-                        var linkPage = new BadLink
+                        var linkPage = new BadLinkDTO
                         {
                             LinkPath = rawLinkUrl,
                             OriginalPageLink = startingAdressUri.AbsoluteUri
@@ -375,7 +375,7 @@ namespace CrawlerClient
         private void AddInternalLink(string linkUrl, string seedLink, int currentPageLevel, string originalPageLink)
         {
             originalPageLink = NormalizeUrl(originalPageLink);
-            var linkPage = new InternalLink
+            var linkPage = new InternalLinkDTO
             {
                 IsHtml = false,
                 IsProcessed = false,
