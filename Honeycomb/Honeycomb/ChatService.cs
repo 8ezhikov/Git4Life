@@ -156,6 +156,9 @@ namespace Honeycomb
             e.clientCrawlerInfo = this.clientCrawlerInfo;
             e.message = msg;
             BroadcastMessage(e);
+
+
+
         }
 
         public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
