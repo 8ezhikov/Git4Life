@@ -176,7 +176,21 @@ namespace Honeycomb
             //    InternalLink
             }
         }
-      
+
+        private InternalLink CovertInternalLinkDTOtoDB(InternalLinkDTO internalLinkDto)
+        {
+            var internalLinkDB = new InternalLink();
+            internalLinkDB.PageSeedLink = internalLinkDto.PageSeedLink;
+            internalLinkDB.PageIdSeedSpecific = internalLinkDto.PageIdSeedSpecific;
+            internalLinkDB.IsProcessed = internalLinkDto.IsProcessed;
+            internalLinkDB.PageLevel = internalLinkDto.PageLevel;
+            internalLinkDB.PageLink = internalLinkDto.PageLink;
+            internalLinkDB.LinkPath = internalLinkDto.LinkPath;
+            internalLinkDB.IsHtml = internalLinkDto.IsHtml;
+            internalLinkDB.OriginalPageLink = internalLinkDto.OriginalPageLink;
+            internalLinkDB.LinkCount = internalLinkDto.LinkCount;
+
+        }
         public void Leave()
         {
             if (this.clientCrawlerInfo == null)
