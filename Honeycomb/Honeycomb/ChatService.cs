@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.ServiceModel;
+using System.Windows;
 using Honeycomb.Shared;
 
 namespace Honeycomb
 {
-   
-   
+
+
     #region Public enums/event args
     /// <summary>
     /// A simple enumeration for dealing with the chat message types
@@ -113,8 +115,8 @@ namespace Honeycomb
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
         {
             bool userAdded = false;
-                this.clientCrawlerInfo = clientCrawlerNewInfo;
-                userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
+            this.clientCrawlerInfo = clientCrawlerNewInfo;
+            userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
             if (userAdded)
             {
                 callback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
@@ -164,20 +166,54 @@ namespace Honeycomb
         public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
         {
             SaveClientResultsToDatabase(resultsDto);
-            var dbModel = new QuickModelDataContext();
         }
 
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
         {
 
-            var dbModel = new QuickModelDataContext();
+            var dbContext = new CrawlerEntities();
             foreach (var internalLink in resultsDto.InternalLinksList)
             {
-            //    InternalLink
+                var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
+                dbContext.InternalLinks.Add(dbLink);
             }
+            foreach (var externalLink in resultsDto.ExternalLinksList)
+            {
+                var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
+                dbContext.ExternalLinks.Add(dbLink);
+            }
+            foreach (var badLink in resultsDto.BadLinksList)
+            {
+                var dbLink = ConvertBadLinkDTOtoDB(badLink);
+                dbContext.BadLinks.Add(dbLink);
+            }
+            try
+            {
+                dbContext.SaveChanges();
+
+            }
+
+            catch (DbEntityValidationException e)
+            {
+                var errorString = "";
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    errorString += String.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        errorString += String.Format("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+
+                MessageBox.Show(errorString);
+                throw;
+            }
+
         }
 
-        private InternalLink CovertInternalLinkDTOtoDB(InternalLinkDTO internalLinkDto)
+        private InternalLink ConvertInternalLinkDTOtoDB(InternalLinkDTO internalLinkDto)
         {
             var internalLinkDB = new InternalLink();
             internalLinkDB.PageSeedLink = internalLinkDto.PageSeedLink;
@@ -185,12 +221,37 @@ namespace Honeycomb
             internalLinkDB.IsProcessed = internalLinkDto.IsProcessed;
             internalLinkDB.PageLevel = internalLinkDto.PageLevel;
             internalLinkDB.PageLink = internalLinkDto.PageLink;
-            internalLinkDB.LinkPath = internalLinkDto.LinkPath;
             internalLinkDB.IsHtml = internalLinkDto.IsHtml;
             internalLinkDB.OriginalPageLink = internalLinkDto.OriginalPageLink;
             internalLinkDB.LinkCount = internalLinkDto.LinkCount;
-
+            return internalLinkDB;
         }
+
+
+        private ExternalLink ConvertExternalLinkDTOtoDB(ExternalLinkDTO linkDto)
+        {
+            var linkDB = new ExternalLink();
+
+          
+            linkDB.PageSeedLink = linkDto.PageSeedLink;
+            linkDB.LinkAnchor = linkDto.LinkAnchor;
+            linkDB.LinkPath = linkDto.LinkPath;
+            linkDB.LinkWeight = linkDto.LinkWeight;
+            linkDB.OriginalPageLevel = linkDto.OriginalPageLevel;
+            linkDB.OriginalPageLink = linkDto.OriginalPageLink;
+            linkDB.LinkCount = linkDto.LinkCount;
+            return linkDB;
+        }
+        private BadLink ConvertBadLinkDTOtoDB(BadLinkDTO linkDto)
+        {
+            var linkDB = new BadLink();
+
+
+            linkDB.LinkPath = linkDto.LinkPath;
+            linkDB.OriginalPageLink = linkDto.OriginalPageLink;
+            return linkDB;
+        }
+
         public void Leave()
         {
             if (this.clientCrawlerInfo == null)
@@ -238,7 +299,7 @@ namespace Honeycomb
                         callback.Receive(e.clientCrawlerInfo, e.message);
                         break;
                     case MessageType.ReceiveWhisper:
-                        callback.StartCrawling( e.message);
+                        callback.StartCrawling(e.message);
                         break;
                     //case MessageType.UserEnter:
                     //    callback.UserEnter(e.clientCrawlerInfo);
@@ -308,4 +369,3 @@ namespace Honeycomb
     #endregion
 }
 
- 

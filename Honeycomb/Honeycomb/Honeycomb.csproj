@@ -34,11 +34,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,13 +73,38 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BadLink.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
     <Compile Include="ChatService.cs" />
-    <Compile Include="Interfaces\ICrawlerClientCallback.cs" />
-    <Compile Include="Interfaces\IRemoteCrawler.cs" />
-    <Compile Include="QuickModel.designer.cs">
+    <Compile Include="Crawler_Setting.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DCrawlerRepo.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>QuickModel.dbml</DependentUpon>
+      <DependentUpon>DCrawlerRepo.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DCrawlerRepo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DCrawlerRepo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DCrawlerRepo.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalLink.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ICrawlerClientCallback.cs" />
+    <Compile Include="Interfaces\IRemoteCrawler.cs" />
+    <Compile Include="InternalLink.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Seed.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
     <Compile Include="ServerMainWindow.xaml.cs">
       <DependentUpon>ServerMainWindow.xaml</DependentUpon>
@@ -88,16 +121,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EntityDeploy Include="DCrawlerRepo.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DCrawlerRepo.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DCrawlerRepo.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DCrawlerRepo.edmx</DependentUpon>
+      <LastGenOutput>DCrawlerRepo.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DCrawlerRepo.edmx.diagram">
+      <DependentUpon>DCrawlerRepo.edmx</DependentUpon>
+    </None>
+    <None Include="DCrawlerRepo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DCrawlerRepo.edmx</DependentUpon>
+      <LastGenOutput>DCrawlerRepo.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="QuickModel.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>QuickModel.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -110,11 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="QuickModel.dbml.layout">
-      <DependentUpon>QuickModel.dbml</DependentUpon>
-    </None>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
