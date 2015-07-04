@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity.Validation;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Windows;
 using Honeycomb.Shared;
 
@@ -52,8 +54,17 @@ namespace Honeycomb
         //holds a list of chatters, and a delegate to allow the BroadcastEvent to work
         //out which chatter delegate to invoke
         static ConcurrentDictionary<ClientCrawlerInfo, CrawlerClientEventHandler> chatters = new ConcurrentDictionary<ClientCrawlerInfo, CrawlerClientEventHandler>();
+
+        public ObservableCollection<ClientCrawlerInfo> ConnectedClientCrawlers
+        {
+            get { return _connectedClientCrawlers; }
+            set { _connectedClientCrawlers = value; }
+        }
+
         //current ClientCrawlerInfo 
-        private ClientCrawlerInfo clientCrawlerInfo;
+       // private ClientCrawlerInfo clientCrawlerInfo;
+        private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers;
+
         #endregion
         #region Helpers
         /// <summary>
@@ -75,6 +86,7 @@ namespace Honeycomb
             return false;
         }
 
+       
         public bool StartCrawling()
         {
             if (callback != null)
@@ -114,31 +126,32 @@ namespace Honeycomb
 
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
         {
-            bool userAdded = false;
-            this.clientCrawlerInfo = clientCrawlerNewInfo;
-            userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
-            if (userAdded)
-            {
-                callback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
-                CrawlEventArgs e = new CrawlEventArgs();
-                e.msgType = MessageType.UserEnter;
-                e.clientCrawlerInfo = this.clientCrawlerInfo;
-                BroadcastMessage(e);
-                //add this newly joined chatters CrawlerClientEventHandler delegate, to the global
-                //multicast delegate for invocation
-                ChatEvent += myEventHandler;
-                var list = new ClientCrawlerInfo[chatters.Count];
-                //carry out a critical section that copy all chatters to a new list
-                lock (syncObj)
-                {
-                    chatters.Keys.CopyTo(list, 0);
-                }
-                return list;
-            }
-            else
-            {
+            ConnectedClientCrawlers.Add(clientCrawlerNewInfo);
+            //bool userAdded = false;
+            //this.clientCrawlerInfo = clientCrawlerNewInfo;
+            //userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
+            //if (userAdded)
+            //{
+            //    callback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
+            //    CrawlEventArgs e = new CrawlEventArgs();
+            //    e.msgType = MessageType.UserEnter;
+            //    e.clientCrawlerInfo = this.clientCrawlerInfo;
+            //    BroadcastMessage(e);
+            //    //add this newly joined chatters CrawlerClientEventHandler delegate, to the global
+            //    //multicast delegate for invocation
+            //    ChatEvent += myEventHandler;
+            //    var list = new ClientCrawlerInfo[chatters.Count];
+            //    //carry out a critical section that copy all chatters to a new list
+            //    lock (syncObj)
+            //    {
+            //        chatters.Keys.CopyTo(list, 0);
+            //    }
+            //    return list;
+            //}
+            //else
+            //{
                 return null;
-            }
+            //}
         }
 
         public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl, Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd)
@@ -153,11 +166,11 @@ namespace Honeycomb
         /// <param ClientName="msg">The message to broadcast to all chatters</param>
         public void ReturnIntermediateResults(string msg)
         {
-            CrawlEventArgs e = new CrawlEventArgs();
-            e.msgType = MessageType.Receive;
-            e.clientCrawlerInfo = this.clientCrawlerInfo;
-            e.message = msg;
-            BroadcastMessage(e);
+            //CrawlEventArgs e = new CrawlEventArgs();
+            //e.msgType = MessageType.Receive;
+            //e.clientCrawlerInfo = this.clientCrawlerInfo;
+            //e.message = msg;
+            //BroadcastMessage(e);
 
 
 
@@ -254,28 +267,28 @@ namespace Honeycomb
 
         public void Leave()
         {
-            if (this.clientCrawlerInfo == null)
-                return;
+            //if (this.clientCrawlerInfo == null)
+            //    return;
 
-            //get the chatters CrawlerClientEventHandler delegate
-            CrawlerClientEventHandler chatterToRemove = getPersonHandler(this.clientCrawlerInfo.ClientName);
+            ////get the chatters CrawlerClientEventHandler delegate
+            //CrawlerClientEventHandler chatterToRemove = getPersonHandler(this.clientCrawlerInfo.ClientName);
 
-            //carry out a critical section, that removes the chatter from the
-            //internal list of chatters
-            //lock (syncObj)
-            //{
-            //    chatters.TryRemove(this.clientCrawlerInfo, chatterToRemove);
-            //}
-            //unwire the chatters delegate from the multicast delegate, so that 
-            //it no longer gets invokes by globally broadcasted methods
-            ChatEvent -= chatterToRemove;
-            CrawlEventArgs e = new CrawlEventArgs();
-            e.msgType = MessageType.UserLeave;
-            e.clientCrawlerInfo = this.clientCrawlerInfo;
-            this.clientCrawlerInfo = null;
-            //broadcast this leave message to all other remaining connected
-            //chatters
-            BroadcastMessage(e);
+            ////carry out a critical section, that removes the chatter from the
+            ////internal list of chatters
+            ////lock (syncObj)
+            ////{
+            ////    chatters.TryRemove(this.clientCrawlerInfo, chatterToRemove);
+            ////}
+            ////unwire the chatters delegate from the multicast delegate, so that 
+            ////it no longer gets invokes by globally broadcasted methods
+            //ChatEvent -= chatterToRemove;
+            //CrawlEventArgs e = new CrawlEventArgs();
+            //e.msgType = MessageType.UserLeave;
+            //e.clientCrawlerInfo = this.clientCrawlerInfo;
+            //this.clientCrawlerInfo = null;
+            ////broadcast this leave message to all other remaining connected
+            ////chatters
+            //BroadcastMessage(e);
         }
         #endregion
         #region private methods

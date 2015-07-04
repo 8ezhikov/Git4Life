@@ -25,13 +25,6 @@ namespace Honeycomb
             OutputTextBox.AppendText("Press ENTER to stop chat service... \n");
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-           
-            //Console.ReadLine();
-     
-        }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var hoster = ((RemoteCrawlerService) host.SingletonInstance);
