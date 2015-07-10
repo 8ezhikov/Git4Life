@@ -86,7 +86,16 @@ namespace Honeycomb
             return false;
         }
 
-       
+       public void SaveEmployee(InternalLink emp)
+        {
+            In.EmpNo = _serviceProxy.CreateEmployee(emp);
+            if (EmpInfo.EmpNo != 0)
+            {
+                Employees.Add(EmpInfo);
+                RaisePropertyChanged("EmpInfo");
+            }
+        }
+
         public bool StartCrawling()
         {
             if (callback != null)

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Configuration;
+using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -23,9 +26,23 @@ namespace Honeycomb.ViewModel
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
+        /// 
+        ServiceHost host;
+        private RemoteCrawlerService instance;
+        public RelayCommand ReadAllCommand { get; set; }
         public MainViewModel()
         {
             ShowPopUp = new RelayCommand(ShowPopUpExecute, () => true);
+            ReadAllCommand = new RelayCommand(GetEmployees);
+            var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
+            instance = new RemoteCrawlerService();
+            host = new ServiceHost(instance, uri);
+            host.Open();
+            ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
+          
+
+
+
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
@@ -34,6 +51,25 @@ namespace Honeycomb.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
+        }
+
+        private Seed _seedInfo;
+        public Seed SeedInfo
+        {
+            get { return _seedInfo; }
+            set
+            {
+                _seedInfo = value;
+                RaisePropertyChanged("SeedInfo");
+            }
+        }
+
+        void SaveEmployee(InternalLink emp)
+        {
+           
+           //     Employees.Add(EmpInfo);
+                RaisePropertyChanged("SeedInfo");
+           
         }
 
         ObservableCollection<ClientCrawlerInfo> _clientCrawlers;
@@ -52,6 +88,20 @@ namespace Honeycomb.ViewModel
         private void ShowPopUpExecute()
         {
             MessageBox.Show("Hello!");
+        }
+
+        void GetEmployees()
+        {
+
+            var tempData = new ClientCrawlerInfo("192.168.50.123", "Test 1");
+            var tempData1 = new ClientCrawlerInfo("192.161218.50.123", "Test 343 ");
+            ClientCrawlers.Add(tempData);
+            ClientCrawlers.Add(tempData1);
+            //ClientCrawlers.Clear();
+            //foreach (var item in instance.ConnectedClientCrawlers)
+            //{
+            //    ClientCrawlers.Add(item);
+            //}
         }
     }
 }
