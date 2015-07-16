@@ -64,11 +64,18 @@ namespace Honeycomb.ViewModel
             }
         }
 
-        void SaveEmployee(InternalLink emp)
+        void SaveSeed(Seed emp)
         {
-           
+            instance.SaveSeed(emp);
+
+           // EmpInfo.EmpNo = _serviceProxy.CreateEmployee(emp);
+           // if (EmpInfo.EmpNo != 0)
+           // {
            //     Employees.Add(EmpInfo);
-                RaisePropertyChanged("SeedInfo");
+           //     RaisePropertyChanged("EmpInfo");
+           // }
+           ////     Employees.Add(EmpInfo);
+           //     RaisePropertyChanged("SeedInfo");
            
         }
 

@@ -86,14 +86,12 @@ namespace Honeycomb
             return false;
         }
 
-       public void SaveEmployee(InternalLink emp)
+       public void SaveSeed(Seed emp)
         {
-            In.EmpNo = _serviceProxy.CreateEmployee(emp);
-            if (EmpInfo.EmpNo != 0)
-            {
-                Employees.Add(EmpInfo);
-                RaisePropertyChanged("EmpInfo");
-            }
+            var dbContext = new CrawlerEntities();
+
+            dbContext.Seeds.Add(emp);
+            dbContext.SaveChanges();
         }
 
         public bool StartCrawling()
