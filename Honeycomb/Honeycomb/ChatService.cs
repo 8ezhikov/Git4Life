@@ -63,7 +63,7 @@ namespace Honeycomb
 
         //current ClientCrawlerInfo 
        // private ClientCrawlerInfo clientCrawlerInfo;
-        private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers;
+        private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
 
         #endregion
         #region Helpers
