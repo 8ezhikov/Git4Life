@@ -68,6 +68,7 @@ namespace Honeycomb
 }
 
 
+
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
 [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IRemoteCrawler", CallbackContract = typeof(IRemoteCrawlerCallback), SessionMode = System.ServiceModel.SessionMode.Required)]
 public interface IRemoteCrawler
@@ -120,27 +121,27 @@ public partial class RemoteCrawlerClient : System.ServiceModel.DuplexClientBase<
 {
 
     public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance) :
-        base(callbackInstance)
+            base(callbackInstance)
     {
     }
 
     public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) :
-        base(callbackInstance, endpointConfigurationName)
+            base(callbackInstance, endpointConfigurationName)
     {
     }
 
     public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) :
-        base(callbackInstance, endpointConfigurationName, remoteAddress)
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
 
     public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
-        base(callbackInstance, endpointConfigurationName, remoteAddress)
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
     {
     }
 
     public RemoteCrawlerClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
-        base(callbackInstance, binding, remoteAddress)
+            base(callbackInstance, binding, remoteAddress)
     {
     }
 
