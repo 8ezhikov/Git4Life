@@ -61,6 +61,11 @@
     <Compile Include="ClientHelper.cs" />
     <Compile Include="CrawlerEngine.cs" />
     <Compile Include="ProxySingletone.cs" />
+    <Compile Include="Service References\CrawlerServer\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,12 +97,29 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Honeycomb.ClientCrawlerInfo.datasource" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\CrawlerServer\chatservice.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\chatservice1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\chatservice2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\chatservice3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\chatservice4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\RemoteCrawlerService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -105,9 +127,34 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CrawlerServer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CrawlerServer\chatservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CrawlerServer\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CrawlerServer\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CrawlerServer\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Honeycomb.Shared\Honeycomb.Shared.csproj">
       <Project>{4af188a2-a6f3-4c44-9e2b-5f1cbd6adf27}</Project>
       <Name>Honeycomb.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Honeycomb\Honeycomb.csproj">
+      <Project>{CD6D6A3B-0B9B-411B-A6A0-D6364B63AAA7}</Project>
+      <Name>Honeycomb</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

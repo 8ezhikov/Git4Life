@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/System.Collections.Generic" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:22222/chatservice?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" />
+  <xs:complexType name="StackOfInternalLinkDTOATpcs25C">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="StackOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="InternalLinkDTO" Namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" name="_array" nillable="true" type="q1:ArrayOfInternalLinkDTO" />
+      <xs:element name="_size" type="xs:int" />
+      <xs:element name="_version" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StackOfInternalLinkDTOATpcs25C" nillable="true" type="tns:StackOfInternalLinkDTOATpcs25C" />
+</xs:schema>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Windows;
+using CrawlerClient.CrawlerServer;
+using Honeycomb.Shared;
 using Honeycomb;
 
 namespace CrawlerClient
@@ -132,9 +134,13 @@ namespace CrawlerClient
         public void Connect(ClientCrawlerInfo p)
         {
             var site = new InstanceContext(this);
-            proxy = new RemoteCrawlerClient(site);
 
-            ClientCrawlerInfo[] list = proxy.Join(p);
+            var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
+
+   //         proxy = new RemoteCrawlerClient(site);
+
+             //proxy = new 
+            ClientCrawlerInfo[] list = anotherProxy.Join(p);
 
           // HandleEndJoin(list);
             //IAsyncResult ee = proxy.JoinAsync(p);
@@ -213,6 +219,11 @@ namespace CrawlerClient
                 proxy = null;
             }
         }
+
+        //public void Receive(Honeycomb.ClientCrawlerInfo sender, string message)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         #endregion
     }

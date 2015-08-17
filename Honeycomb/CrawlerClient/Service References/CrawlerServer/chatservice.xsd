@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:22222/chatservice?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" />
+  <xs:import schemaLocation="http://localhost:22222/chatservice?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Honeycomb" />
+  <xs:element name="ReturnIntermediateResults">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="msg" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReturnCrawlingResults">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" minOccurs="0" name="resultsDto" nillable="true" type="q1:CrawlerResultsDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Join">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Honeycomb" minOccurs="0" name="clientCrawlerInfo" nillable="true" type="q2:ClientCrawlerInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JoinResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Honeycomb" minOccurs="0" name="JoinResult" nillable="true" type="q3:ArrayOfClientCrawlerInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Leave">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Receive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Honeycomb" minOccurs="0" name="sender" nillable="true" type="q4:ClientCrawlerInfo" />
+        <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StartCrawling">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="siteURL" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:22222/chatservice?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
+  <xs:complexType name="CrawlerResultsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BadLinksList" nillable="true" type="tns:ArrayOfBadLinkDTO" />
+      <xs:element minOccurs="0" name="ExternalLinksList" nillable="true" type="tns:ArrayOfExternalLinkDTO" />
+      <xs:element minOccurs="0" name="InternalLinksList" nillable="true" type="tns:ArrayOfInternalLinkDTO" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="InternalUnprocessedLinks" nillable="true" type="q1:StackOfInternalLinkDTOATpcs25C" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CrawlerResultsDTO" nillable="true" type="tns:CrawlerResultsDTO" />
+  <xs:complexType name="ArrayOfBadLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BadLinkDTO" nillable="true" type="tns:BadLinkDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBadLinkDTO" nillable="true" type="tns:ArrayOfBadLinkDTO" />
+  <xs:complexType name="BadLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LinkPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OriginalPageLink" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BadLinkDTO" nillable="true" type="tns:BadLinkDTO" />
+  <xs:complexType name="ArrayOfExternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExternalLinkDTO" nillable="true" type="tns:ExternalLinkDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExternalLinkDTO" nillable="true" type="tns:ArrayOfExternalLinkDTO" />
+  <xs:complexType name="ExternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LinkAnchor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LinkCount" type="xs:int" />
+      <xs:element minOccurs="0" name="LinkPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LinkWeight" type="xs:int" />
+      <xs:element minOccurs="0" name="OriginalPageLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="OriginalPageLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageSeedLink" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExternalLinkDTO" nillable="true" type="tns:ExternalLinkDTO" />
+  <xs:complexType name="ArrayOfInternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InternalLinkDTO" nillable="true" type="tns:InternalLinkDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInternalLinkDTO" nillable="true" type="tns:ArrayOfInternalLinkDTO" />
+  <xs:complexType name="InternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsHtml" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsProcessed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LinkCount" type="xs:int" />
+      <xs:element minOccurs="0" name="LinkPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OriginalPageLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageIdSeedSpecific" type="xs:int" />
+      <xs:element minOccurs="0" name="PageLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="PageLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageSeedLink" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InternalLinkDTO" nillable="true" type="tns:InternalLinkDTO" />
+</xs:schema>

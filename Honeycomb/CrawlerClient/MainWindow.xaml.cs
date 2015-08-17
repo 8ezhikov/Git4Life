@@ -17,7 +17,7 @@ namespace CrawlerClient
         {
             var singleTone = ConnectionSingleton.Instance;
             // InstanceContext site = new InstanceContext(singleTone);
-            var newPerson = new ClientCrawlerInfo();
+            var newPerson = new ClientCrawlerInfo("sdf","sdfds");
             newPerson.ClientName = "Denis Crawler";
             string globalIP = ClientHelper.GetPublicIP();
 
