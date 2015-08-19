@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
@@ -141,8 +142,8 @@ namespace CrawlerClient
 
              //proxy = new 
             ClientCrawlerInfo[] list = anotherProxy.Join(p);
-
-          // HandleEndJoin(list);
+            MessageBox.Show("Great Success!"+list.Count());
+            // HandleEndJoin(list);
             //IAsyncResult ee = proxy.JoinAsync(p);
             //ee.AsyncWaitHandle = await 
             //IAsyncResult iar = proxy.BeginJoin(p, new AsyncCallback(OnEndJoin), null);

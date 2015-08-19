@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Windows;
@@ -157,7 +158,7 @@ namespace Honeycomb
             //}
             //else
             //{
-                return null;
+                return ConnectedClientCrawlers.ToArray();
             //}
         }
 
