@@ -9,7 +9,7 @@
             <Grid  HorizontalAlignment="Left" Height="271"  VerticalAlignment="Top" Width="967">
                 <Button  Command="{Binding ShowPopUp}" Content="Start Crawling" HorizontalAlignment="Left" Margin="31,204,0,0" VerticalAlignment="Top" Width="124" Click="Button_Click_1" Height="67"/>
                 <DataGrid HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="194" Width="967" ItemsSource="{Binding ClientCrawlers}"/>
-                <Button  Command="{Binding ReadAllCommand}" Content="Button" HorizontalAlignment="Left" Margin="206,209,0,0" VerticalAlignment="Top" Width="115" Height="52"/>
+                <Button  Command="{Binding ReadAllCommand}" Content="Refresh" HorizontalAlignment="Left" Margin="198,204,0,0" VerticalAlignment="Top" Width="142" Height="67" Click="Button_Click"/>
 
             </Grid>
             <TextBox x:Name="OutputTextBox" Height="220" TextWrapping="Wrap" Text="" IsReadOnly="True" MinHeight="218" HorizontalScrollBarVisibility="Auto"/>
