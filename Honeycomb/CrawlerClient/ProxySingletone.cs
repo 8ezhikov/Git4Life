@@ -136,13 +136,13 @@ namespace CrawlerClient
         {
             var site = new InstanceContext(this);
 
-            var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
+            //var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
 
-   //         proxy = new RemoteCrawlerClient(site);
+            proxy = new RemoteCrawlerClient(site);
 
              //proxy = new 
-            ClientCrawlerInfo[] list = anotherProxy.Join(p);
-            MessageBox.Show("Great Success!"+list.Count());
+            ClientCrawlerInfo[] list = proxy.Join(p);
+            MessageBox.Show("Great Success!" + list.Count());
             // HandleEndJoin(list);
             //IAsyncResult ee = proxy.JoinAsync(p);
             //ee.AsyncWaitHandle = await 
