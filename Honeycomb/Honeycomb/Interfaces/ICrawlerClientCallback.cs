@@ -2,7 +2,7 @@
 
 namespace Honeycomb
 {
-    interface ICrawlerClientCallback
+    public interface ICrawlerClientCallback
     {
         [OperationContract(IsOneWay = true)]
         void Receive(ClientCrawlerInfo sender, string message);

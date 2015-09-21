@@ -48,6 +48,8 @@ namespace Honeycomb
         private static Object syncObj = new Object();
         //callback interface for clients
         ICrawlerClientCallback callback = null;
+        private ObservableCollection<ICrawlerClientCallback> _connectedCrawlersCallbacks = new ObservableCollection<ICrawlerClientCallback>();
+
         //delegate used for BroadcastEvent
         public delegate void CrawlerClientEventHandler(object sender, CrawlEventArgs e);
         public static event CrawlerClientEventHandler ChatEvent;
@@ -62,32 +64,20 @@ namespace Honeycomb
             set { _connectedClientCrawlers = value; }
         }
 
+        public ObservableCollection<ICrawlerClientCallback> ConnectedCrawlersCallbacks
+        {
+            get { return _connectedCrawlersCallbacks; }
+            set { _connectedCrawlersCallbacks = value; }
+        }
+
         //current ClientCrawlerInfo 
        // private ClientCrawlerInfo clientCrawlerInfo;
         private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
 
         #endregion
         #region Helpers
-        /// <summary>
-        /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
-        /// true if the ClientCrawlerInfo could be found
-        /// </summary>
-        /// <param ClientName="ClientCrawlerInfo">the ClientName of the <see cref="Common.Person">ClientCrawlerInfo</see> to find</param>
-        /// <returns>True if the <see cref="Common.Person">ClientCrawlerInfo</see> was found in the
-        /// internal list of chatters</returns>
-        private bool checkIfPersonExists(string name)
-        {
-            foreach (ClientCrawlerInfo p in chatters.Keys)
-            {
-                if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
-       public void SaveSeed(Seed emp)
+        public void SaveSeed(Seed emp)
         {
             var dbContext = new CrawlerEntities();
 
@@ -97,15 +87,20 @@ namespace Honeycomb
 
         public bool StartCrawling()
         {
-            if (callback != null)
+            foreach (var crawlerCallback in ConnectedCrawlersCallbacks)
             {
-                callback.StartCrawling("http://webometrics.krc.karelia.ru/");
-                return true;
+                crawlerCallback.StartCrawling("http://webometrics.krc.karelia.ru/");
             }
-            else
-            {
-                return false;
-            }
+            return true;
+            //if (callback != null)
+            //{
+            //    callback.StartCrawling("http://webometrics.krc.karelia.ru/");
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
         /// <summary>
         /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
@@ -135,31 +130,26 @@ namespace Honeycomb
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
         {
             ConnectedClientCrawlers.Add(clientCrawlerNewInfo);
-            //bool userAdded = false;
+            bool userAdded = false;
             //this.clientCrawlerInfo = clientCrawlerNewInfo;
-            //userAdded = chatters.TryAdd(clientCrawlerInfo, MyEventHandler);
-            //if (userAdded)
-            //{
-            //    callback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
-            //    CrawlEventArgs e = new CrawlEventArgs();
-            //    e.msgType = MessageType.UserEnter;
-            //    e.clientCrawlerInfo = this.clientCrawlerInfo;
-            //    BroadcastMessage(e);
-            //    //add this newly joined chatters CrawlerClientEventHandler delegate, to the global
-            //    //multicast delegate for invocation
-            //    ChatEvent += myEventHandler;
-            //    var list = new ClientCrawlerInfo[chatters.Count];
-            //    //carry out a critical section that copy all chatters to a new list
-            //    lock (syncObj)
-            //    {
-            //        chatters.Keys.CopyTo(list, 0);
-            //    }
-            //    return list;
-            //}
-            //else
-            //{
+            
+               var  tempCallback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
+            ConnectedCrawlersCallbacks.Add(tempCallback);
+               // CrawlEventArgs e = new CrawlEventArgs();
+               // e.msgType = MessageType.UserEnter;
+               // e.clientCrawlerInfo = this.clientCrawlerInfo;
+               //// BroadcastMessage(e);
+               // //add this newly joined chatters CrawlerClientEventHandler delegate, to the global
+               // //multicast delegate for invocation
+               // ChatEvent += myEventHandler;
+               // var list = new ClientCrawlerInfo[chatters.Count];
+               // //carry out a critical section that copy all chatters to a new list
+               // lock (syncObj)
+               // {
+               //     chatters.Keys.CopyTo(list, 0);
+               // }
                 return ConnectedClientCrawlers.ToArray();
-            //}
+         
         }
 
         public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl, Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd)

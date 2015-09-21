@@ -39,18 +39,8 @@ namespace Honeycomb.ViewModel
             host = new ServiceHost(instance, uri);
             host.Open();
             ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
-          
+            ClientCrawlers = instance.ConnectedClientCrawlers;
 
-
-
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
         }
 
         private Seed _seedInfo;
@@ -79,6 +69,8 @@ namespace Honeycomb.ViewModel
            
         }
 
+        private string _textBoxContent;
+
         ObservableCollection<ClientCrawlerInfo> _clientCrawlers;
 
         public ObservableCollection<ClientCrawlerInfo> ClientCrawlers
@@ -92,18 +84,33 @@ namespace Honeycomb.ViewModel
         }
         public ICommand ShowPopUp { get; private set; }
 
+        public string TextBoxContent
+        {
+            get { return _textBoxContent; }
+            set
+            {
+                RaisePropertyChanged("TextBoxContent");
+                _textBoxContent = value;
+            }
+        }
+
         private void ShowPopUpExecute()
         {
-            MessageBox.Show("Hello!");
+
+            var hoster = ((RemoteCrawlerService) host.SingletonInstance);
+            hoster.StartCrawling();
+            //MessageBox.Show("Hello!");
         }
 
         void GetEmployees()
         {
 
-            var tempData = new ClientCrawlerInfo("192.168.50.123", "Test 1");
-            var tempData1 = new ClientCrawlerInfo("192.161218.50.123", "Test 343 ");
-            ClientCrawlers.Add(tempData);
-            ClientCrawlers.Add(tempData1);
+            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
+            hoster.StartCrawling();
+            //var tempData = new ClientCrawlerInfo("192.168.50.123", "Test 1");
+            //var tempData1 = new ClientCrawlerInfo("192.161218.50.123", "Test 343 ");
+            //ClientCrawlers.Add(tempData);
+            //ClientCrawlers.Add(tempData1);
             //ClientCrawlers.Clear();
             //foreach (var item in instance.ConnectedClientCrawlers)
             //{

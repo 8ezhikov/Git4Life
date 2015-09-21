@@ -26,5 +26,10 @@ namespace Honeycomb
             //var hoster = ((RemoteCrawlerService) host.SingletonInstance);
             //hoster.StartCrawling();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
