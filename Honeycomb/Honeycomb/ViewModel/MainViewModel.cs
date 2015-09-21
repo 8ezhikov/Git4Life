@@ -39,7 +39,8 @@ namespace Honeycomb.ViewModel
             host = new ServiceHost(instance, uri);
             host.Open();
             ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
-          
+            ClientCrawlers = instance.ConnectedClientCrawlers;
+
         }
 
         private Seed _seedInfo;
@@ -68,6 +69,8 @@ namespace Honeycomb.ViewModel
            
         }
 
+        private string _textBoxContent;
+
         ObservableCollection<ClientCrawlerInfo> _clientCrawlers;
 
         public ObservableCollection<ClientCrawlerInfo> ClientCrawlers
@@ -80,6 +83,16 @@ namespace Honeycomb.ViewModel
             }
         }
         public ICommand ShowPopUp { get; private set; }
+
+        public string TextBoxContent
+        {
+            get { return _textBoxContent; }
+            set
+            {
+                RaisePropertyChanged("TextBoxContent");
+                _textBoxContent = value;
+            }
+        }
 
         private void ShowPopUpExecute()
         {
@@ -94,7 +107,6 @@ namespace Honeycomb.ViewModel
 
             var hoster = ((RemoteCrawlerService)host.SingletonInstance);
             hoster.StartCrawling();
-            ClientCrawlers = hoster.ConnectedClientCrawlers;
             //var tempData = new ClientCrawlerInfo("192.168.50.123", "Test 1");
             //var tempData1 = new ClientCrawlerInfo("192.161218.50.123", "Test 343 ");
             //ClientCrawlers.Add(tempData);
