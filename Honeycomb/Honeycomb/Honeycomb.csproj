@@ -80,13 +80,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Seed management.xaml.cs">
-      <DependentUpon>Seed management.xaml</DependentUpon>
+    <Compile Include="SeedManagement.xaml.cs">
+      <DependentUpon>SeedManagement.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SeedManagementViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Page Include="Seed management.xaml">
+    <Page Include="SeedManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

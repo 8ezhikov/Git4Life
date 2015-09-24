@@ -43,6 +43,8 @@ namespace Honeycomb.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SeedManagementViewModel>();
+
         }
 
         public MainViewModel Main

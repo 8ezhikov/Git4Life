@@ -30,10 +30,13 @@ namespace Honeycomb.ViewModel
         ServiceHost host;
         private RemoteCrawlerService instance;
         public RelayCommand ReadAllCommand { get; set; }
+        public RelayCommand ShowSeedWindowCommand { get; set; }
+
         public MainViewModel()
         {
             ShowPopUp = new RelayCommand(ShowPopUpExecute, () => true);
             ReadAllCommand = new RelayCommand(GetEmployees);
+            ShowSeedWindowCommand = new RelayCommand(ShowSeedWindow);
             var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
             instance = new RemoteCrawlerService();
             host = new ServiceHost(instance, uri);
@@ -100,6 +103,13 @@ namespace Honeycomb.ViewModel
             var hoster = ((RemoteCrawlerService) host.SingletonInstance);
             hoster.StartCrawling();
             //MessageBox.Show("Hello!");
+        }
+
+        void ShowSeedWindow()
+        {
+            var window = new SeedManagement();
+            window.Show();
+
         }
 
         void GetEmployees()

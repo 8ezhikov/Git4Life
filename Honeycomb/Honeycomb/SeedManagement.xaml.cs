@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Honeycomb
 {
     /// <summary>
-    /// Interaction logic for Seed_management.xaml
+    /// Interaction logic for SeedManagement.xaml
     /// </summary>
-    public partial class Seed_management : Window
+    public partial class SeedManagement : Window
     {
-        public Seed_management()
+        public SeedManagement()
         {
             InitializeComponent();
         }
