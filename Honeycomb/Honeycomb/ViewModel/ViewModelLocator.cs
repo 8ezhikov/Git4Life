@@ -54,7 +54,13 @@ namespace Honeycomb.ViewModel
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
-        
+        public SeedManagementViewModel SeedManagement
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<SeedManagementViewModel>();
+            }
+        }
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

@@ -5,11 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Honeycomb"
         mc:Ignorable="d"
-        DataContext="{Binding Main, Source={StaticResource Locator} }"
-        Title="SeedManagement" Height="396.127" Width="743.381">
+        DataContext="{Binding SeedManagement, Source={StaticResource Locator} }"
+        Title="SeedManagement" Height="400" Width="750" MinHeight="300" MinWidth="600">
     <Grid>
-        <DataGrid x:Name="seedDataGrid" Height="200"/>
-        <Grid HorizontalAlignment="Left" Height="100" VerticalAlignment="Bottom"/>
-
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="SeedGridRow" Height="*" MinHeight="150"/>
+            <RowDefinition x:Name="BottomRow" Height="200" MaxHeight="200" MinHeight="200" />
+        </Grid.RowDefinitions>
+        <DataGrid x:Name="SeedDataGrid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0"/>
+        <Grid Grid.Row="1" >
+            <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"  Margin="25,138,0,0" Height="40" Command="{Binding AddSeedCommand}"/>
+            <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="171,138,0,0" VerticalAlignment="Top" Width="100" Height="40"/>
+            <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="332,138,0,0" VerticalAlignment="Top" Width="100" Height="40"/>
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="25,41,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedIndex}" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="ShortNameTextbox" HorizontalAlignment="Left" Height="23" Margin="25,99,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedShortName}" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="223,41,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedDomainName}" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="FullNameTextBox" HorizontalAlignment="Left" Height="23" Margin="223,99,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedFullName}" VerticalAlignment="Top" Width="120"/>
+            <Label x:Name="SeedIndexLabel" Content="Seed Index" HorizontalAlignment="Left" Margin="25,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.191,0.519"/>
+            <Label x:Name="SeedURLLabel" Content="Seed URL" HorizontalAlignment="Left" Margin="223,10,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="SeedShortNameLabel" Content="Seed Short Name" HorizontalAlignment="Left" Margin="25,68,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="SeedFullNameLabel" Content="Seed Full Name" HorizontalAlignment="Left" Margin="223,73,0,0" VerticalAlignment="Top"/>
+        </Grid>
     </Grid>
 </Window>
