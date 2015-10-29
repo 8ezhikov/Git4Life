@@ -80,6 +80,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\DataAccessService.cs" />
     <Compile Include="SeedManagement.xaml.cs">
       <DependentUpon>SeedManagement.xaml</DependentUpon>
     </Compile>

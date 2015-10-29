@@ -14,6 +14,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using Honeycomb.Services;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Honeycomb.ViewModel
@@ -44,7 +45,7 @@ namespace Honeycomb.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<SeedManagementViewModel>();
-
+            SimpleIoc.Default.Register < SeedModel.IDataAccessService, SeedModel.DataAccessService > ();
         }
 
         public MainViewModel Main

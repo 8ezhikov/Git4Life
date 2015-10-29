@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Honeycomb.Services;
 
 namespace Honeycomb.ViewModel
 {
     public class SeedManagementViewModel : ViewModelBase
     {
-        public SeedManagementViewModel()
+        public SeedManagementViewModel(SeedModel.IDataAccessService servPxy)
         {
+            dataAccessService = servPxy;
             AddSeedCommand = new RelayCommand<Seed>(SaveEmployee);
             NewSeed = new Seed();
         }
 
         public RelayCommand<Seed> AddSeedCommand { get; set; }
-
+        private SeedModel.IDataAccessService dataAccessService;
         Seed _newSeed;
 
         public Seed NewSeed
@@ -32,14 +35,12 @@ namespace Honeycomb.ViewModel
 
         void SaveEmployee(Seed emp)
         {
-         
-            
-            //EmpInfo.EmpNo = _serviceProxy.CreateEmployee(emp);
-            //if (EmpInfo.EmpNo != 0)
-            //{
-            //    Employees.Add(EmpInfo);
-            //    RaisePropertyChanged("EmpInfo");
-            //}
+            if (dataAccessService.CreateSeed(NewSeed)>0)
+            {
+                MessageBox.Show("Successfully added new Seed!");
+            }
+                
+          
         }
 
     }
