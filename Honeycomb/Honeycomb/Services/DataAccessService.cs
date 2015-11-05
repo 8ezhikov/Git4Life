@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Honeycomb.Services
 {
@@ -8,6 +11,8 @@ namespace Honeycomb.Services
         {
             ObservableCollection<Seed> GetSeeds();
             int CreateSeed(Seed newSeed);
+
+            void DeleteSeed(Seed selectedSeed);
         }
 
         public class DataAccessService : IDataAccessService
@@ -19,6 +24,7 @@ namespace Honeycomb.Services
             }
             public ObservableCollection<Seed> GetSeeds()
             {
+                context.Seeds.Load();
                 return context.Seeds.Local;
             }
 
@@ -26,6 +32,12 @@ namespace Honeycomb.Services
             {
                 context.Seeds.Add(newSeed);
                 return context.SaveChanges();
+            }
+
+            public void DeleteSeed(Seed selectedSeed)
+            {
+                context.Seeds.Remove(selectedSeed);
+                context.SaveChanges();
             }
 
         }

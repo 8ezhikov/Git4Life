@@ -12,11 +12,10 @@
             <RowDefinition x:Name="SeedGridRow" Height="*" MinHeight="150"/>
             <RowDefinition x:Name="BottomRow" Height="200" MaxHeight="200" MinHeight="200" />
         </Grid.RowDefinitions>
-        <DataGrid x:Name="SeedDataGrid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0"/>
+        <DataGrid x:Name="SeedDataGrid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" DataContext="{Binding SeedList}" IsReadOnly ="True"  ItemsSource="{Binding Mode=OneWay}" />
         <Grid Grid.Row="1" >
             <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"  Margin="25,138,0,0" Height="40" Command="{Binding AddSeedCommand}"/>
-            <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="171,138,0,0" VerticalAlignment="Top" Width="100" Height="40"/>
-            <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="332,138,0,0" VerticalAlignment="Top" Width="100" Height="40"/>
+            <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="223,138,0,0" VerticalAlignment="Top" Width="100" Height="40" Command="{Binding DeleteSeedCommand}" CommandParameter="{Binding SelectedItem, ElementName=SeedDataGrid}" />
             <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="25,41,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedIndex}" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="ShortNameTextbox" HorizontalAlignment="Left" Height="23" Margin="25,99,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedShortName}" VerticalAlignment="Top" Width="120"/>
             <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="223,41,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedDomainName}" VerticalAlignment="Top" Width="120"/>
