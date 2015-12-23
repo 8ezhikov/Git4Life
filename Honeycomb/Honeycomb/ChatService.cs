@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,12 +45,10 @@ namespace Honeycomb
     public class RemoteCrawlerService : IRemoteCrawler
     {
         #region Instance fields
-        //thread sync lock object
-        private static Object syncObj = new Object();
         //callback interface for clients
         ICrawlerClientCallback callback = null;
         private ObservableCollection<ICrawlerClientCallback> _connectedCrawlersCallbacks = new ObservableCollection<ICrawlerClientCallback>();
-
+        private ConcurrentStack<Seed> globalSeedStack;  
         //delegate used for BroadcastEvent
         public delegate void CrawlerClientEventHandler(object sender, CrawlEventArgs e);
         public static event CrawlerClientEventHandler ChatEvent;
@@ -70,8 +69,6 @@ namespace Honeycomb
             set { _connectedCrawlersCallbacks = value; }
         }
 
-        //current ClientCrawlerInfo 
-       // private ClientCrawlerInfo clientCrawlerInfo;
         private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
 
         #endregion
@@ -87,20 +84,25 @@ namespace Honeycomb
 
         public bool StartCrawling()
         {
+            var dbContext = new CrawlerEntities();
+
+            globalSeedStack.PushRange(dbContext.Seeds.ToArray());
             foreach (var crawlerCallback in ConnectedCrawlersCallbacks)
             {
-                crawlerCallback.StartCrawling("http://webometrics.krc.karelia.ru/");
+
+                Seed nextSeed;
+                if (globalSeedStack.TryPop(out nextSeed))
+                {
+                    crawlerCallback.StartCrawling(nextSeed.SeedDomainName);
+                }
+                else
+                {
+                    throw new Exception("Couldn't pop from stack");
+                }
+
             }
             return true;
-            //if (callback != null)
-            //{
-            //    callback.StartCrawling("http://webometrics.krc.karelia.ru/");
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
+
         }
         /// <summary>
         /// Searches the intenal list of chatters for a particular ClientCrawlerInfo, and returns
