@@ -8,7 +8,7 @@
         <StackPanel HorizontalAlignment="Center"   Width="977">
 
             <Grid  HorizontalAlignment="Left" Height="271"  VerticalAlignment="Top" Width="967">
-                <Button  Command="{Binding ShowPopUp}" Content="Start Crawling" HorizontalAlignment="Left" Margin="31,204,0,0" VerticalAlignment="Top" Width="124" Click="Button_Click_1" Height="67"/>
+                <Button  Command="{Binding StartCrawlingCommand}" Content="Start Crawling" HorizontalAlignment="Left" Margin="31,204,0,0" VerticalAlignment="Top" Width="124" Click="Button_Click_1" Height="67"/>
                 <DataGrid HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="194" Width="967" ItemsSource="{Binding ClientCrawlers}"/>
                 <Button  Command="{Binding ReadAllCommand}" Content="Refresh" HorizontalAlignment="Left" Margin="198,204,0,0" VerticalAlignment="Top" Width="142" Height="67" Click="Button_Click"/>
                 <Button Command="{Binding ShowSeedWindowCommand}" Content="Manage Seeds" HorizontalAlignment="Left" Margin="374,204,0,0" VerticalAlignment="Top" Width="138" Height="67"/>

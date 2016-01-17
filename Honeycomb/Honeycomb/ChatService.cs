@@ -21,7 +21,7 @@ namespace Honeycomb
 
     /// <summary>
     /// This class is used when carrying out any of the 4 chat callback actions
-    /// such as Receive, StartCrawling, UserEnter, UserLeave <see cref="ICrawlerClientCallback">
+    /// such as Receive, StartCrawlingCommand, UserEnter, UserLeave <see cref="ICrawlerClientCallback">
     /// ICrawlerClientCallback</see> for more details
     /// </summary>
     public class CrawlEventArgs : EventArgs
@@ -94,7 +94,7 @@ namespace Honeycomb
             return true;
             //if (callback != null)
             //{
-            //    callback.StartCrawling("http://webometrics.krc.karelia.ru/");
+            //    callback.StartCrawlingCommand("http://webometrics.krc.karelia.ru/");
             //    return true;
             //}
             //else

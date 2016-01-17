@@ -34,7 +34,7 @@ namespace Honeycomb.ViewModel
 
         public MainViewModel()
         {
-            ShowPopUp = new RelayCommand(ShowPopUpExecute, () => true);
+            StartCrawlingCommand = new RelayCommand(ShowPopUpExecute, () => true);
             ReadAllCommand = new RelayCommand(GetEmployees);
             ShowSeedWindowCommand = new RelayCommand(ShowSeedWindow);
             var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
@@ -85,7 +85,7 @@ namespace Honeycomb.ViewModel
                 RaisePropertyChanged("ClientCrawlers");
             }
         }
-        public ICommand ShowPopUp { get; private set; }
+        public ICommand StartCrawlingCommand { get; private set; }
 
         public string TextBoxContent
         {
