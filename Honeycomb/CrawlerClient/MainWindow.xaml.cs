@@ -8,9 +8,17 @@ namespace CrawlerClient
     /// </summary>
     public partial class MainWindow
     {
+        private string LocalIP;
+        private string GlobalIP;
         public MainWindow()
         {
             InitializeComponent();
+            LocalIP = ClientHelper.GetLocalIP();
+            GlobalIP = ClientHelper.GetPublicIP();
+
+            LocalIpLabel.Content = "Your local IP is " + LocalIP; 
+            GlobalIpLabel.Content = "Your Global IP is " + GlobalIP;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
