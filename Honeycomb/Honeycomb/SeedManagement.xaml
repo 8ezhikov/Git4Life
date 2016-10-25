@@ -6,24 +6,24 @@
         xmlns:local="clr-namespace:Honeycomb"
         mc:Ignorable="d"
         DataContext="{Binding SeedManagement, Source={StaticResource Locator} }"
-        Title="SeedManagement" Height="400" Width="750" MinHeight="300" MinWidth="600">
+        Title="SeedManagement" Height="400" Width="750" MinHeight="350" MinWidth="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="SeedGridRow" Height="*" MinHeight="150"/>
             <RowDefinition x:Name="BottomRow" Height="200" MaxHeight="200" MinHeight="200" />
         </Grid.RowDefinitions>
         <DataGrid x:Name="SeedDataGrid"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0" DataContext="{Binding SeedList}" IsReadOnly ="True"  ItemsSource="{Binding Mode=OneWay}" />
-        <Grid Grid.Row="1" >
-            <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"  Margin="25,138,0,0" Height="40" Command="{Binding AddSeedCommand}"/>
-            <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="223,138,0,0" VerticalAlignment="Top" Width="100" Height="40" Command="{Binding DeleteSeedCommand}" CommandParameter="{Binding SelectedItem, ElementName=SeedDataGrid}" />
-            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="25,41,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedIndex}" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="ShortNameTextbox" HorizontalAlignment="Left" Height="23" Margin="25,99,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedShortName}" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="223,41,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedDomainName}" VerticalAlignment="Top" Width="120"/>
-            <TextBox x:Name="FullNameTextBox" HorizontalAlignment="Left" Height="23" Margin="223,99,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedFullName}" VerticalAlignment="Top" Width="120"/>
-            <Label x:Name="SeedIndexLabel" Content="Seed Index" HorizontalAlignment="Left" Margin="25,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.191,0.519"/>
-            <Label x:Name="SeedURLLabel" Content="Seed URL" HorizontalAlignment="Left" Margin="223,10,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="SeedShortNameLabel" Content="Seed Short Name" HorizontalAlignment="Left" Margin="25,68,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="SeedFullNameLabel" Content="Seed Full Name" HorizontalAlignment="Left" Margin="223,73,0,0" VerticalAlignment="Top"/>
+        <Grid Grid.Row="1" MinHeight="200" MaxHeight="200" >
+            <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150"  Margin="539,11,0,0" Height="54" Command="{Binding AddSeedCommand}"/>
+            <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="539,102,0,0" VerticalAlignment="Top" Width="150" Height="55" Command="{Binding DeleteSeedCommand}" CommandParameter="{Binding SelectedItem, ElementName=SeedDataGrid}" />
+            <TextBox x:Name="SeedIndexTextBox" HorizontalAlignment="Left" Height="25" Margin="25,40,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedIndex}" VerticalAlignment="Top" Width="100" UseLayoutRounding="True" FontSize="14" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="ShortNameTextbox" HorizontalAlignment="Left" Height="25" Margin="25,132,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedShortName}" VerticalAlignment="Top" Width="200" UseLayoutRounding="True" FontSize="14" VerticalContentAlignment="Center" />
+            <TextBox x:Name="SeedUrlTextBox" HorizontalAlignment="Left" Height="25" Margin="291,40,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedDomainName}" VerticalAlignment="Top" Width="200" UseLayoutRounding="True" FontSize="14" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="FullNameTextBox" HorizontalAlignment="Left" Height="25" Margin="291,131,0,0" TextWrapping="Wrap" Text="{Binding NewSeed.SeedFullName}" VerticalAlignment="Top" Width="200" UseLayoutRounding="True" FontSize="14" VerticalContentAlignment="Center"/>
+            <Label x:Name="SeedIndexLabel" Content="Seed Index" HorizontalAlignment="Left" Margin="25,11,0,0" VerticalAlignment="Top"  FontSize="14" FontWeight="SemiBold"/>
+            <Label x:Name="SeedURLLabel" Content="Seed URL" HorizontalAlignment="Left" Margin="291,11,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="SemiBold" RenderTransformOrigin="0.671,-0.414"/>
+            <Label x:Name="SeedShortNameLabel" Content="Seed Short Name" HorizontalAlignment="Left" Margin="25,102,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="14"/>
+            <Label x:Name="SeedFullNameLabel" Content="Seed Full Name" HorizontalAlignment="Left" Margin="291,102,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="SemiBold"/>
         </Grid>
     </Grid>
 </Window>

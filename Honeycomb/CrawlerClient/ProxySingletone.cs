@@ -14,7 +14,6 @@ namespace CrawlerClient
     public enum CallBackType
     {
         Receive,
-        ReceiveWhisper,
         UserEnter,
         UserLeave
     };

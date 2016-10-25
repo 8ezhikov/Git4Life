@@ -48,7 +48,7 @@ namespace Honeycomb
         //callback interface for clients
         ICrawlerClientCallback callback = null;
         private ObservableCollection<ICrawlerClientCallback> _connectedCrawlersCallbacks = new ObservableCollection<ICrawlerClientCallback>();
-        private ConcurrentStack<Seed> globalSeedStack;  
+        private ConcurrentStack<Seed> globalSeedStack = new ConcurrentStack<Seed>();  
         //delegate used for BroadcastEvent
         public delegate void CrawlerClientEventHandler(object sender, CrawlEventArgs e);
         public static event CrawlerClientEventHandler ChatEvent;

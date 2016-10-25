@@ -16,17 +16,17 @@ namespace Honeycomb.ViewModel
         public SeedManagementViewModel(SeedModel.IDataAccessService servPxy)
         {
             dataAccessService = servPxy;
-            AddSeedCommand = new RelayCommand<Seed>(SaveEmployee);
+            AddSeedCommand = new RelayCommand(SaveSeed);
             DeleteSeedCommand  = new RelayCommand<Seed>(DeleteSeed);
             NewSeed = new Seed();
             SeedList = dataAccessService.GetSeeds();
         }
 
-        public RelayCommand<Seed> AddSeedCommand { get; set; }
+        public RelayCommand AddSeedCommand { get; set; }
         public RelayCommand<Seed> DeleteSeedCommand { get; set; }
 
         private SeedModel.IDataAccessService dataAccessService;
-        Seed _newSeed;
+        private Seed _newSeed;
         public Seed NewSeed
         {
             get { return _newSeed; }
@@ -48,7 +48,7 @@ namespace Honeycomb.ViewModel
             }
         }
 
-        void SaveEmployee(Seed emp)
+        private void SaveSeed()
         {
             if (dataAccessService.CreateSeed(NewSeed)>0)
             {
@@ -57,7 +57,7 @@ namespace Honeycomb.ViewModel
             }
         }
 
-        void DeleteSeed(Seed selectedSeed)
+        private void DeleteSeed(Seed selectedSeed)
         {
           // SeedList.Remove(SelectedSeed);
             dataAccessService.DeleteSeed(selectedSeed);

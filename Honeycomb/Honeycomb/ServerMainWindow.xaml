@@ -3,24 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:System="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d" x:Class="Honeycomb.ServerMainWindow"
     DataContext="{Binding Main, Source={StaticResource Locator} }"   
-    Title="ServerMainWindow" Width="990" Height="694.613">
-    <Grid>
-        <StackPanel HorizontalAlignment="Center"   Width="977">
+    Title="ServerMainWindow" Width="990" Height="700">
+    <Grid SnapsToDevicePixels="True">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="150"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center"   Width="978" Height="369" VerticalAlignment="Top" SnapsToDevicePixels="True" Margin="2,0">
 
             <Grid  HorizontalAlignment="Left" Height="271"  VerticalAlignment="Top" Width="967">
-                <Button  Command="{Binding StartCrawlingCommand}" Content="Start Crawling" HorizontalAlignment="Left" Margin="31,204,0,0" VerticalAlignment="Top" Width="124" Click="Button_Click_1" Height="67"/>
+                <Button  Command="{Binding StartCrawlingCommand}" Content="Start Crawling" HorizontalAlignment="Left" Margin="28,248,0,-44" VerticalAlignment="Top" Width="124"  Height="67"/>
                 <DataGrid HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Height="194" Width="967" ItemsSource="{Binding ClientCrawlers}"/>
-                <Button  Command="{Binding ReadAllCommand}" Content="Refresh" HorizontalAlignment="Left" Margin="198,204,0,0" VerticalAlignment="Top" Width="142" Height="67" Click="Button_Click"/>
+                <Button  Command="{Binding ReadAllCommand}" Content="Refresh Server List" HorizontalAlignment="Left" Margin="198,204,0,0" VerticalAlignment="Top" Width="142" Height="67"/>
                 <Button Command="{Binding ShowSeedWindowCommand}" Content="Manage Seeds" HorizontalAlignment="Left" Margin="374,204,0,0" VerticalAlignment="Top" Width="138" Height="67"/>
-                <Button x:Name="button" Content="Button" Margin="540,204,262,0"/>
 
 
             </Grid>
 
 
-            <TextBox x:Name="OutputTextBox" Height="220" TextWrapping="Wrap" Text="" IsReadOnly="True" MinHeight="218" HorizontalScrollBarVisibility="Auto"/>
 
         </StackPanel>
+        <TextBox x:Name="OutputTextBox" TextWrapping="Wrap" Text="" IsReadOnly="True" MinHeight="300" HorizontalScrollBarVisibility="Auto" FontFamily="Lucida Console" UseLayoutRounding="True" VerticalAlignment="Bottom" VerticalScrollBarVisibility="Visible"/>
 
     </Grid>
 </Window>

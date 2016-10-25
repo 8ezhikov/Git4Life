@@ -11,7 +11,6 @@ namespace Honeycomb
     /// </summary>
     public partial class ServerMainWindow
     {
-   
         public ServerMainWindow()
         {
             InitializeComponent();
@@ -19,17 +18,6 @@ namespace Honeycomb
             
             //OutputTextBox.AppendText("Chat service listen on endpoint " + uri + "\n");
             OutputTextBox.AppendText("Press ENTER to stop chat service... \n");
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            //var hoster = ((RemoteCrawlerService) host.SingletonInstance);
-            //hoster.StartCrawlingCommand();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
