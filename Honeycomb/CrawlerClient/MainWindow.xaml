@@ -14,7 +14,7 @@
         <Label x:Name="DynamicStatusLabel" Content="" HorizontalAlignment="Left" Margin="121,114,0,0" VerticalAlignment="Top"/>
         <Label x:Name="LocalIpDynamicLabel" Content="{Binding LocalIpAddress, Mode=OneWay}" HorizontalAlignment="Left" Margin="159,72,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="0.775,3.808"/>
         <Label x:Name="LocalIpTextLabel" Content="Here is Your local IP:" HorizontalAlignment="Left" Margin="32,72,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ClientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="159,153,0,0" TextWrapping="Wrap" Text="{Binding ClientName}" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="ClientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="159,153,0,0" TextWrapping="Wrap" Text="{Binding ClientName}" VerticalAlignment="Top" Width="247"/>
         <Label x:Name="ClientNameLabel" Content="Client Name" HorizontalAlignment="Left" Margin="32,150,0,0" VerticalAlignment="Top"/>
 
 

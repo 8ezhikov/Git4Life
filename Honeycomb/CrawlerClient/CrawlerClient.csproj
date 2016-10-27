@@ -179,10 +179,6 @@
       <Project>{4af188a2-a6f3-4c44-9e2b-5f1cbd6adf27}</Project>
       <Name>Honeycomb.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Honeycomb\Honeycomb.csproj">
-      <Project>{CD6D6A3B-0B9B-411B-A6A0-D6364B63AAA7}</Project>
-      <Name>Honeycomb</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

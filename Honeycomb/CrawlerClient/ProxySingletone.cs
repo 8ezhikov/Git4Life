@@ -3,9 +3,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
-using Honeycomb.Shared;
-using Honeycomb;
-using Honeycomb.Models;
+using ClientCrawlerInfo = CrawlerClient.CrawlerServer.ClientCrawlerInfo;
 
 namespace CrawlerClient
 {
@@ -81,6 +79,11 @@ namespace CrawlerClient
             Receive(sender, message, CallBackType.Receive);
         }
 
+        public void GiveInitialTasks(string siteURL)
+        {
+            throw new NotImplementedException();
+        }
+
         public void StartCrawling(string urlToCrawl)
         {
 
@@ -94,7 +97,7 @@ namespace CrawlerClient
 
 
             //And then we want to return results
-            //   Receive(sender, message, CallBackType.ReceiveWhisper);
+            //   Receive(sender, message, CallBackT ype.ReceiveWhisper);
         }
 
         public void UserEnter(ClientCrawlerInfo person)

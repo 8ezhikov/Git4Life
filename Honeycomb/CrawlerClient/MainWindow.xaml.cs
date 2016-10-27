@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using Honeycomb;
-using Honeycomb.Models;
 
 namespace CrawlerClient
 {

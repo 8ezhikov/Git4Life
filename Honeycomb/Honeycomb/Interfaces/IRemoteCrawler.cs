@@ -1,5 +1,6 @@
 ﻿using System.ServiceModel;
 using Honeycomb.Models;
+using Honeycomb.Shared;
 
 namespace Honeycomb
 {

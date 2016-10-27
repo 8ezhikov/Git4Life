@@ -80,7 +80,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\ClientCrawlerInfo.cs" />
     <Compile Include="Models\CrawlRequest.cs" />
     <Compile Include="Services\DataAccessService.cs" />
     <Compile Include="SeedManagement.xaml.cs">

@@ -1,7 +1,8 @@
 using System;
+using CrawlerClient.CrawlerServer;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Honeycomb.Models;
+using ClientCrawlerInfo = CrawlerClient.CrawlerServer.ClientCrawlerInfo;
 
 namespace CrawlerClient.ViewModel
 {
@@ -35,7 +36,7 @@ namespace CrawlerClient.ViewModel
         {
             var singleTone = ConnectionSingleton.Instance;
 
-            var newPerson = new ClientCrawlerInfo("sdf", "sdfds") {ClientName = "Denis Crawler"};
+            var newPerson = new ClientCrawlerInfo{ClientName = "Denis Crawler"};
             string globalIP = ClientHelper.GetPublicIP();
 
 
