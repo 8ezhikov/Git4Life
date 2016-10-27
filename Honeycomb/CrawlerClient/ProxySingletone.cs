@@ -5,6 +5,7 @@ using System.Windows;
 using CrawlerClient.CrawlerServer;
 using Honeycomb.Shared;
 using Honeycomb;
+using Honeycomb.Models;
 
 namespace CrawlerClient
 {
@@ -80,22 +81,22 @@ namespace CrawlerClient
             Receive(sender, message, CallBackType.Receive);
         }
 
-        public void StartCrawling( string urlToCrawl)
+        public void StartCrawling(string urlToCrawl)
         {
 
             var crawlerInstance = new CrawlerEngine();
             var result = crawlerInstance.StartCrawlingProcess(urlToCrawl);
 
-          proxy.ReturnCrawlingResults(result);
+            proxy.ReturnCrawlingResults(result);
 
 
             //Here we crawl. Crawl and crawl.
 
 
-           //And then we want to return results
-         //   Receive(sender, message, CallBackType.ReceiveWhisper);
+            //And then we want to return results
+            //   Receive(sender, message, CallBackType.ReceiveWhisper);
         }
-        
+
         public void UserEnter(ClientCrawlerInfo person)
         {
             UserEnterLeave(person, CallBackType.UserEnter);
@@ -130,7 +131,7 @@ namespace CrawlerClient
             get { return LazySingleton.Value; }
         }
 
-    
+
         public void Connect(ClientCrawlerInfo p)
         {
             var site = new InstanceContext(this);
@@ -139,7 +140,7 @@ namespace CrawlerClient
 
             proxy = new RemoteCrawlerClient(site);
 
-             //proxy = new 
+            //proxy = new 
             ClientCrawlerInfo[] list = proxy.Join(p);
             MessageBox.Show("Great Success!" + list.Count());
             // HandleEndJoin(list);
@@ -188,7 +189,7 @@ namespace CrawlerClient
                 ProxyEvent(this, e);
             }
         }
-     
+
         public void SayAndClear(string to, string msg, bool pvt)
         {
             //if (!pvt)

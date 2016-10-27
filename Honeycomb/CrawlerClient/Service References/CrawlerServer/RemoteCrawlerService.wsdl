@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RemoteCrawlerService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsp:Policy wsu:Id="WSDualHttpBinding_IRemoteCrawler_policy">
     <wsp:ExactlyOne>
@@ -40,8 +40,8 @@
   <wsdl:message name="IRemoteCrawler_Receive_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:Receive" />
   </wsdl:message>
-  <wsdl:message name="IRemoteCrawler_StartCrawling_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:StartCrawling" />
+  <wsdl:message name="IRemoteCrawler_GiveInitialTasks_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:GiveInitialTasks" />
   </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IRemoteCrawler">
     <wsdl:operation msc:isInitiating="false" msc:isTerminating="false" name="ReturnIntermediateResults">
@@ -60,8 +60,8 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Receive">
       <wsdl:output wsaw:Action="http://tempuri.org/IRemoteCrawler/Receive" message="tns:IRemoteCrawler_Receive_OutputCallbackMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="StartCrawling">
-      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteCrawler/StartCrawling" message="tns:IRemoteCrawler_StartCrawling_OutputCallbackMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GiveInitialTasks">
+      <wsdl:output wsaw:Action="http://tempuri.org/IRemoteCrawler/GiveInitialTasks" message="tns:IRemoteCrawler_GiveInitialTasks_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSDualHttpBinding_IRemoteCrawler" type="tns:IRemoteCrawler">
@@ -100,8 +100,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="StartCrawling">
-      <soap12:operation soapAction="http://tempuri.org/IRemoteCrawler/StartCrawling" style="document" />
+    <wsdl:operation name="GiveInitialTasks">
+      <soap12:operation soapAction="http://tempuri.org/IRemoteCrawler/GiveInitialTasks" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

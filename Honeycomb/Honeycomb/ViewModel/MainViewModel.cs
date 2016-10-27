@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Honeycomb.Models;
 
 namespace Honeycomb.ViewModel
 {
@@ -34,7 +35,7 @@ namespace Honeycomb.ViewModel
 
         public MainViewModel()
         {
-            StartCrawlingCommand = new RelayCommand(ShowPopUpExecute, () => true);
+            StartCrawlingCommand = new RelayCommand(StartCrawling, () => true);
             ReadAllCommand = new RelayCommand(GetEmployees);
             ShowSeedWindowCommand = new RelayCommand(ShowSeedWindow);
             var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
@@ -97,11 +98,11 @@ namespace Honeycomb.ViewModel
             }
         }
 
-        private void ShowPopUpExecute()
+        private void StartCrawling()
         {
 
             var hoster = ((RemoteCrawlerService) host.SingletonInstance);
-            hoster.StartCrawling();
+            hoster.GiveInitialTasks();
             //MessageBox.Show("Hello!");
         }
 
@@ -116,7 +117,7 @@ namespace Honeycomb.ViewModel
         {
 
             var hoster = ((RemoteCrawlerService)host.SingletonInstance);
-            hoster.StartCrawling();
+            hoster.GiveInitialTasks();
             //var tempData = new ClientCrawlerInfo("192.168.50.123", "Test 1");
             //var tempData1 = new ClientCrawlerInfo("192.161218.50.123", "Test 343 ");
             //ClientCrawlers.Add(tempData);

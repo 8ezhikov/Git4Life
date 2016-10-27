@@ -9,7 +9,70 @@
 //------------------------------------------------------------------------------
 
 namespace CrawlerClient.CrawlerServer {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ClientCrawlerInfo", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
+    [System.SerializableAttribute()]
+    public partial class ClientCrawlerInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ClientNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ServerIPField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ClientName {
+            get {
+                return this.ClientNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ClientNameField, value) != true)) {
+                    this.ClientNameField = value;
+                    this.RaisePropertyChanged("ClientName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ServerIP {
+            get {
+                return this.ServerIPField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ServerIPField, value) != true)) {
+                    this.ServerIPField = value;
+                    this.RaisePropertyChanged("ServerIP");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="CrawlerServer.IRemoteCrawler", CallbackContract=typeof(CrawlerClient.CrawlerServer.IRemoteCrawlerCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
@@ -28,10 +91,10 @@ namespace CrawlerClient.CrawlerServer {
         System.Threading.Tasks.Task ReturnCrawlingResultsAsync(Honeycomb.Shared.CrawlerResultsDTO resultsDto);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteCrawler/Join", ReplyAction="http://tempuri.org/IRemoteCrawler/JoinResponse")]
-        Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
+        CrawlerClient.CrawlerServer.ClientCrawlerInfo[] Join(CrawlerClient.CrawlerServer.ClientCrawlerInfo clientCrawlerInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRemoteCrawler/Join", ReplyAction="http://tempuri.org/IRemoteCrawler/JoinResponse")]
-        System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo);
+        System.Threading.Tasks.Task<CrawlerClient.CrawlerServer.ClientCrawlerInfo[]> JoinAsync(CrawlerClient.CrawlerServer.ClientCrawlerInfo clientCrawlerInfo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, IsTerminating=true, IsInitiating=false, Action="http://tempuri.org/IRemoteCrawler/Leave")]
         void Leave();
@@ -44,10 +107,10 @@ namespace CrawlerClient.CrawlerServer {
     public interface IRemoteCrawlerCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IRemoteCrawler/Receive")]
-        void Receive(Honeycomb.ClientCrawlerInfo sender, string message);
+        void Receive(CrawlerClient.CrawlerServer.ClientCrawlerInfo sender, string message);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IRemoteCrawler/StartCrawling")]
-        void StartCrawling(string siteURL);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IRemoteCrawler/GiveInitialTasks")]
+        void GiveInitialTasks(string siteURL);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -94,11 +157,11 @@ namespace CrawlerClient.CrawlerServer {
             return base.Channel.ReturnCrawlingResultsAsync(resultsDto);
         }
         
-        public Honeycomb.ClientCrawlerInfo[] Join(Honeycomb.ClientCrawlerInfo clientCrawlerInfo) {
+        public CrawlerClient.CrawlerServer.ClientCrawlerInfo[] Join(CrawlerClient.CrawlerServer.ClientCrawlerInfo clientCrawlerInfo) {
             return base.Channel.Join(clientCrawlerInfo);
         }
         
-        public System.Threading.Tasks.Task<Honeycomb.ClientCrawlerInfo[]> JoinAsync(Honeycomb.ClientCrawlerInfo clientCrawlerInfo) {
+        public System.Threading.Tasks.Task<CrawlerClient.CrawlerServer.ClientCrawlerInfo[]> JoinAsync(CrawlerClient.CrawlerServer.ClientCrawlerInfo clientCrawlerInfo) {
             return base.Channel.JoinAsync(clientCrawlerInfo);
         }
         

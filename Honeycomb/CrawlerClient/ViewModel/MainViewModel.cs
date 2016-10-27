@@ -1,4 +1,7 @@
+using System;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using Honeycomb.Models;
 
 namespace CrawlerClient.ViewModel
 {
@@ -16,33 +19,61 @@ namespace CrawlerClient.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        public RelayCommand StartTestCrawlingCommand { get; set; }
+        public RelayCommand ConnectToServerCommand { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
-        }
+            ConnectToServerCommand = new RelayCommand(ConnectToServer);
+            ClientName = $"Denis Test Crawler {DateTime.Now}";
 
-        private string _publicAdress;
-        public string IPAddress
+        }
+        private void ConnectToServer()
+        {
+            var singleTone = ConnectionSingleton.Instance;
+
+            var newPerson = new ClientCrawlerInfo("sdf", "sdfds") {ClientName = "Denis Crawler"};
+            string globalIP = ClientHelper.GetPublicIP();
+
+
+            newPerson.ServerIP = globalIP;
+            //  newPerson.ImageURL = "3434";
+            singleTone.Connect(newPerson);
+
+        }
+        private string _publicIpAdress;
+        public string PublicIpAddress
         {
             get
             {
-                if (string.IsNullOrEmpty(_publicAdress))
+                if (string.IsNullOrEmpty(_publicIpAdress))
                 {
-                    _publicAdress = ClientHelper.GetPublicIP();
+                    _publicIpAdress = ClientHelper.GetPublicIP();
                 }
                
-                return _publicAdress;
+                return _publicIpAdress;
             }
         }
+
+        private string _localIpAdress;
+        public string LocalIpAddress
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_localIpAdress))
+                {
+                    _localIpAdress = ClientHelper.GetLocalIP();
+                }
+
+                return _localIpAdress;
+            }
+        }
+
+        public string ClientName { get; set; }
+
+      
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel;
+using Honeycomb.Models;
 
 namespace Honeycomb
 {
@@ -8,7 +9,7 @@ namespace Honeycomb
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
         void ReturnIntermediateResults(string msg);
 
-        [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = false)]
+        [OperationContract(IsOneWay = false, IsInitiating = false, IsTerminating = false)]
         void ReturnCrawlingResults(Shared.CrawlerResultsDTO resultsDto);
 
         [OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]

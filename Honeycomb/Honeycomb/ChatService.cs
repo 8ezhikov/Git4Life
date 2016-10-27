@@ -8,6 +8,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Windows;
+using Honeycomb.Models;
 using Honeycomb.Shared;
 
 namespace Honeycomb
@@ -22,7 +23,7 @@ namespace Honeycomb
 
     /// <summary>
     /// This class is used when carrying out any of the 4 chat callback actions
-    /// such as Receive, StartCrawling, UserEnter, UserLeave <see cref="ICrawlerClientCallback">
+    /// such as Receive, GiveInitialTasks, UserEnter, UserLeave <see cref="ICrawlerClientCallback">
     /// ICrawlerClientCallback</see> for more details
     /// </summary>
     public class CrawlEventArgs : EventArgs
@@ -82,7 +83,7 @@ namespace Honeycomb
             dbContext.SaveChanges();
         }
 
-        public bool StartCrawling()
+        public bool GiveInitialTasks()
         {
             var dbContext = new CrawlerEntities();
 
@@ -112,19 +113,19 @@ namespace Honeycomb
         /// <param ClientName="ClientCrawlerInfo">the ClientName of the <see cref="Common.Person">ClientCrawlerInfo</see> to find</param>
         /// <returns>The True CrawlerClientEventHandler delegate for the <see cref="Common.Person">ClientCrawlerInfo</see> who matched
         /// the ClientName input parameter</returns>
-        private CrawlerClientEventHandler getPersonHandler(string name)
-        {
-            foreach (ClientCrawlerInfo p in chatters.Keys)
-            {
-                if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
-                {
-                    CrawlerClientEventHandler crawlerClientTo = null;
-                    chatters.TryGetValue(p, out crawlerClientTo);
-                    return crawlerClientTo;
-                }
-            }
-            return null;
-        }
+        //private CrawlerClientEventHandler getPersonHandler(string name)
+        //{
+        //    foreach (ClientCrawlerInfo p in chatters.Keys)
+        //    {
+        //        if (p.ClientName.Equals(name, StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            CrawlerClientEventHandler crawlerClientTo = null;
+        //            chatters.TryGetValue(p, out crawlerClientTo);
+        //            return crawlerClientTo;
+        //        }
+        //    }
+        //    return null;
+        //}
 
         #endregion
         #region IRemoteCrawler implementation
