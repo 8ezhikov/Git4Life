@@ -117,9 +117,9 @@ namespace CrawlerClient
             MessageBox.Show(RuningTime);
 
             var result = new CrawlerResultsDTO();
-            result.BadLinksList = BadLinksList;
-            result.ExternalLinksList = ExternalLinksList;
-            result.InternalLinksList = InternalLinksList;
+            result.BadLinksList = BadLinksList.ToArray();
+            result.ExternalLinksList = ExternalLinksList.ToArray();
+            result.InternalLinksList = InternalLinksList.ToArray();
 
             return result;
         }

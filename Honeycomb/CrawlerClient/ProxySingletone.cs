@@ -2,8 +2,7 @@
 using System.Linq;
 using System.ServiceModel;
 using System.Windows;
-using CrawlerClient.CrawlerServer;
-using ClientCrawlerInfo = CrawlerClient.CrawlerServer.ClientCrawlerInfo;
+using Honeycomb;
 
 namespace CrawlerClient
 {
