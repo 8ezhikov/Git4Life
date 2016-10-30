@@ -138,13 +138,19 @@ namespace CrawlerClient
         {
             var site = new InstanceContext(this);
 
-            //var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
+            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
+            EndpointAddress address = new EndpointAddress("net.tcp://188.143.161.41:22222/chatservice/");
+            var factory = new DuplexChannelFactory<IRemoteCrawler>( site,binding, address);
+            var yourInterface = factory.CreateChannel();
+            yourInterface.Join(p);
 
-            proxy = new RemoteCrawlerClient(site);
+            ////var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
 
-            //proxy = new 
-            ClientCrawlerInfo[] list = proxy.Join(p);
-            MessageBox.Show("Great Success!" + list.Count());
+            //proxy = new RemoteCrawlerClient(site);
+
+            ////proxy = new 
+            //ClientCrawlerInfo[] list = proxy.Join(p);
+            MessageBox.Show("Great Success!" );
             // HandleEndJoin(list);
             //IAsyncResult ee = proxy.JoinAsync(p);
             //ee.AsyncWaitHandle = await 
