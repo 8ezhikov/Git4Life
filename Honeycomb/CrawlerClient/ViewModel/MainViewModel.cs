@@ -28,6 +28,7 @@ namespace CrawlerClient.ViewModel
         public MainViewModel()
         {
             ConnectToServerCommand = new RelayCommand(ConnectToServer);
+            StartTestCrawlingCommand = new RelayCommand(TestCrawl);
             ClientName = $"Denis Test Crawler {DateTime.Now}";
 
         }
@@ -35,15 +36,22 @@ namespace CrawlerClient.ViewModel
         {
             var singleTone = ConnectionSingleton.Instance;
 
-            var newPerson = new ClientCrawlerInfo{ClientName = "Denis Crawler"};
-            string globalIP = ClientHelper.GetPublicIP();
+            var newPerson = new ClientCrawlerInfo
+            {
+                ClientName = ClientName,
+                ServerIP = LocalIpAddress
+            };
 
-
-            newPerson.ServerIP = globalIP;
-            //  newPerson.ImageURL = "3434";
             singleTone.Connect(newPerson);
 
         }
+
+        private void ConnectToServer()
+        {
+            var crawlerInstance = new CrawlerEngine();
+            crawlerInstance.StartCrawlingProcess("http://webometrics.krc.karelia.ru/");
+        }
+
         private string _publicIpAdress;
         public string PublicIpAddress
         {
