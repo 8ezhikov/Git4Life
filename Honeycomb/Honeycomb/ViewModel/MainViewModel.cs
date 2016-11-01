@@ -29,7 +29,7 @@ namespace Honeycomb.ViewModel
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         /// 
-        ServiceHost host;
+        private ServiceHost host;
         private RemoteCrawlerService instance;
         public RelayCommand ReadAllCommand { get; set; }
         public RelayCommand ShowSeedWindowCommand { get; set; }
@@ -46,6 +46,8 @@ namespace Honeycomb.ViewModel
             ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
             ClientCrawlers = instance.ConnectedClientCrawlers;
 
+            TextBoxContent += "Starting Server...\n";
+            TextBoxContent += "Press ENTER to stop chat service... \n";
         }
 
         private Seed _seedInfo;
@@ -63,15 +65,15 @@ namespace Honeycomb.ViewModel
         {
             instance.SaveSeed(emp);
 
-           // EmpInfo.EmpNo = _serviceProxy.CreateEmployee(emp);
-           // if (EmpInfo.EmpNo != 0)
-           // {
-           //     Employees.Add(EmpInfo);
-           //     RaisePropertyChanged("EmpInfo");
-           // }
-           ////     Employees.Add(EmpInfo);
-           //     RaisePropertyChanged("SeedInfo");
-           
+            // EmpInfo.EmpNo = _serviceProxy.CreateEmployee(emp);
+            // if (EmpInfo.EmpNo != 0)
+            // {
+            //     Employees.Add(EmpInfo);
+            //     RaisePropertyChanged("EmpInfo");
+            // }
+            ////     Employees.Add(EmpInfo);
+            //     RaisePropertyChanged("SeedInfo");
+
         }
 
         private string _textBoxContent;
@@ -102,7 +104,7 @@ namespace Honeycomb.ViewModel
         private void StartCrawling()
         {
 
-            var hoster = ((RemoteCrawlerService) host.SingletonInstance);
+            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
             hoster.GiveInitialTasks();
             //MessageBox.Show("Hello!");
         }

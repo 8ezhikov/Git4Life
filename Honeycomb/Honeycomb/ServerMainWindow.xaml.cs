@@ -1,10 +1,4 @@
-﻿using System;
-using System.ServiceModel;
-using System.Windows;
-using System.Configuration;
-using System.Windows.Controls;
-
-namespace Honeycomb
+﻿namespace Honeycomb
 {
     /// <summary>
     /// Interaction logic for ServerMainWindow.xaml
@@ -14,10 +8,6 @@ namespace Honeycomb
         public ServerMainWindow()
         {
             InitializeComponent();
-            OutputTextBox.AppendText("Starting Server...\n");
-            
-            //OutputTextBox.AppendText("Chat service listen on endpoint " + uri + "\n");
-            OutputTextBox.AppendText("Press ENTER to stop chat service... \n");
         }
     }
 }
