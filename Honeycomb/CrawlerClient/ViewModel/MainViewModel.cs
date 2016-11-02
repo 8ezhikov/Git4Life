@@ -46,7 +46,7 @@ namespace CrawlerClient.ViewModel
 
         }
 
-        private void ConnectToServer()
+        private void TestCrawl()
         {
             var crawlerInstance = new CrawlerEngine();
             crawlerInstance.StartCrawlingProcess("http://webometrics.krc.karelia.ru/");
