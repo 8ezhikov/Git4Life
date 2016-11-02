@@ -2,7 +2,7 @@
 using System.Linq;
 using System.ServiceModel;
 using System.Windows;
-using Honeycomb;
+using CrawlerClient.CrawlerServer;
 
 namespace CrawlerClient
 {
@@ -142,7 +142,7 @@ namespace CrawlerClient
             EndpointAddress address = new EndpointAddress("net.tcp://188.143.161.41:22222/chatservice/");
             var factory = new DuplexChannelFactory<IRemoteCrawler>( site,binding, address);
             var yourInterface = factory.CreateChannel();
-            yourInterface.Join(p);
+            yourInterface.Join( p);
 
             ////var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
 
@@ -157,7 +157,7 @@ namespace CrawlerClient
             //IAsyncResult iar = proxy.BeginJoin(p, new AsyncCallback(OnEndJoin), null);
         }
 
-        private void HandleEndJoin(ClientCrawlerInfo[] list)
+        private void HandleEndJoin(ClientCrawlerInfo[] list) 
         {
             if (list == null)
             {

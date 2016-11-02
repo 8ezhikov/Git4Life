@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows;
-using Honeycomb.Shared;
+using CrawlerClient.CrawlerServer;
 using HtmlAgilityPack;
 
 namespace CrawlerClient
@@ -117,9 +117,9 @@ namespace CrawlerClient
             MessageBox.Show(RuningTime);
 
             var result = new CrawlerResultsDTO();
-            result.BadLinksList = BadLinksList.ToArray();
-            result.ExternalLinksList = ExternalLinksList.ToArray();
-            result.InternalLinksList = InternalLinksList.ToArray();
+            result.BadLinksList = BadLinksList.ToList();
+            result.ExternalLinksList = ExternalLinksList.ToList();
+            result.InternalLinksList = InternalLinksList.ToList();
 
             return result;
         }

@@ -1,7 +1,7 @@
 using System;
+using CrawlerClient.CrawlerServer;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Honeycomb;
 
 namespace CrawlerClient.ViewModel
 {

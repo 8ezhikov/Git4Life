@@ -128,25 +128,22 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\CrawlerServer\chatservice.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CrawlerServer\chatservice1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CrawlerServer\chatservice2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CrawlerServer\chatservice3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\CrawlerServer\chatservice4.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\CrawlerServer\CrawlerClient.CrawlerServer.ClientCrawlerInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\CrawlerServer\RemoteCrawlerService.wsdl" />
+    <None Include="Service References\CrawlerServer\Honeycomb.Shared.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\service.wsdl" />
+    <None Include="Service References\CrawlerServer\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CrawlerServer\System.Collections.Generic.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -158,9 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\CrawlerServer\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\CrawlerServer\chatservice.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\CrawlerServer\configuration91.svcinfo" />
