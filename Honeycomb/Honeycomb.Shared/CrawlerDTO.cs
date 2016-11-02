@@ -14,6 +14,8 @@ namespace Honeycomb.Shared
         public List<BadLinkDTO> BadLinksList;
         [DataMember]
         public Stack<InternalLinkDTO> InternalUnprocessedLinks;
+
+        [DataMember] public SeedDTO ProcessedSeed;
     }
 
 
