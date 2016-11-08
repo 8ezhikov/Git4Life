@@ -7,16 +7,16 @@ namespace CrawlerClient
     {
         public static string GetLocalIP()
         {
-            var localIP = "?";
+            var localIp = "?";
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    localIP = ip.ToString();
+                    localIp = ip.ToString();
                 }
             }
-            return localIP;
+            return localIp;
         }
 
         public static string GetPublicIP()
