@@ -7,7 +7,7 @@
     <ExcludedTypes />
     <ImportXmlTypes>false</ImportXmlTypes>
     <GenerateInternalTypes>false</GenerateInternalTypes>
-    <GenerateMessageContracts>true</GenerateMessageContracts>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
     <NamespaceMappings />
     <CollectionMappings>
       <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
@@ -21,16 +21,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:22222/chatservice" Protocol="http" SourceId="1" />
+    <MetadataSource Address="net.tcp://localhost:22222/chatservice/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="chatservice.xsd" MetadataType="Schema" ID="96d10cf4-189c-4eca-a07d-2807629a2d32" SourceId="1" SourceUrl="http://localhost:22222/chatservice?xsd=xsd0" />
-    <MetadataFile FileName="chatservice.disco" MetadataType="Disco" ID="d7318ffe-2ce9-4332-a83c-f3484be86ca2" SourceId="1" SourceUrl="http://localhost:22222/chatservice?disco" />
-    <MetadataFile FileName="chatservice1.xsd" MetadataType="Schema" ID="42b6bdcd-1865-413c-ab53-a6850ace50fd" SourceId="1" SourceUrl="http://localhost:22222/chatservice?xsd=xsd2" />
-    <MetadataFile FileName="chatservice2.xsd" MetadataType="Schema" ID="b8d69960-3ab2-46be-b524-941ccd17a416" SourceId="1" SourceUrl="http://localhost:22222/chatservice?xsd=xsd1" />
-    <MetadataFile FileName="chatservice3.xsd" MetadataType="Schema" ID="28a8632b-85fa-4763-9294-f1dca5b82803" SourceId="1" SourceUrl="http://localhost:22222/chatservice?xsd=xsd4" />
-    <MetadataFile FileName="chatservice4.xsd" MetadataType="Schema" ID="def6335d-0a41-4202-b93e-f9711f382c37" SourceId="1" SourceUrl="http://localhost:22222/chatservice?xsd=xsd3" />
-    <MetadataFile FileName="RemoteCrawlerService.wsdl" MetadataType="Wsdl" ID="d7d41620-62f0-4018-827f-b980bb01d38e" SourceId="1" SourceUrl="http://localhost:22222/chatservice?wsdl" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="7cc352b9-6b25-43b4-965a-1199dd2f5b8b" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="3e8ca7f2-33ee-4eb6-b75c-4a769657366d" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="a712f9d2-324f-4c10-828f-afb680ee7589" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
+    <MetadataFile FileName="Honeycomb.Shared.xsd" MetadataType="Schema" ID="814c5381-eb36-4aaf-a2b8-71c712ea8a8b" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
+    <MetadataFile FileName="System.Collections.Generic.xsd" MetadataType="Schema" ID="8f5dc600-86fe-4561-83ee-f3f298f0ad03" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

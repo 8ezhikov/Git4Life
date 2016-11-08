@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:System="clr-namespace:System;assembly=mscorlib" mc:Ignorable="d" x:Class="Honeycomb.ServerMainWindow"
     DataContext="{Binding Main, Source={StaticResource Locator} }"   
     Title="ServerMainWindow" Width="1000" Height="700">
-    <Grid SnapsToDevicePixels="True" MinHeight="700" MinWidth="1000">
+    <Grid SnapsToDevicePixels="True" MinHeight="650" MinWidth="1000">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="150"/>
@@ -17,7 +17,7 @@
                 <Button  Command="{Binding ReadAllCommand}" Content="Refresh Server List" HorizontalAlignment="Left" Margin="198,38,0,0" VerticalAlignment="Top" Width="142" Height="67"/>
                 <Button Command="{Binding ShowSeedWindowCommand}" Content="Manage Seeds" HorizontalAlignment="Left" Margin="394,38,0,0" VerticalAlignment="Top" Width="138" Height="67"/>
             </Grid>
-        <TextBox x:Name="OutputTextBox" Grid.Row ="2" TextWrapping="Wrap" Text="" IsReadOnly="True" MinHeight="300" HorizontalScrollBarVisibility="Auto" FontFamily="Lucida Console" UseLayoutRounding="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2"  />
+        <TextBox x:Name="OutputTextBox" Grid.Row ="2" TextWrapping="Wrap" Text="{Binding TextBoxContent}" IsReadOnly="True" MinHeight="250" HorizontalScrollBarVisibility="Auto" FontFamily="Lucida Console" UseLayoutRounding="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2"  />
 
     </Grid>
 </Window>
