@@ -7,7 +7,6 @@ using CrawlerClient.CrawlerServer;
 namespace CrawlerClient
 {
 
-    #region Public enums/event args
 
     public enum CallBackType
     {
@@ -39,13 +38,10 @@ namespace CrawlerClient
         public ClientCrawlerInfo person = null;
     }
 
-    #endregion
-
-    #region ConnectionSingleton class
+ 
 
     public sealed class ConnectionSingleton : IRemoteCrawlerCallback
     {
-        #region Instance Fields
 
         public delegate void ProxyCallBackEventHandler(object sender, ProxyCallBackEventArgs e);
 
@@ -63,25 +59,18 @@ namespace CrawlerClient
 
         public event ProxyCallBackEventHandler ProxyCallBackEvent;
 
-        #endregion
 
         private ConnectionSingleton()
         {
         }
 
-        #region Public Methods
-
-        #region IChatCallback implementation
 
         public void Receive(ClientCrawlerInfo sender, string message)
         {
             Receive(sender, message, CallBackType.Receive);
         }
 
-        public void GiveInitialTasks(string siteURL)
-        {
-            throw new NotImplementedException();
-        }
+   
 
         public void StartCrawling(string urlToCrawl)
         {
@@ -99,39 +88,18 @@ namespace CrawlerClient
             //   Receive(sender, message, CallBackT ype.ReceiveWhisper);
         }
 
-        public void UserEnter(ClientCrawlerInfo person)
-        {
-            UserEnterLeave(person, CallBackType.UserEnter);
-        }
-
-        public void UserLeave(ClientCrawlerInfo person)
-        {
-            UserEnterLeave(person, CallBackType.UserLeave);
-        }
-
         private void Receive(ClientCrawlerInfo sender, string message, CallBackType callbackType)
         {
             var e = new ProxyCallBackEventArgs();
             e.message = message;
             e.callbackType = callbackType;
             e.person = sender;
-            OnProxyCallBackEvent(e);
+            //OnProxyCallBackEvent(e);
         }
 
-        private void UserEnterLeave(ClientCrawlerInfo person, CallBackType callbackType)
-        {
-            var e = new ProxyCallBackEventArgs();
-            e.person = person;
-            e.callbackType = callbackType;
-            OnProxyCallBackEvent(e);
-        }
 
-        #endregion
 
-        public static ConnectionSingleton Instance
-        {
-            get { return LazySingleton.Value; }
-        }
+        public static ConnectionSingleton Instance => LazySingleton.Value;
 
 
         public void Connect(ClientCrawlerInfo p)
@@ -157,85 +125,47 @@ namespace CrawlerClient
             //IAsyncResult iar = proxy.BeginJoin(p, new AsyncCallback(OnEndJoin), null);
         }
 
-        private void HandleEndJoin(ClientCrawlerInfo[] list) 
-        {
-            if (list == null)
-            {
-                MessageBox.Show("Error: List is empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                ExitChatSession();
-            }
-            else
-            {
-                var e = new ProxyEventArgs();
-                e.list = list;
-                OnProxyEvent(e);
-            }
-        }
-
-        /// <summary>
-        ///     Raises the event for connected subscribers
-        /// </summary>
-        /// <param name="e"><see cref="ProxyCallBackEventArgs">ProxyCallBackEventArgs</see> event args</param>
-        private void OnProxyCallBackEvent(ProxyCallBackEventArgs e)
-        {
-            if (ProxyCallBackEvent != null)
-            {
-                // Invokes the delegates. 
-                ProxyCallBackEvent(this, e);
-            }
-        }
-
-        /// <summary>
-        ///     Raises the event for connected subscribers
-        /// </summary>
-        /// <param name="e"><see cref="ProxyEventArgs">ProxyEventArgs</see> event args</param>
-        private void OnProxyEvent(ProxyEventArgs e)
-        {
-            if (ProxyEvent != null)
-            {
-                // Invokes the delegates. 
-                ProxyEvent(this, e);
-            }
-        }
-
-        public void SayAndClear(string to, string msg, bool pvt)
-        {
-            //if (!pvt)
-            //    //proxy.ReturnCrawlingResults(msg,msg);
-        }
-
-        public void ExitChatSession()
-        {
-            try
-            {
-                proxy.Leave();
-            }
-            catch
-            {
-            }
-            finally
-            {
-                AbortProxy();
-            }
-        }
-
-        public void AbortProxy()
-        {
-            if (proxy != null)
-            {
-                proxy.Abort();
-                proxy.Close();
-                proxy = null;
-            }
-        }
-
-        //public void Receive(Honeycomb.ClientCrawlerInfo sender, string message)
+        //private void HandleEndJoin(ClientCrawlerInfo[] list) 
         //{
-        //    throw new NotImplementedException();
+        //    if (list == null)
+        //    {
+        //        MessageBox.Show("Error: List is empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        ExitChatSession();
+        //    }
+        //    else
+        //    {
+        //        var e = new ProxyEventArgs();
+        //        e.list = list;
+        //        OnProxyEvent(e);
+        //    }
         //}
 
-        #endregion
+        /// <summary>
+        /////     Raises the event for connected subscribers
+        ///// </summary>
+        ///// <param name="e"><see cref="ProxyCallBackEventArgs">ProxyCallBackEventArgs</see> event args</param>
+        //private void OnProxyCallBackEvent(ProxyCallBackEventArgs e)
+        //{
+        //    if (ProxyCallBackEvent != null)
+        //    {
+        //        // Invokes the delegates. 
+        //        ProxyCallBackEvent(this, e);
+        //    }
+        //}
+
+        ///// <summary>
+        /////     Raises the event for connected subscribers
+        ///// </summary>
+        ///// <param name="e"><see cref="ProxyEventArgs">ProxyEventArgs</see> event args</param>
+        //private void OnProxyEvent(ProxyEventArgs e)
+        //{
+        //    if (ProxyEvent != null)
+        //    {
+        //        // Invokes the delegates. 
+        //        ProxyEvent(this, e);
+        //    }
+        //}
+
     }
 
-    #endregion
 }
