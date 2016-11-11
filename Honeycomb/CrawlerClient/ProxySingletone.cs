@@ -6,46 +6,27 @@ using CrawlerClient.CrawlerServer;
 
 namespace CrawlerClient
 {
+    //public class ProxyEventArgs : EventArgs
+    //{
+    //    public ClientCrawlerInfo[] list;
+    //}
 
-
-    public enum CallBackType
-    {
-        Receive,
-        UserEnter,
-        UserLeave
-    };
-
-    public class ProxyEventArgs : EventArgs
-    {
-        public ClientCrawlerInfo[] list;
-    }
-
-    /// <summary>
-    ///     Proxy callback event args
-    /// </summary>
-    public class ProxyCallBackEventArgs : EventArgs
-    {
-        /// <summary>
-        ///     Callback type <see cref="CallBackType">CallBackType</see>
-        /// </summary>
-        public CallBackType callbackType;
-
-        /// <summary>
-        ///     The incoming message
-        /// </summary>
-        public string message = "";
-
-        public ClientCrawlerInfo person = null;
-    }
+    ///// <summary>
+    /////     Proxy callback event args
+    ///// </summary>
+    //public class ProxyCallBackEventArgs : EventArgs
+    //{
+    //    public ClientCrawlerInfo person = null;
+    //}
 
  
 
     public sealed class ConnectionSingleton : IRemoteCrawlerCallback
     {
 
-        public delegate void ProxyCallBackEventHandler(object sender, ProxyCallBackEventArgs e);
+        //public delegate void ProxyCallBackEventHandler(object sender, ProxyCallBackEventArgs e);
 
-        public delegate void ProxyEventHandler(object sender, ProxyEventArgs e);
+        //public delegate void ProxyEventHandler(object sender, ProxyEventArgs e);
 
         private static readonly Lazy<ConnectionSingleton> LazySingleton =
             new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
@@ -54,10 +35,10 @@ namespace CrawlerClient
 
         //main proxy event
 
-        public event ProxyEventHandler ProxyEvent;
-        //callback proxy event
+        //public event ProxyEventHandler ProxyEvent;
+        ////callback proxy event
 
-        public event ProxyCallBackEventHandler ProxyCallBackEvent;
+        //public event ProxyCallBackEventHandler ProxyCallBackEvent;
 
 
         private ConnectionSingleton()
@@ -67,7 +48,7 @@ namespace CrawlerClient
 
         public void Receive(ClientCrawlerInfo sender, string message)
         {
-            Receive(sender, message, CallBackType.Receive);
+            //Receive(sender, message);
         }
 
    
@@ -88,14 +69,14 @@ namespace CrawlerClient
             //   Receive(sender, message, CallBackT ype.ReceiveWhisper);
         }
 
-        private void Receive(ClientCrawlerInfo sender, string message, CallBackType callbackType)
-        {
-            var e = new ProxyCallBackEventArgs();
-            e.message = message;
-            e.callbackType = callbackType;
-            e.person = sender;
-            //OnProxyCallBackEvent(e);
-        }
+        //private void Receive(ClientCrawlerInfo sender, string message, CallBackType callbackType)
+        //{
+        //    var e = new ProxyCallBackEventArgs();
+        //    e.message = message;
+        //    e.callbackType = callbackType;
+        //    e.person = sender;
+        //    //OnProxyCallBackEvent(e);
+        //}
 
 
 

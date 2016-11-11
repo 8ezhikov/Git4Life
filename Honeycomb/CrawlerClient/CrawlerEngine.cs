@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,137 +13,96 @@ namespace CrawlerClient
     class CrawlerEngine
     {
         private int _maxPageLevel;
-        private readonly Hashtable _allLinks = new Hashtable();
-        public bool ForceStop;
-        private CrawlerStatus _status;
-        private string _runingTime;
+        private readonly HashSet<string> _allLinks = new HashSet<string>();
+        private bool _forceStop;
         private int _internalLinksCounter = 1;
         private const string StartingPageName = "Starting Page";
-        private const int MaxLevel = 5;
-        private List<InternalLinkDTO> InternalLinksList = new List<InternalLinkDTO>();
-        private List<ExternalLinkDTO> ExternalLinksList = new List<ExternalLinkDTO>();
-        private List<BadLinkDTO> BadLinksList = new List<BadLinkDTO>();
-        private Stack<InternalLinkDTO> InternalUnprocessedLinks = new Stack<InternalLinkDTO>();
+        private readonly Dictionary<string,InternalLinkDTO> _internalLinksDictionary = new Dictionary<string, InternalLinkDTO>();
+        private readonly Dictionary<string, ExternalLinkDTO> _externalLinksDictionary = new Dictionary<string, ExternalLinkDTO>();
+        private readonly List<BadLinkDTO> _badLinksList = new List<BadLinkDTO>();
+        private readonly Stack<InternalLinkDTO> _internalUnprocessedLinks = new Stack<InternalLinkDTO>();
 
 
-        // Declare the event
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public string RuningTime
+
+        public CrawlerResultsDTO StartCrawlingProcess(string startingSeedName, int maxCrawlLevel= 5)
         {
-            get { return _runingTime; }
-            set
-            {
-                _runingTime = value;
-                // Call OnPropertyChanged whenever the property is updated
-                OnPropertyChanged("RuningTime");
-            }
-        }
-        public CrawlerStatus Status
-        {
-            get { return _status; }
-            set
-            {
-                _status = value;
-                // Call OnPropertyChanged whenever the property is updated
-                OnPropertyChanged("Status");
-            }
-        }
-
-        // Create the OnPropertyChanged method to raise the event
-        protected void OnPropertyChanged(string name)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        public CrawlerEngine()
-        {
-            Status = CrawlerStatus.Wating;
-        }
-
-        public CrawlerResultsDTO StartCrawlingProcess(string startingSeedName)
-        {
-            var startingTime = DateTime.Now;
-            _maxPageLevel = MaxLevel;
-            Status = CrawlerStatus.Working;
-            ForceStop = false;
-            var testSeed = new SeedDTO { SeedDomainName = startingSeedName };
-            var seedCollection = new List<SeedDTO> { testSeed };
+            _maxPageLevel = maxCrawlLevel;
+            _forceStop = false;
+            var startingSeed = new SeedDTO { SeedDomainName = startingSeedName };
+            var seedCollection = new List<SeedDTO> { startingSeed };
             foreach (var seed in seedCollection)
             {
-                var startingAdress = seed.SeedDomainName;
+                var startingAddress = seed.SeedDomainName;
               
                 _internalLinksCounter = 1;
-                if (startingAdress != string.Empty)
+                if (startingAddress == string.Empty)
                 {
-                    FillAllLinks(startingAdress);
-
-                    if (_allLinks[startingAdress] == null)
-                    {
-                        AddInternalLink(startingAdress, startingAdress, 0, StartingPageName);
-                    }
-
-                    ScrapLinks(startingAdress, 0, startingAdress);
-              
-                    while (InternalUnprocessedLinks.Count > 0 & ForceStop != true)
-                    {
-                        var selectedLink = InternalUnprocessedLinks.Pop();
-
-                        if (selectedLink != null)
-                        {
-                            selectedLink.IsProcessed = true;
-                            ScrapLinks(selectedLink.PageLink, selectedLink.PageLevel, startingAdress);
-                        }
-                    }
-
-                    _allLinks.Clear();
+                    continue;
                 }
+                FillAllLinks(startingAddress);
+
+                if (_allLinks.Contains(startingAddress))
+                {
+                    AddInternalLink(startingAddress, startingAddress, 0, StartingPageName);
+                }
+
+                ScrapLinks(startingAddress, 0, startingAddress);
+              
+                while (_internalUnprocessedLinks.Count > 0 & _forceStop != true)
+                {
+                    var selectedLink = _internalUnprocessedLinks.Pop();
+
+                    if (selectedLink != null)
+                    {
+                        selectedLink.IsProcessed = true;
+                        ScrapLinks(selectedLink.PageLink, selectedLink.PageLevel, startingAddress);
+                    }
+                }
+
+                _allLinks.Clear();
             }
-            if (ForceStop)
+            if (_forceStop)
             {
-                Status = CrawlerStatus.Stopped;
-                ForceStop = false;
+                _forceStop = false;
             }
-            else
+        
+
+            //RuningTime = (DateTime.Now - startingTime).ToString();
+            //MessageBox.Show(RuningTime);
+
+            var result = new CrawlerResultsDTO
             {
-                Status = CrawlerStatus.Finished;
-
-            }
-
-            RuningTime = (DateTime.Now - startingTime).ToString();
-            MessageBox.Show(RuningTime);
-
-            var result = new CrawlerResultsDTO();
-            result.BadLinksList = BadLinksList.ToList();
-            result.ExternalLinksList = ExternalLinksList.ToList();
-            result.InternalLinksList = InternalLinksList.ToList();
+                BadLinksList = _badLinksList.ToList(),
+                ExternalLinksList = _externalLinksDictionary.Select(pair => pair.Value).ToList(),
+                InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList()
+            };
 
             return result;
         }
-        void FillAllLinks(string seedName)
+        void FillAllLinks(string seedDomainName)
         {
             var allCollectedInternalLinksForDomain =
-                InternalLinksList.Where(link => link.PageSeedLink == seedName);
+                _internalLinksDictionary.Where(link => link.Value.PageSeedLink == seedDomainName);
             foreach (var internalLink in allCollectedInternalLinksForDomain)
             {
-                _allLinks.Add(internalLink.PageLink, true);
+                _allLinks.Add(internalLink.Key);
             }
 
             var allCollectedExternalLinksForDomain =
-               InternalLinksList.Where(link => link.PageSeedLink == seedName);
+               _internalLinksDictionary.Where(link => link.Value.PageSeedLink == seedDomainName);
             foreach (var internalLink in allCollectedExternalLinksForDomain)
             {
-                _allLinks.Add(internalLink.LinkPath, true);
+                _allLinks.Add(internalLink.Value.LinkPath);
             }
         }
 
 
-        void ScrapLinks(string startingAdress, int pageLevel, string seedLink)
+        private void ScrapLinks(string startingAddress, int pageLevel, string seedLink)
         {
             try
             {
-                if (ForceStop)
+                if (_forceStop)
                     return;
                 var currentPageLevel = pageLevel + 1;
 
@@ -153,21 +110,21 @@ namespace CrawlerClient
                     return;
 
                 var htmlWeb = new HtmlWeb();
-                var startingAdressUri = new Uri(startingAdress);
+                var startingAdressUri = new Uri(startingAddress);
                 HtmlDocument doc;
                 try
                 {
-                    doc = htmlWeb.Load(startingAdress);
+                    doc = htmlWeb.Load(startingAddress);
 
                     if (doc.ParseErrors.Any(error => error.Code == HtmlParseErrorCode.CharsetMismatch))
                     {
-                        doc = GetDocumentCustomMode(doc.Encoding, startingAdress);
+                        doc = GetDocumentCustomMode(doc.Encoding, startingAddress);
                     }
-                    //doc = BeeBot.Shared.Helpers.GetDocumentCustomMode(Encoding.UTF8, startingAdress);
+                    //doc = BeeBot.Shared.Helpers.GetDocumentCustomMode(Encoding.UTF8, startingAddress);
                 }
                 catch (Exception)
                 {
-                    doc = GetDocumentCustomMode(Encoding.GetEncoding("windows-1251"), startingAdress);
+                    doc = GetDocumentCustomMode(Encoding.GetEncoding("windows-1251"), startingAddress);
                 }
 
                 if (pageLevel == 0)
@@ -195,8 +152,7 @@ namespace CrawlerClient
                                     fullLink = startingAdressUri + redirectionPostfixLink;
                                 }
 
-                                var isURLexisting = _allLinks[fullLink];
-                                if (isURLexisting == null)
+                                if (_allLinks.Contains(fullLink))
                                 {
                                     AddInternalLink(fullLink, seedLink, currentPageLevel, startingAdressUri.AbsoluteUri);
                                 }
@@ -232,8 +188,7 @@ namespace CrawlerClient
                         }
 
 
-                        var isURLexisting = _allLinks[frameLink];
-                        if (isURLexisting == null)
+                        if (_allLinks.Contains(frameLink))
                         {
                             AddInternalLink(frameLink, seedLink, currentPageLevel, startingAdressUri.AbsoluteUri);
                         }
@@ -248,7 +203,6 @@ namespace CrawlerClient
             catch (Exception e)
             {
                 LogException(e);
-                //throw;
             }
         }
 
@@ -316,8 +270,7 @@ namespace CrawlerClient
 
                         if (tmplink == tmpSeed)
                         {
-                            var isUrLexisting = _allLinks[linkUrl];
-                            if (isUrLexisting == null)
+                            if (_allLinks.Contains(linkUrl))
                             {
                                 AddInternalLink(linkUrl, seedLink, currentPageLevel, startingAdressUri.AbsoluteUri);
                             }
@@ -328,8 +281,7 @@ namespace CrawlerClient
                         }
                         else
                         {
-                            var isUrLexisting = _allLinks[linkUrl];
-                            if (isUrLexisting == null)
+                            if (_allLinks.Contains(linkUrl))
                             {
                                 var linkPage = new ExternalLinkDTO
                                                    {
@@ -340,8 +292,8 @@ namespace CrawlerClient
                                                        PageSeedLink = seedLink,
                                                        OriginalPageLevel = currentPageLevel - 1
                                                    };
-                                ExternalLinksList.Add(linkPage);
-                                _allLinks.Add(linkPage.LinkPath, true);
+                                _externalLinksDictionary.Add(linkPage.LinkPath,linkPage);
+                                _allLinks.Add(linkPage.LinkPath);
                             }
                             else
                             {
@@ -357,7 +309,7 @@ namespace CrawlerClient
                             LinkPath = rawLinkUrl,
                             OriginalPageLink = startingAdressUri.AbsoluteUri
                         };
-                        BadLinksList.Add(linkPage);
+                        _badLinksList.Add(linkPage);
                     }
                 }
             }
@@ -385,31 +337,22 @@ namespace CrawlerClient
 
             };
             _internalLinksCounter++;
-            InternalUnprocessedLinks.Push(linkPage);
-            InternalLinksList.Add(linkPage);
-            _allLinks.Add(linkPage.PageLink, true);
+            _internalUnprocessedLinks.Push(linkPage);
+            _internalLinksDictionary.Add(linkPage.PageLink,linkPage);
+            _allLinks.Add(linkPage.PageLink);
 
         }
 
         private void IncrementInternalLink(string linkUrl)
         {
-            var selectedLink = InternalLinksList.First(lk => lk.PageLink == linkUrl);
-            selectedLink.LinkCount++;
+            _internalLinksDictionary[linkUrl].LinkCount++;
         }
 
         private void IncrementExternalLink(string linkUrl)
         {
-            var selectedLink = ExternalLinksList.First(lk => lk.LinkPath == linkUrl);
-            selectedLink.LinkCount++;
+            _externalLinksDictionary[linkUrl].LinkCount++;
         }
 
-        public enum CrawlerStatus
-        {
-            Wating = 0,
-            Working = 1,
-            Stopped = 2,
-            Finished = 3
-        }
         public static HtmlDocument GetDocumentCustomMode(Encoding encoding, string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
