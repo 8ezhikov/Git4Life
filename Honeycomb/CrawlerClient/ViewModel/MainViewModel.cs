@@ -49,7 +49,8 @@ namespace CrawlerClient.ViewModel
         private void TestCrawl()
         {
             var crawlerInstance = new CrawlerEngine();
-            crawlerInstance.StartCrawlingProcess("http://www.apmath.spbu.ru/en/staff/pechnikov_aa/index.html");
+            var seed = new SeedDTO {SeedDomainName = "http://webometrics.krc.karelia.ru/"};
+            crawlerInstance.StartCrawlingProcess(new[] {seed});
         }
 
         private string _publicIpAdress;

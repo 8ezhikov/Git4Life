@@ -57,7 +57,8 @@ namespace CrawlerClient
         {
 
             var crawlerInstance = new CrawlerEngine();
-            var result = crawlerInstance.StartCrawlingProcess(urlToCrawl);
+            var seedToCrawl = new  SeedDTO { SeedDomainName = urlToCrawl };
+            var result = crawlerInstance.StartCrawlingProcess(new[] {seedToCrawl});
 
             proxy.ReturnCrawlingResults(result);
 

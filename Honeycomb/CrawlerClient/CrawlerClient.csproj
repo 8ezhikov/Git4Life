@@ -82,6 +82,7 @@
     </ApplicationDefinition>
     <Compile Include="ClientHelper.cs" />
     <Compile Include="CrawlerEngine.cs" />
+    <Compile Include="CrawlerHelpers.cs" />
     <Compile Include="ProxySingletone.cs" />
     <Compile Include="Service References\CrawlerServer\Reference.cs">
       <AutoGen>True</AutoGen>
