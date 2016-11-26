@@ -1,16 +1,13 @@
 ﻿using System.ServiceModel;
-using Honeycomb.Models;
-using Honeycomb.Shared;
 
-namespace Honeycomb
+namespace Honeycomb.Interfaces
 {
     public interface ICrawlerClientCallback
     {
         [OperationContract(IsOneWay = true)]
-        void Receive(ClientCrawlerInfo sender, string message);
+        void StartTestCrawl();
 
         [OperationContract(IsOneWay = true)]
         void StartCrawling(string siteURL);
-
     }
 }

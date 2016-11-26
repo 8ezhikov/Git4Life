@@ -134,6 +134,9 @@
     <None Include="Service References\CrawlerServer\Honeycomb.Shared.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\CrawlerServer\Honeycomb.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\CrawlerServer\service.wsdl" />
     <None Include="Service References\CrawlerServer\service.xsd">
       <SubType>Designer</SubType>

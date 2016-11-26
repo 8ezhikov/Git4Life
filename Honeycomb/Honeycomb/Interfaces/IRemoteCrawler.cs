@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel;
+using Honeycomb.Interfaces;
 using Honeycomb.Models;
 using Honeycomb.Shared;
 
@@ -16,8 +17,8 @@ namespace Honeycomb
         [OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
         ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo);
 
-        [OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
-        ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl,Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd);
+        //[OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
+        //ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl,Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd);
 
 
         [OperationContract(IsOneWay = true, IsInitiating = false, IsTerminating = true)]

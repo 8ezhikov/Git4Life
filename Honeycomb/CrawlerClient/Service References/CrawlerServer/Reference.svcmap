@@ -29,6 +29,7 @@
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="a712f9d2-324f-4c10-828f-afb680ee7589" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
     <MetadataFile FileName="Honeycomb.Shared.xsd" MetadataType="Schema" ID="814c5381-eb36-4aaf-a2b8-71c712ea8a8b" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
     <MetadataFile FileName="System.Collections.Generic.xsd" MetadataType="Schema" ID="8f5dc600-86fe-4561-83ee-f3f298f0ad03" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
+    <MetadataFile FileName="Honeycomb.xsd" MetadataType="Schema" ID="179c0559-96c7-4fee-98f9-94cc198cfe2c" SourceId="1" SourceUrl="net.tcp://localhost:22222/chatservice/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

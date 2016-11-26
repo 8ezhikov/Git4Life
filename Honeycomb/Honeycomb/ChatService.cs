@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
+using Honeycomb.Interfaces;
 using Honeycomb.Shared;
 
 namespace Honeycomb
@@ -21,10 +22,7 @@ namespace Honeycomb
             set { _connectedClientCrawlers = value; }
         }
 
-        private ObservableCollection<ICrawlerClientCallback> ConnectedCrawlersCallbacks { get; set; } = new ObservableCollection<ICrawlerClientCallback>();
-
         private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
-
 
 
         public void SaveSeed(Seed emp)
@@ -40,13 +38,13 @@ namespace Honeycomb
             var dbContext = new CrawlerEntities();
 
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
-            foreach (var crawlerCallback in ConnectedCrawlersCallbacks)
+            foreach (var crawlerCallback in _connectedClientCrawlers)
             {
 
                 Seed nextSeed;
                 if (globalSeedStack.TryPop(out nextSeed))
                 {
-                    crawlerCallback.StartCrawling(nextSeed.SeedDomainName);
+                    crawlerCallback.SavedCallback.StartCrawling(nextSeed.SeedDomainName);
                 }
                 else
                 {
@@ -60,19 +58,18 @@ namespace Honeycomb
 
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
         {
+
+            clientCrawlerNewInfo.SavedCallback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
             ConnectedClientCrawlers.Add(clientCrawlerNewInfo);
 
-            var tempCallback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
-            ConnectedCrawlersCallbacks.Add(tempCallback);
-            
             return ConnectedClientCrawlers.ToArray();
 
         }
 
-        public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl, Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd)
-        {
-            throw new NotImplementedException();
-        }
+        //public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl, Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void ReturnIntermediateResults(string msg)
         {
@@ -81,6 +78,17 @@ namespace Honeycomb
         public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
         {
             SaveClientResultsToDatabase(resultsDto);
+
+
+            Seed nextSeed;
+            if (globalSeedStack.TryPop(out nextSeed))
+            {
+                //crawlerCallback.StartCrawling(nextSeed.SeedDomainName);
+            }
+            else
+            {
+                throw new Exception("Couldn't pop from stack");
+            }
         }
 
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
