@@ -28,7 +28,7 @@ namespace CrawlerClient
             _forceStop = true;
         }
 
-        public CrawlerResultsDTO StartCrawlingProcess(IEnumerable<SeedDTO> seedsToCrawl, int maxCrawlLevel = 5)
+        public CrawlerResultsDTO StartCrawlingProcess(IEnumerable<SeedDTO> seedsToCrawl, int maxCrawlLevel = 2)
         {
             _maxPageLevel = maxCrawlLevel;
             _forceStop = false;

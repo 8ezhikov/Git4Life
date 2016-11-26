@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
 
@@ -19,8 +20,8 @@ namespace CrawlerClient
     //    public ClientCrawlerInfo person = null;
     //}
 
- 
 
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public sealed class ConnectionSingleton : IRemoteCrawlerCallback
     {
 
@@ -31,7 +32,8 @@ namespace CrawlerClient
         private static readonly Lazy<ConnectionSingleton> LazySingleton =
             new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
 
-        private RemoteCrawlerClient proxy;
+        //private RemoteCrawlerClient proxy;
+        private IRemoteCrawler proxy;
 
         //main proxy event
 
@@ -60,7 +62,13 @@ namespace CrawlerClient
             var seedToCrawl = new  SeedDTO { SeedDomainName = urlToCrawl };
             var result = crawlerInstance.StartCrawlingProcess(new[] {seedToCrawl});
 
-            proxy.ReturnCrawlingResults(result);
+
+            Task.Factory.StartNew(() =>
+            {
+                proxy.ReturnCrawlingResults(result);
+            });
+
+            //proxy.ReturnCrawlingResults(result);
 
 
             //Here we crawl. Crawl and crawl.
@@ -89,10 +97,12 @@ namespace CrawlerClient
             var site = new InstanceContext(this);
 
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
+            
             EndpointAddress address = new EndpointAddress("net.tcp://188.143.161.41:22222/chatservice/");
             var factory = new DuplexChannelFactory<IRemoteCrawler>( site,binding, address);
-            var yourInterface = factory.CreateChannel();
-            yourInterface.Join( p);
+            
+            proxy =  factory.CreateChannel();
+            proxy.Join( p);
 
             ////var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
 
