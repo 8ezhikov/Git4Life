@@ -85,6 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CrawlerDTO.cs" />
     <Compile Include="Models\ClientCrawlerInfo.cs" />
     <Compile Include="Models\CrawlRequest.cs" />
     <Compile Include="Services\DataAccessService.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="BadLink.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
-    <Compile Include="ChatService.cs" />
+    <Compile Include="Services\ChatService.cs" />
     <Compile Include="Crawler_Setting.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
@@ -179,12 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Honeycomb.Shared\Honeycomb.Shared.csproj">
-      <Project>{4af188a2-a6f3-4c44-9e2b-5f1cbd6adf27}</Project>
-      <Name>Honeycomb.Shared</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

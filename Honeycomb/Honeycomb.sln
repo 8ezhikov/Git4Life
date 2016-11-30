@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honeycomb", "Honeycomb\Hone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerClient", "CrawlerClient\CrawlerClient.csproj", "{0131EF6B-103B-4B96-B76C-3CB769290FCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honeycomb.Shared", "Honeycomb.Shared\Honeycomb.Shared.csproj", "{4AF188A2-A6F3-4C44-9E2B-5F1CBD6ADF27}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{39D23711-87FF-4774-A694-6FA0F67663A0}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Crawler DB", "Crawler DB\Crawler DB.sqlproj", "{1A884B74-EF2A-4730-A159-EAD5F01159E2}"
@@ -30,10 +28,6 @@ Global
 		{0131EF6B-103B-4B96-B76C-3CB769290FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0131EF6B-103B-4B96-B76C-3CB769290FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0131EF6B-103B-4B96-B76C-3CB769290FCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AF188A2-A6F3-4C44-9E2B-5F1CBD6ADF27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AF188A2-A6F3-4C44-9E2B-5F1CBD6ADF27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AF188A2-A6F3-4C44-9E2B-5F1CBD6ADF27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AF188A2-A6F3-4C44-9E2B-5F1CBD6ADF27}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A884B74-EF2A-4730-A159-EAD5F01159E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A884B74-EF2A-4730-A159-EAD5F01159E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A884B74-EF2A-4730-A159-EAD5F01159E2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

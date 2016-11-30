@@ -7,7 +7,6 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Honeycomb.Models;
-using Honeycomb.Shared;
 
 namespace Honeycomb.ViewModel
 {

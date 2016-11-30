@@ -1,7 +1,6 @@
 ﻿using System.ServiceModel;
 using Honeycomb.Interfaces;
 using Honeycomb.Models;
-using Honeycomb.Shared;
 
 namespace Honeycomb
 {
@@ -12,7 +11,7 @@ namespace Honeycomb
         void ReturnIntermediateResults(string msg);
 
         [OperationContract(IsOneWay = false, IsInitiating = false, IsTerminating = false)]
-        void ReturnCrawlingResults(Shared.CrawlerResultsDTO resultsDto);
+        void ReturnCrawlingResults(CrawlerResultsDTO resultsDto);
 
         [OperationContract(IsOneWay = false, IsInitiating = true, IsTerminating = false)]
         ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerInfo);

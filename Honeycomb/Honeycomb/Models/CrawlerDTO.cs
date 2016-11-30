@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Honeycomb.Shared
+namespace Honeycomb
 {
     [DataContract]
     public class CrawlerResultsDTO
