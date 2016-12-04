@@ -7,21 +7,10 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Honeycomb.Models;
+using Serilog;
 
 namespace Honeycomb.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         /// <summary>
@@ -32,10 +21,14 @@ namespace Honeycomb.ViewModel
         private RemoteCrawlerService instance;
         public RelayCommand ReadAllCommand { get; set; }
         public RelayCommand ShowSeedWindowCommand { get; set; }
+        public RelayCommand StartCrawlingCommand { get; private set; }
+        public RelayCommand StartTestCrawlingCommand { get; private set; }
 
         public MainViewModel()
         {
             StartCrawlingCommand = new RelayCommand(StartCrawling, () => true);
+            StartTestCrawlingCommand = new RelayCommand(StartTestCrawling, () => true);
+
             ReadAllCommand = new RelayCommand(GetEmployees);
             ShowSeedWindowCommand = new RelayCommand(ShowSeedWindow);
             var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
@@ -47,32 +40,6 @@ namespace Honeycomb.ViewModel
 
             TextBoxContent += "Starting Server...\n";
             TextBoxContent += "Press ENTER to stop chat service... \n";
-        }
-
-        private Seed _seedInfo;
-        public Seed SeedInfo
-        {
-            get { return _seedInfo; }
-            set
-            {
-                _seedInfo = value;
-                RaisePropertyChanged("SeedInfo");
-            }
-        }
-
-        void SaveSeed(Seed emp)
-        {
-            instance.SaveSeed(emp);
-
-            // EmpInfo.EmpNo = _serviceProxy.CreateEmployee(emp);
-            // if (EmpInfo.EmpNo != 0)
-            // {
-            //     Employees.Add(EmpInfo);
-            //     RaisePropertyChanged("EmpInfo");
-            // }
-            ////     Employees.Add(EmpInfo);
-            //     RaisePropertyChanged("SeedInfo");
-
         }
 
         private string _textBoxContent;
@@ -88,7 +55,6 @@ namespace Honeycomb.ViewModel
                 RaisePropertyChanged("ClientCrawlers");
             }
         }
-        public ICommand StartCrawlingCommand { get; private set; }
 
         public string TextBoxContent
         {
@@ -100,35 +66,28 @@ namespace Honeycomb.ViewModel
             }
         }
 
+        private void StartTestCrawling()
+        {
+            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
+            hoster.GiveTestInitialTasks();
+        }
+
         private void StartCrawling()
         {
-
             var hoster = ((RemoteCrawlerService)host.SingletonInstance);
             hoster.GiveInitialTasks();
-            //MessageBox.Show("Hello!");
         }
 
         void ShowSeedWindow()
         {
             var window = new SeedManagement();
             window.Show();
-
         }
 
         void GetEmployees()
         {
-
             var hoster = ((RemoteCrawlerService)host.SingletonInstance);
             hoster.GiveInitialTasks();
-            //var tempData = new ClientCrawlerInfo("192.168.50.123", "Test 1");
-            //var tempData1 = new ClientCrawlerInfo("192.161218.50.123", "Test 343 ");
-            //ClientCrawlers.Add(tempData);
-            //ClientCrawlers.Add(tempData1);
-            //ClientCrawlers.Clear();
-            //foreach (var item in instance.ConnectedClientCrawlers)
-            //{
-            //    ClientCrawlers.Add(item);
-            //}
         }
     }
 }

@@ -131,9 +131,6 @@
     <None Include="Service References\CrawlerServer\CrawlerClient.CrawlerServer.ClientCrawlerInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\CrawlerServer\Honeycomb.Shared.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\CrawlerServer\Honeycomb.xsd">
       <SubType>Designer</SubType>
     </None>

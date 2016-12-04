@@ -14,10 +14,9 @@ namespace Honeycomb
         public List<BadLinkDTO> BadLinksList;
         [DataMember]
         public Stack<InternalLinkDTO> InternalUnprocessedLinks;
-
-        [DataMember] public SeedDTO ProcessedSeed;
+        [DataMember]
+        public SeedDTO ProcessedSeed;
     }
-
 
     [DataContract]
     public class SeedDTO
@@ -25,6 +24,7 @@ namespace Honeycomb
         [DataMember]
         public string SeedDomainName;
     }
+
     [DataContract]
     public class InternalLinkDTO
     {
@@ -48,6 +48,7 @@ namespace Honeycomb
         public int LinkCount;
 
     }
+
     [DataContract]
     public class ExternalLinkDTO
     {
@@ -66,6 +67,7 @@ namespace Honeycomb
         [DataMember]
         public int LinkCount;
     }
+
     [DataContract]
     public class BadLinkDTO
     {

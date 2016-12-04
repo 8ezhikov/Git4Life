@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Honeycomb" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Honeycomb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="CrawlerResultsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BadLinksList" nillable="true" type="tns:ArrayOfBadLinkDTO" />
+      <xs:element minOccurs="0" name="ExternalLinksList" nillable="true" type="tns:ArrayOfExternalLinkDTO" />
+      <xs:element minOccurs="0" name="InternalLinksList" nillable="true" type="tns:ArrayOfInternalLinkDTO" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="InternalUnprocessedLinks" nillable="true" type="q1:StackOfInternalLinkDTOOvmpZAGU" />
+      <xs:element minOccurs="0" name="ProcessedSeed" nillable="true" type="tns:SeedDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CrawlerResultsDTO" nillable="true" type="tns:CrawlerResultsDTO" />
+  <xs:complexType name="ArrayOfBadLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BadLinkDTO" nillable="true" type="tns:BadLinkDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBadLinkDTO" nillable="true" type="tns:ArrayOfBadLinkDTO" />
+  <xs:complexType name="BadLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LinkPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OriginalPageLink" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BadLinkDTO" nillable="true" type="tns:BadLinkDTO" />
+  <xs:complexType name="ArrayOfExternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExternalLinkDTO" nillable="true" type="tns:ExternalLinkDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExternalLinkDTO" nillable="true" type="tns:ArrayOfExternalLinkDTO" />
+  <xs:complexType name="ExternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="LinkAnchor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LinkCount" type="xs:int" />
+      <xs:element minOccurs="0" name="LinkPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LinkWeight" type="xs:int" />
+      <xs:element minOccurs="0" name="OriginalPageLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="OriginalPageLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageSeedLink" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExternalLinkDTO" nillable="true" type="tns:ExternalLinkDTO" />
+  <xs:complexType name="ArrayOfInternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InternalLinkDTO" nillable="true" type="tns:InternalLinkDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInternalLinkDTO" nillable="true" type="tns:ArrayOfInternalLinkDTO" />
+  <xs:complexType name="InternalLinkDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IsHtml" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsProcessed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LinkCount" type="xs:int" />
+      <xs:element minOccurs="0" name="LinkPath" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OriginalPageLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageIdSeedSpecific" type="xs:int" />
+      <xs:element minOccurs="0" name="PageLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="PageLink" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PageSeedLink" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InternalLinkDTO" nillable="true" type="tns:InternalLinkDTO" />
+  <xs:complexType name="SeedDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SeedDomainName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SeedDTO" nillable="true" type="tns:SeedDTO" />
+  <xs:complexType name="ClientCrawlerInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClientIdentifier" type="ser:guid" />
+      <xs:element minOccurs="0" name="ClientName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServerIP" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClientCrawlerInfo" nillable="true" type="tns:ClientCrawlerInfo" />
+  <xs:complexType name="ArrayOfClientCrawlerInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClientCrawlerInfo" nillable="true" type="tns:ClientCrawlerInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClientCrawlerInfo" nillable="true" type="tns:ArrayOfClientCrawlerInfo" />
+</xs:schema>

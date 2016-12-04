@@ -23,16 +23,28 @@ namespace Honeycomb
 
         private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
 
-
-        public void SaveSeed(Seed emp)
+        public void GiveTestInitialTasks()
         {
             var dbContext = new CrawlerEntities();
 
-            dbContext.Seeds.Add(emp);
-            dbContext.SaveChanges();
+            globalSeedStack.PushRange(dbContext.Seeds.ToArray());
+            foreach (var crawlerCallback in _connectedClientCrawlers)
+            {
+
+                Seed nextSeed;
+                if (globalSeedStack.TryPop(out nextSeed))
+                {
+                    crawlerCallback.SavedCallback.StartTestCrawl();
+                }
+                else
+                {
+                    throw new Exception("Couldn't pop from stack");
+                }
+
+            }
         }
 
-        public bool GiveInitialTasks()
+        public void GiveInitialTasks()
         {
             var dbContext = new CrawlerEntities();
 
@@ -51,8 +63,6 @@ namespace Honeycomb
                 }
 
             }
-            return true;
-
         }
 
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
@@ -64,11 +74,6 @@ namespace Honeycomb
             return ConnectedClientCrawlers.ToArray();
 
         }
-
-        //public ClientCrawlerInfo[] WorkaroundMethod(Shared.BadLinkDTO bl, Shared.InternalLinkDTO il, Shared.ExternalLinkDTO el, Shared.SeedDTO sd)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public void ReturnIntermediateResults(string msg)
         {

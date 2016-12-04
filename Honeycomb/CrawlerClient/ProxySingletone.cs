@@ -13,7 +13,7 @@ namespace CrawlerClient
     public sealed class ConnectionSingleton : IRemoteCrawlerCallback
     {
         private static readonly Lazy<ConnectionSingleton> LazySingleton = new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
-        private Guid _singletoneId;
+        private readonly Guid _singletoneId;
         private IRemoteCrawler proxy;
 
         private ConnectionSingleton()

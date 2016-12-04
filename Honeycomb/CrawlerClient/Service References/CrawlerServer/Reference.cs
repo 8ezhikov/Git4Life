@@ -15,7 +15,7 @@ namespace CrawlerClient.CrawlerServer {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CrawlerResultsDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CrawlerResultsDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
     [System.SerializableAttribute()]
     public partial class CrawlerResultsDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -124,7 +124,7 @@ namespace CrawlerClient.CrawlerServer {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="InternalLinkDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="InternalLinkDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
     [System.SerializableAttribute()]
     public partial class InternalLinkDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -297,7 +297,7 @@ namespace CrawlerClient.CrawlerServer {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SeedDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SeedDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
     [System.SerializableAttribute()]
     public partial class SeedDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -342,7 +342,7 @@ namespace CrawlerClient.CrawlerServer {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BadLinkDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BadLinkDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
     [System.SerializableAttribute()]
     public partial class BadLinkDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -403,7 +403,7 @@ namespace CrawlerClient.CrawlerServer {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ExternalLinkDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb.Shared")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ExternalLinkDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
     [System.SerializableAttribute()]
     public partial class ExternalLinkDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
