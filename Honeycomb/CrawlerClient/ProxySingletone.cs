@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
@@ -26,7 +27,8 @@ namespace CrawlerClient
             Thread.Sleep(5000);
 
             var result = new CrawlerResultsDTO();
-            result.ExternalLinksList.Add(new ExternalLinkDTO { LinkAnchor = "Test Run" });
+            result.ExternalLinksList = new List<ExternalLinkDTO>();
+            result.ExternalLinksList.Add(new ExternalLinkDTO { LinkAnchor = "Test Run"  });
             Task.Factory.StartNew(() =>
             {
                 proxy.ReturnCrawlingResults(result);
