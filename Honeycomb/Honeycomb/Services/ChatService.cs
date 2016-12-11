@@ -99,20 +99,29 @@ namespace Honeycomb
         {
 
             var dbContext = new CrawlerEntities();
-            foreach (var internalLink in resultsDto.InternalLinksList)
+            if (resultsDto.InternalLinksList != null)
             {
-                var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
-                dbContext.InternalLinks.Add(dbLink);
+                foreach (var internalLink in resultsDto.InternalLinksList)
+                {
+                    var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
+                    dbContext.InternalLinks.Add(dbLink);
+                }
             }
-            foreach (var externalLink in resultsDto.ExternalLinksList)
+            if (resultsDto.ExternalLinksList != null)
             {
-                var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
-                dbContext.ExternalLinks.Add(dbLink);
+                foreach (var externalLink in resultsDto.ExternalLinksList)
+                {
+                    var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
+                    dbContext.ExternalLinks.Add(dbLink);
+                }
             }
-            foreach (var badLink in resultsDto.BadLinksList)
+            if (resultsDto.BadLinksList != null)
             {
-                var dbLink = ConvertBadLinkDTOtoDB(badLink);
-                dbContext.BadLinks.Add(dbLink);
+                foreach (var badLink in resultsDto.BadLinksList)
+                {
+                    var dbLink = ConvertBadLinkDTOtoDB(badLink);
+                    dbContext.BadLinks.Add(dbLink);
+                }
             }
             dbContext.SaveChanges();
 

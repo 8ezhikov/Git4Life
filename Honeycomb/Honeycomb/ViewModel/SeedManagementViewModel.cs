@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Honeycomb.Services;
@@ -45,9 +46,18 @@ namespace Honeycomb.ViewModel
 
         private void SaveSeed()
         {
-            if (dataAccessService.CreateSeed(NewSeed)>0)
+            var clonedSeed = new Seed
             {
-                SeedList.Add(NewSeed);
+                SeedDomainName = NewSeed.SeedDomainName,
+                IsProcessed = NewSeed.IsProcessed,
+                SeedFullName = NewSeed.SeedFullName,
+                SeedIndex = NewSeed.SeedIndex,
+                SeedShortName = NewSeed.SeedShortName
+            };
+
+            if (dataAccessService.CreateSeed(clonedSeed) >0)
+            {
+                SeedList.Add(clonedSeed);
                 MessageBox.Show("Successfully added new Seed!");
             }
         }

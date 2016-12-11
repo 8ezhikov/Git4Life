@@ -258,3 +258,4 @@ bin-release/
 
 #db extensions 
 *.sqlite
+/Honeycomb/Crawler DB/*.jfm
