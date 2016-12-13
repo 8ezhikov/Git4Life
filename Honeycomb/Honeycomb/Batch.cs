@@ -12,19 +12,16 @@ namespace Honeycomb
     using System;
     using System.Collections.Generic;
     
-    public partial class Seed
+    public partial class Batch
     {
-        public Seed()
-        {
-            this.Batches = new HashSet<Batch>();
-        }
+        public int Id { get; set; }
+        public System.Guid CrawlerConnectionId { get; set; }
+        public System.DateTime StartTime { get; set; }
+        public int CrawlingTime { get; set; }
+        public int NumberOfCrawledLinks { get; set; }
+        public int SeedId { get; set; }
     
-        public int SeedIndex { get; set; }
-        public string SeedDomainName { get; set; }
-        public string SeedShortName { get; set; }
-        public string SeedFullName { get; set; }
-        public bool IsProcessed { get; set; }
-    
-        public virtual ICollection<Batch> Batches { get; set; }
+        public virtual CrawlerConnection CrawlerConnection { get; set; }
+        public virtual Seed Seed { get; set; }
     }
 }

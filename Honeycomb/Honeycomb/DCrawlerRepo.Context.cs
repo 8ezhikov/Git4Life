@@ -13,10 +13,10 @@ namespace Honeycomb
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class CrawlerEntities : DbContext
+    public partial class Crawler_DBEntities : DbContext
     {
-        public CrawlerEntities()
-            : base("name=CrawlerEntities")
+        public Crawler_DBEntities()
+            : base("name=Crawler_DBEntities")
         {
         }
     
@@ -30,5 +30,7 @@ namespace Honeycomb
         public virtual DbSet<ExternalLink> ExternalLinks { get; set; }
         public virtual DbSet<InternalLink> InternalLinks { get; set; }
         public virtual DbSet<Seed> Seeds { get; set; }
+        public virtual DbSet<Batch> Batches { get; set; }
+        public virtual DbSet<CrawlerConnection> CrawlerConnections { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace Honeycomb
 
         public void GiveTestInitialTasks()
         {
-            var dbContext = new CrawlerEntities();
+            var dbContext = new Crawler_DBEntities();
 
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
             foreach (var crawlerCallback in _connectedClientCrawlers)
@@ -46,7 +46,7 @@ namespace Honeycomb
 
         public void GiveInitialTasks()
         {
-            var dbContext = new CrawlerEntities();
+            var dbContext = new Crawler_DBEntities();
 
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
             foreach (var crawlerCallback in _connectedClientCrawlers)
@@ -98,7 +98,7 @@ namespace Honeycomb
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
         {
 
-            var dbContext = new CrawlerEntities();
+            var dbContext = new Crawler_DBEntities();
             if (resultsDto.InternalLinksList != null)
             {
                 foreach (var internalLink in resultsDto.InternalLinksList)

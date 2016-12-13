@@ -189,6 +189,8 @@
     <Build Include="BadLinks.table.sql">
       <SubType>Code</SubType>
     </Build>
+    <Build Include="Batches.sql" />
+    <Build Include="CrawlerConnections.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Debug.publish.xml" />
@@ -199,5 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post-deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Crawler DB.refactorlog" />
   </ItemGroup>
 </Project>

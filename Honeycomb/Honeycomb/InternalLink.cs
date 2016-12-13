@@ -20,9 +20,9 @@ namespace Honeycomb
         public string PageSeedLink { get; set; }
         public string OriginalPageLink { get; set; }
         public int PageLevel { get; set; }
-        public Nullable<bool> IsProcessed { get; set; }
-        public Nullable<bool> IsAvailable { get; set; }
-        public Nullable<bool> IsHtml { get; set; }
-        public Nullable<int> LinkCount { get; set; }
+        public bool IsProcessed { get; set; }
+        public bool IsAvailable { get; set; }
+        public bool IsHtml { get; set; }
+        public int LinkCount { get; set; }
     }
 }

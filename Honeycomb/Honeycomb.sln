@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Honeycomb", "Honeycomb\Hone
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerClient", "CrawlerClient\CrawlerClient.csproj", "{0131EF6B-103B-4B96-B76C-3CB769290FCC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{39D23711-87FF-4774-A694-6FA0F67663A0}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Crawler DB", "Crawler DB\Crawler DB.sqlproj", "{1A884B74-EF2A-4730-A159-EAD5F01159E2}"
 EndProject
 Global

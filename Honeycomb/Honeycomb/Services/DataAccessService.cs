@@ -17,10 +17,10 @@ namespace Honeycomb.Services
 
         public class DataAccessService : IDataAccessService
         {
-            CrawlerEntities context;
+             Crawler_DBEntities context;
             public DataAccessService()
             {
-                context = new CrawlerEntities();
+                context = new Crawler_DBEntities();
             }
             public ObservableCollection<Seed> GetSeeds()
             {

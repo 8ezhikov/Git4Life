@@ -5,7 +5,7 @@
 	LinkAnchor nvarchar(MAX) NOT NULL,
 	PageSeedLink nvarchar(MAX) NOT NULL,
 	OriginalPageLink nvarchar(MAX) NOT NULL,
-	LinkWeight float,
+	LinkWeight float NULL,
 	OriginalPageLevel int not NULL,
 	LinkCount int NULL DEFAULT 0	
 )

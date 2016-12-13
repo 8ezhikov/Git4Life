@@ -12,18 +12,17 @@ namespace Honeycomb
     using System;
     using System.Collections.Generic;
     
-    public partial class Seed
+    public partial class CrawlerConnection
     {
-        public Seed()
+        public CrawlerConnection()
         {
             this.Batches = new HashSet<Batch>();
         }
     
-        public int SeedIndex { get; set; }
-        public string SeedDomainName { get; set; }
-        public string SeedShortName { get; set; }
-        public string SeedFullName { get; set; }
-        public bool IsProcessed { get; set; }
+        public System.Guid Id { get; set; }
+        public System.DateTime ConnectionTime { get; set; }
+        public string CrawlerName { get; set; }
+        public string CrawlerIP { get; set; }
     
         public virtual ICollection<Batch> Batches { get; set; }
     }
