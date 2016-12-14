@@ -28,7 +28,7 @@ namespace CrawlerClient
 
             var result = new CrawlerResultsDTO();
             result.ExternalLinksList = new List<ExternalLinkDTO>();
-            result.ExternalLinksList.Add(new ExternalLinkDTO { LinkAnchor = "Test Run"  });
+            result.ExternalLinksList.Add(new ExternalLinkDTO { LinkAnchor = "Test Run", LinkPath  = "",OriginalPageLink ="", PageSeedLink=""});
             Task.Factory.StartNew(() =>
             {
                 proxy.ReturnCrawlingResults(result);
