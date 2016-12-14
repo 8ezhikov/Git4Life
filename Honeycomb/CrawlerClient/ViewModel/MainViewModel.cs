@@ -21,6 +21,7 @@ namespace CrawlerClient.ViewModel
     {
         public RelayCommand StartTestCrawlingCommand { get; set; }
         public RelayCommand ConnectToServerCommand { get; set; }
+        public RelayCommand CloseWindowCommand { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -29,6 +30,8 @@ namespace CrawlerClient.ViewModel
         {
             ConnectToServerCommand = new RelayCommand(ConnectToServer);
             StartTestCrawlingCommand = new RelayCommand(TestCrawl);
+            CloseWindowCommand = new RelayCommand(CloseWindow);
+
             ClientName = $"Denis Test Crawler {DateTime.Now}";
 
         }
@@ -45,7 +48,10 @@ namespace CrawlerClient.ViewModel
             singleTone.Connect(newPerson);
 
         }
-
+        private void CloseWindow()
+        {
+            ConnectionSingleton.Instance.Disconnect();
+        }
         private void TestCrawl()
         {
             var crawlerInstance = new CrawlerEngine();

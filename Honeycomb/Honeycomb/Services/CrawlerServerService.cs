@@ -171,9 +171,15 @@ namespace Honeycomb
             return linkDb;
         }
 
-        public void Leave()
+        public void Leave( Guid clientGuid)
         {
-          
+
+            var clientToRemove = _connectedClientCrawlers.FirstOrDefault(cl => cl.ClientIdentifier == clientGuid);
+            if (clientToRemove != null)
+            {
+                _connectedClientCrawlers.Remove(clientToRemove);
+            }
+
         }
     }
 }
