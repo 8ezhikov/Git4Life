@@ -141,7 +141,7 @@
     <Compile Include="BadLink.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
-    <Compile Include="Services\ChatService.cs" />
+    <Compile Include="Services\CrawlerServerService.cs" />
     <Compile Include="Crawler_Setting.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>

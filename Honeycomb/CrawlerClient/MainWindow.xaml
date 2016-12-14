@@ -1,8 +1,16 @@
 ﻿<Window x:Class="CrawlerClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:z="http://schemas.microsoft.com/expression/2010/interactivity"
         DataContext="{Binding Main, Source={StaticResource Locator} }"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+       >
+    <z:Interaction.Triggers>
+        <z:EventTrigger EventName="Closing">
+            <z:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
+        </z:EventTrigger>
+    </z:Interaction.Triggers>
+
     <Grid>
         <Button x:Name="ConnectButton" Content="Connect to Server" HorizontalAlignment="Left" Margin="50,255,0,0"
                 VerticalAlignment="Top" Width="130" Height="39" Command="{Binding ConnectToServerCommand}" />

@@ -642,10 +642,10 @@ namespace CrawlerClient.CrawlerServer {
         System.Threading.Tasks.Task<System.Collections.Generic.List<CrawlerClient.CrawlerServer.ClientCrawlerInfo>> JoinAsync(CrawlerClient.CrawlerServer.ClientCrawlerInfo clientCrawlerInfo);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, IsTerminating=true, IsInitiating=false, Action="http://tempuri.org/IRemoteCrawler/Leave")]
-        void Leave();
+        void Leave(System.Guid clientGuid);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, IsTerminating=true, IsInitiating=false, Action="http://tempuri.org/IRemoteCrawler/Leave")]
-        System.Threading.Tasks.Task LeaveAsync();
+        System.Threading.Tasks.Task LeaveAsync(System.Guid clientGuid);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -710,12 +710,12 @@ namespace CrawlerClient.CrawlerServer {
             return base.Channel.JoinAsync(clientCrawlerInfo);
         }
         
-        public void Leave() {
-            base.Channel.Leave();
+        public void Leave(System.Guid clientGuid) {
+            base.Channel.Leave(clientGuid);
         }
         
-        public System.Threading.Tasks.Task LeaveAsync() {
-            return base.Channel.LeaveAsync();
+        public System.Threading.Tasks.Task LeaveAsync(System.Guid clientGuid) {
+            return base.Channel.LeaveAsync(clientGuid);
         }
     }
 }

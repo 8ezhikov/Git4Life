@@ -52,6 +52,10 @@ namespace CrawlerClient
         public static ConnectionSingleton Instance => LazySingleton.Value;
 
 
+        public void Disconnect()
+        {
+            proxy.Leave(_singletoneId);
+        }
         public void Connect(ClientCrawlerInfo clientCrawlerInfo)
         {
             var site = new InstanceContext(this);
