@@ -26,6 +26,12 @@ namespace CrawlerClient.CrawlerServer {
         private System.Collections.Generic.List<CrawlerClient.CrawlerServer.BadLinkDTO> BadLinksListField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private CrawlerClient.CrawlerServer.BatchDTO BatchInfoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private CrawlerClient.CrawlerServer.ConnectionInfoDTO ConnectionInfoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.List<CrawlerClient.CrawlerServer.ExternalLinkDTO> ExternalLinksListField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -56,6 +62,32 @@ namespace CrawlerClient.CrawlerServer {
                 if ((object.ReferenceEquals(this.BadLinksListField, value) != true)) {
                     this.BadLinksListField = value;
                     this.RaisePropertyChanged("BadLinksList");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public CrawlerClient.CrawlerServer.BatchDTO BatchInfo {
+            get {
+                return this.BatchInfoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BatchInfoField, value) != true)) {
+                    this.BatchInfoField = value;
+                    this.RaisePropertyChanged("BatchInfo");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public CrawlerClient.CrawlerServer.ConnectionInfoDTO ConnectionInfo {
+            get {
+                return this.ConnectionInfoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ConnectionInfoField, value) != true)) {
+                    this.ConnectionInfoField = value;
+                    this.RaisePropertyChanged("ConnectionInfo");
                 }
             }
         }
@@ -108,6 +140,224 @@ namespace CrawlerClient.CrawlerServer {
                 if ((object.ReferenceEquals(this.ProcessedSeedField, value) != true)) {
                     this.ProcessedSeedField = value;
                     this.RaisePropertyChanged("ProcessedSeed");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BatchDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
+    [System.SerializableAttribute()]
+    public partial class BatchDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid CrawlerConnectionIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int CrawlingTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int NumberOfCrawledLinksField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int SeedIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime StartTimeField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid CrawlerConnectionId {
+            get {
+                return this.CrawlerConnectionIdField;
+            }
+            set {
+                if ((this.CrawlerConnectionIdField.Equals(value) != true)) {
+                    this.CrawlerConnectionIdField = value;
+                    this.RaisePropertyChanged("CrawlerConnectionId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CrawlingTime {
+            get {
+                return this.CrawlingTimeField;
+            }
+            set {
+                if ((this.CrawlingTimeField.Equals(value) != true)) {
+                    this.CrawlingTimeField = value;
+                    this.RaisePropertyChanged("CrawlingTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int NumberOfCrawledLinks {
+            get {
+                return this.NumberOfCrawledLinksField;
+            }
+            set {
+                if ((this.NumberOfCrawledLinksField.Equals(value) != true)) {
+                    this.NumberOfCrawledLinksField = value;
+                    this.RaisePropertyChanged("NumberOfCrawledLinks");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int SeedId {
+            get {
+                return this.SeedIdField;
+            }
+            set {
+                if ((this.SeedIdField.Equals(value) != true)) {
+                    this.SeedIdField = value;
+                    this.RaisePropertyChanged("SeedId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime StartTime {
+            get {
+                return this.StartTimeField;
+            }
+            set {
+                if ((this.StartTimeField.Equals(value) != true)) {
+                    this.StartTimeField = value;
+                    this.RaisePropertyChanged("StartTime");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ConnectionInfoDTO", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
+    [System.SerializableAttribute()]
+    public partial class ConnectionInfoDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime ConnectionTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CrawlerIPField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CrawlerNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid IdField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime ConnectionTime {
+            get {
+                return this.ConnectionTimeField;
+            }
+            set {
+                if ((this.ConnectionTimeField.Equals(value) != true)) {
+                    this.ConnectionTimeField = value;
+                    this.RaisePropertyChanged("ConnectionTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CrawlerIP {
+            get {
+                return this.CrawlerIPField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CrawlerIPField, value) != true)) {
+                    this.CrawlerIPField = value;
+                    this.RaisePropertyChanged("CrawlerIP");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string CrawlerName {
+            get {
+                return this.CrawlerNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CrawlerNameField, value) != true)) {
+                    this.CrawlerNameField = value;
+                    this.RaisePropertyChanged("CrawlerName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
                 }
             }
         }

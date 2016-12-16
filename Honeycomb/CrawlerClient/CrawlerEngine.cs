@@ -74,7 +74,7 @@ namespace CrawlerClient
             {
                 BadLinksList = _badLinksList.ToList(),
                 ExternalLinksList = _externalLinksDictionary.Select(pair => pair.Value).ToList(),
-                InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList()
+                InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList(),
             };
 
             return result;

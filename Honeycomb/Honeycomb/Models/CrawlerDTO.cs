@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Honeycomb
@@ -16,7 +17,41 @@ namespace Honeycomb
         public Stack<InternalLinkDTO> InternalUnprocessedLinks;
         [DataMember]
         public SeedDTO ProcessedSeed;
+        [DataMember]
+        public BatchDTO BatchInfo;
+        [DataMember]
+        public ConnectionInfoDTO ConnectionInfo;
     }
+
+    [DataContract]
+    public class BatchDTO
+    {
+        [DataMember]
+        public Guid CrawlerConnectionId;
+        [DataMember]
+        public int CrawlingTime;
+        [DataMember]
+        public DateTime StartTime;
+        [DataMember]
+        public int NumberOfCrawledLinks;
+        [DataMember]
+        public int SeedId;
+        [DataMember]
+        public int Id;
+    }
+    [DataContract]
+    public class ConnectionInfoDTO
+    {
+        [DataMember]
+        public Guid Id;
+        [DataMember]
+        public string CrawlerName;
+        [DataMember]
+        public DateTime ConnectionTime;
+        [DataMember]
+        public string CrawlerIP;
+    }
+
 
     [DataContract]
     public class SeedDTO
@@ -24,7 +59,6 @@ namespace Honeycomb
         [DataMember]
         public string SeedDomainName;
     }
-
     [DataContract]
     public class InternalLinkDTO
     {
