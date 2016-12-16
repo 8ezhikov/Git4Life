@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,13 +12,17 @@ namespace CrawlerClient
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public sealed class ConnectionSingleton : IRemoteCrawlerCallback
     {
-        private static readonly Lazy<ConnectionSingleton> LazySingleton = new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
+        private static readonly Lazy<ConnectionSingleton> LazySingleton =
+            new Lazy<ConnectionSingleton>(() => new ConnectionSingleton());
+
         private readonly Guid _singletoneId;
         private IRemoteCrawler proxy;
+        public static ConnectionSingleton Instance => LazySingleton.Value;
+
 
         private ConnectionSingleton()
         {
-            _singletoneId =  Guid.NewGuid();
+            _singletoneId = Guid.NewGuid();
         }
 
         public void StartTestCrawl()
@@ -37,11 +40,9 @@ namespace CrawlerClient
 
         public void StartCrawling(string urlToCrawl)
         {
-
             var crawlerInstance = new CrawlerEngine();
-            var seedToCrawl = new  SeedDTO { SeedDomainName = urlToCrawl };
+            var seedToCrawl = new SeedDTO {SeedDomainName = urlToCrawl};
             var result = crawlerInstance.StartCrawlingProcess(new[] {seedToCrawl});
-
 
             Task.Factory.StartNew(() =>
             {
@@ -49,37 +50,34 @@ namespace CrawlerClient
             });
         }
 
-        public static ConnectionSingleton Instance => LazySingleton.Value;
-
-
         public void Disconnect()
         {
             proxy.Leave(_singletoneId);
         }
-        public void Connect(ClientCrawlerInfo clientCrawlerInfo)
+
+        public bool Connect(ClientCrawlerInfo clientCrawlerInfo)
         {
-            var site = new InstanceContext(this);
+            try
+            {
+                var site = new InstanceContext(this);
 
-            NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
-            
-            EndpointAddress address = new EndpointAddress("net.tcp://188.143.161.41:22222/chatservice/");
-            var factory = new DuplexChannelFactory<IRemoteCrawler>( site,binding, address);
-            
-            proxy =  factory.CreateChannel();
-            clientCrawlerInfo.ClientIdentifier = _singletoneId;
-            proxy.Join(clientCrawlerInfo);
+                var binding = new NetTcpBinding(SecurityMode.None);
+                var address = new EndpointAddress("net.tcp://188.143.161.41:22222/chatservice/");
+                var factory = new DuplexChannelFactory<IRemoteCrawler>(site, binding, address);
 
-            ////var anotherProxy = new CrawlerServer.RemoteCrawlerClient(site);
+                proxy = factory.CreateChannel();
+                clientCrawlerInfo.ClientIdentifier = _singletoneId;
+                proxy.Join(clientCrawlerInfo);
 
-            //proxy = new RemoteCrawlerClient(site);
+                return true;
+            }
 
-            ////proxy = new 
-            //ClientCrawlerInfo[] list = proxy.Join(p);
-            MessageBox.Show("Great Success!" );
-            // HandleEndJoin(list);
-            //IAsyncResult ee = proxy.JoinAsync(p);
-            //ee.AsyncWaitHandle = await 
-            //IAsyncResult iar = proxy.BeginJoin(p, new AsyncCallback(OnEndJoin), null);
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error happened" + ex.Message);
+                return false;
+            }
+
         }
     }
 
