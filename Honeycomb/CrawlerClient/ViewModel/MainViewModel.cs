@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 using CrawlerClient.CrawlerServer;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -45,7 +46,9 @@ namespace CrawlerClient.ViewModel
                 ServerIP = LocalIpAddress
             };
 
-            singleTone.Connect(newPerson);
+           var result =  singleTone.Connect(newPerson);
+            if (result)
+                MessageBox.Show("Success!");
 
         }
         private void CloseWindow()
