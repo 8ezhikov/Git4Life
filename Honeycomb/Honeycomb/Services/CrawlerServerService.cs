@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
+using AutoMapper;
 using Honeycomb.Interfaces;
 
 namespace Honeycomb
@@ -47,7 +48,7 @@ namespace Honeycomb
         public void GiveInitialTasks()
         {
             var dbContext = new Crawler_DBEntities();
-
+            ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
             foreach (var crawlerCallback in _connectedClientCrawlers)
             {
@@ -55,7 +56,8 @@ namespace Honeycomb
                 Seed nextSeed;
                 if (globalSeedStack.TryPop(out nextSeed))
                 {
-                    crawlerCallback.SavedCallback.StartCrawling(nextSeed.SeedDomainName);
+                   
+                    //crawlerCallback.SavedCallback.StartCrawling(nextSeed);
                 }
                 else
                 {
@@ -170,10 +172,15 @@ namespace Honeycomb
 
             return linkDb;
         }
+        private void ConvertSeedLinkDTOtoDB(Seed seedDto)
+        {
+            var result =   Mapper.Map<SeedDTO>(seedDto);
+
+          
+        }
 
         public void Leave( Guid clientGuid)
         {
-
             var clientToRemove = _connectedClientCrawlers.FirstOrDefault(cl => cl.ClientIdentifier == clientGuid);
             if (clientToRemove != null)
             {

@@ -8,6 +8,6 @@ namespace Honeycomb.Interfaces
         void StartTestCrawl();
 
         [OperationContract(IsOneWay = true)]
-        void StartCrawling(string siteURL);
+        void StartCrawling(SeedDTO SelectedSeedDTO);
     }
 }

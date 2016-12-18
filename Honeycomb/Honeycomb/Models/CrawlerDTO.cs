@@ -33,7 +33,9 @@ namespace Honeycomb
         [DataMember]
         public DateTime StartTime;
         [DataMember]
-        public int NumberOfCrawledLinks;
+        public int NumberOfCrawledInternalLinks;
+        [DataMember]
+        public int NumberOfCrawledExternalLinks;
         [DataMember]
         public int SeedId;
         [DataMember]
@@ -58,6 +60,9 @@ namespace Honeycomb
     {
         [DataMember]
         public string SeedDomainName;
+
+        [DataMember]
+        public int SeedIndex;
     }
     [DataContract]
     public class InternalLinkDTO

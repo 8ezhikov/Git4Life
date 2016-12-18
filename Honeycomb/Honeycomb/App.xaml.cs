@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using Serilog;
 
 namespace Honeycomb
@@ -23,7 +24,9 @@ namespace Honeycomb
             Log.Logger = new LoggerConfiguration()
               .MinimumLevel.Debug()
               .WriteTo.Seq("http://193.124.113.235:5341")
-              .CreateLogger();  
+              .CreateLogger();
+
+            Mapper.Initialize(cfg => cfg.CreateMap<Seed, SeedDTO>());
         }
 
         private static void MyHandler(object sender, UnhandledExceptionEventArgs args)

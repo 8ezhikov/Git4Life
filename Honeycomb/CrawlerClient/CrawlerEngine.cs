@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,9 +31,14 @@ namespace CrawlerClient
 
         public CrawlerResultsDTO StartCrawlingProcess(IEnumerable<SeedDTO> seedsToCrawl, int maxCrawlLevel = 2)
         {
+            var timetracker = new Stopwatch();
+
+            timetracker.Start();
+
+            var startTime = DateTime.Now;
+
             _maxPageLevel = maxCrawlLevel;
             _forceStop = false;
-
             foreach (var seed in seedsToCrawl)
             {
                 var startingAddress = seed.SeedDomainName;
@@ -66,9 +72,13 @@ namespace CrawlerClient
                 _forceStop = false;
             }
 
-
-            //RuningTime = (DateTime.Now - startingTime).ToString();
+            timetracker.Stop();
+            var runingTime = timetracker.Elapsed.Seconds;
             //MessageBox.Show(RuningTime);
+            var batchInfo = new BatchDTO();
+            batchInfo.CrawlingTime = runingTime;
+            batchInfo.StartTime = startTime;
+           
 
             var result = new CrawlerResultsDTO
             {
@@ -79,23 +89,6 @@ namespace CrawlerClient
 
             return result;
         }
-        //void FillAllLinks(string seedDomainName)
-        //{
-        //    var allCollectedInternalLinksForDomain =
-        //        _internalLinksDictionary.Where(link => link.Value.PageSeedLink == seedDomainName);
-        //    foreach (var internalLink in allCollectedInternalLinksForDomain)
-        //    {
-        //        _allLinks.Add(internalLink.Key);
-        //    }
-
-        //    var allCollectedExternalLinksForDomain =
-        //       _internalLinksDictionary.Where(link => link.Value.PageSeedLink == seedDomainName);
-        //    foreach (var internalLink in allCollectedExternalLinksForDomain)
-        //    {
-        //        _allLinks.Add(internalLink.Value.LinkPath);
-        //    }
-        //}
-
 
         private void FindLinks(string startingAddress, int pageLevel, string seedLink)
         {
