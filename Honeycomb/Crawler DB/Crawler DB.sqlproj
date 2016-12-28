@@ -168,6 +168,7 @@
     <None Include="Scripts\Post-Deployment\Script.PostDeployment.sql">
       <SubType>Code</SubType>
     </None>
+    <None Include="Crawler DB UltraVDS.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <BuildContributorArgument Include="OutDir=$(OutDir)" />
