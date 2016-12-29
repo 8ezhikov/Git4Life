@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,11 +39,20 @@ namespace CrawlerClient
             });
         }
 
-        public void StartCrawling(string urlToCrawl)
+        public void StartCrawling(SeedDTO seed)
         {
             var crawlerInstance = new CrawlerEngine();
-            var seedToCrawl = new SeedDTO {SeedDomainName = urlToCrawl};
-            var result = crawlerInstance.StartCrawlingProcess(new[] {seedToCrawl});
+            CrawlerResultsDTO result;
+
+            try
+            {
+                result = crawlerInstance.StartCrawlingProcess(new[] { seed });
+            }
+            catch (Exception ex)
+            {
+                
+                return;
+            }
 
             Task.Factory.StartNew(() =>
             {
@@ -52,7 +62,7 @@ namespace CrawlerClient
 
         public void Disconnect()
         {
-            proxy.Leave(_singletoneId);
+            proxy?.Leave(_singletoneId);
         }
 
         public bool Connect(ClientCrawlerInfo clientCrawlerInfo)
@@ -62,10 +72,11 @@ namespace CrawlerClient
                 var site = new InstanceContext(this);
 
                 var binding = new NetTcpBinding(SecurityMode.None);
-                var address = new EndpointAddress("net.tcp://188.143.161.41:22222/chatservice/");
+                var address = new EndpointAddress("net.tcp://193.124.113.235:22222/chatservice/");
                 var factory = new DuplexChannelFactory<IRemoteCrawler>(site, binding, address);
-
+                
                 proxy = factory.CreateChannel();
+                ((IContextChannel)proxy).OperationTimeout = new TimeSpan(1, 0, 10);
                 clientCrawlerInfo.ClientIdentifier = _singletoneId;
                 proxy.Join(clientCrawlerInfo);
 

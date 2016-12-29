@@ -32,7 +32,8 @@
       <xs:element minOccurs="0" name="CrawlerConnectionId" type="ser:guid" />
       <xs:element minOccurs="0" name="CrawlingTime" type="xs:int" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="NumberOfCrawledLinks" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfCrawledExternalLinks" type="xs:int" />
+      <xs:element minOccurs="0" name="NumberOfCrawledInternalLinks" type="xs:int" />
       <xs:element minOccurs="0" name="SeedId" type="xs:int" />
       <xs:element minOccurs="0" name="StartTime" type="xs:dateTime" />
     </xs:sequence>
@@ -88,6 +89,7 @@
   <xs:complexType name="SeedDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="SeedDomainName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SeedIndex" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SeedDTO" nillable="true" type="tns:SeedDTO" />

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 
@@ -17,10 +18,14 @@ namespace Honeycomb.Services
 
         public class DataAccessService : IDataAccessService
         {
-             Crawler_DBEntities context;
+
+
+            Crawler_DBEntities context;
             public DataAccessService()
             {
+
                 context = new Crawler_DBEntities();
+                
             }
             public ObservableCollection<Seed> GetSeeds()
             {

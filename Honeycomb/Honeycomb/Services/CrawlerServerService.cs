@@ -48,7 +48,7 @@ namespace Honeycomb
         public void GiveInitialTasks()
         {
             var dbContext = new Crawler_DBEntities();
-            ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
+          //  ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
             foreach (var crawlerCallback in _connectedClientCrawlers)
             {
@@ -56,12 +56,11 @@ namespace Honeycomb
                 Seed nextSeed;
                 if (globalSeedStack.TryPop(out nextSeed))
                 {
-                   
-                    //crawlerCallback.SavedCallback.StartCrawling(nextSeed);
+                    crawlerCallback.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
                 }
                 else
                 {
-                    throw new Exception("Couldn't pop from stack");
+                    //throw new Exception("Couldn't pop from stack");
                 }
 
             }
@@ -89,11 +88,12 @@ namespace Honeycomb
             Seed nextSeed;
             if (globalSeedStack.TryPop(out nextSeed))
             {
-                //crawlerCallback.StartCrawling(nextSeed.SeedDomainName);
+                var foundcallback = _connectedClientCrawlers.FirstOrDefault(crw =>crw.ClientIdentifier== resultsDto.ConnectionInfo.Id);
+                foundcallback?.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
             }
             else
             {
-                throw new Exception("Couldn't pop from stack");
+                //throw new Exception("Couldn't pop from stack");
             }
         }
 
@@ -172,21 +172,14 @@ namespace Honeycomb
 
             return linkDb;
         }
-        private void ConvertSeedLinkDTOtoDB(Seed seedDto)
-        {
-            var result =   Mapper.Map<SeedDTO>(seedDto);
 
-          
-        }
-
-        public void Leave( Guid clientGuid)
+        public void Leave(Guid clientGuid)
         {
             var clientToRemove = _connectedClientCrawlers.FirstOrDefault(cl => cl.ClientIdentifier == clientGuid);
             if (clientToRemove != null)
             {
                 _connectedClientCrawlers.Remove(clientToRemove);
             }
-
         }
     }
 }

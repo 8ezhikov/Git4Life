@@ -173,7 +173,10 @@ namespace CrawlerClient.CrawlerServer {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int NumberOfCrawledLinksField;
+        private int NumberOfCrawledExternalLinksField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int NumberOfCrawledInternalLinksField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SeedIdField;
@@ -231,14 +234,27 @@ namespace CrawlerClient.CrawlerServer {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int NumberOfCrawledLinks {
+        public int NumberOfCrawledExternalLinks {
             get {
-                return this.NumberOfCrawledLinksField;
+                return this.NumberOfCrawledExternalLinksField;
             }
             set {
-                if ((this.NumberOfCrawledLinksField.Equals(value) != true)) {
-                    this.NumberOfCrawledLinksField = value;
-                    this.RaisePropertyChanged("NumberOfCrawledLinks");
+                if ((this.NumberOfCrawledExternalLinksField.Equals(value) != true)) {
+                    this.NumberOfCrawledExternalLinksField = value;
+                    this.RaisePropertyChanged("NumberOfCrawledExternalLinks");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int NumberOfCrawledInternalLinks {
+            get {
+                return this.NumberOfCrawledInternalLinksField;
+            }
+            set {
+                if ((this.NumberOfCrawledInternalLinksField.Equals(value) != true)) {
+                    this.NumberOfCrawledInternalLinksField = value;
+                    this.RaisePropertyChanged("NumberOfCrawledInternalLinks");
                 }
             }
         }
@@ -557,6 +573,9 @@ namespace CrawlerClient.CrawlerServer {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SeedDomainNameField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int SeedIndexField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -576,6 +595,19 @@ namespace CrawlerClient.CrawlerServer {
                 if ((object.ReferenceEquals(this.SeedDomainNameField, value) != true)) {
                     this.SeedDomainNameField = value;
                     this.RaisePropertyChanged("SeedDomainName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int SeedIndex {
+            get {
+                return this.SeedIndexField;
+            }
+            set {
+                if ((this.SeedIndexField.Equals(value) != true)) {
+                    this.SeedIndexField = value;
+                    this.RaisePropertyChanged("SeedIndex");
                 }
             }
         }
@@ -905,7 +937,7 @@ namespace CrawlerClient.CrawlerServer {
         void StartTestCrawl();
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IRemoteCrawler/StartCrawling")]
-        void StartCrawling(string siteURL);
+        void StartCrawling(CrawlerClient.CrawlerServer.SeedDTO SelectedSeedDTO);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
