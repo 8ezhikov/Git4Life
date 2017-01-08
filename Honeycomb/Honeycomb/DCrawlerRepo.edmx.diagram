@@ -14,6 +14,7 @@
         <EntityTypeShape EntityType="DCrawlerModel.CrawlerConnection" Width="1.5" PointX="4.75" PointY="8" />
         <AssociationConnector Association="DCrawlerModel.FK_Batches_ToCrawlerConnection" />
         <AssociationConnector Association="DCrawlerModel.FK_Batches_ToSeeds" />
+        <EntityTypeShape EntityType="DCrawlerModel.C__RefactorLog" Width="1.5" PointX="5.375" PointY="4.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

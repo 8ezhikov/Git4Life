@@ -32,14 +32,13 @@ namespace Honeycomb.ViewModel
             ReadAllCommand = new RelayCommand(GetEmployees);
             ShowSeedWindowCommand = new RelayCommand(ShowSeedWindow);
             var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
-            instance = new RemoteCrawlerService();
+            instance = new RemoteCrawlerService(this);
             host = new ServiceHost(instance, uri);
             host.Open();
             ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
             ClientCrawlers = instance.ConnectedClientCrawlers;
-
-            TextBoxContent += "Starting Server...\n";
-            TextBoxContent += "Press ENTER to stop chat service... \n";
+            AppendTextToConsole("Starting Server...");
+            AppendTextToConsole( "Press ENTER to stop chat service...");
         }
 
         private string _textBoxContent;
@@ -66,6 +65,10 @@ namespace Honeycomb.ViewModel
             }
         }
 
+        public void AppendTextToConsole(string messageToAppend)
+        {
+            TextBoxContent += messageToAppend + '\n';
+        }
         private void StartTestCrawling()
         {
             var hoster = ((RemoteCrawlerService)host.SingletonInstance);

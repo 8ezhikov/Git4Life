@@ -5,6 +5,12 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DCrawlerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="BadLinks">
           <Key>
             <PropertyRef Name="LinkId" />
@@ -21,7 +27,8 @@
           <Property Name="CrawlerConnectionId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="CrawlingTime" Type="int" Nullable="false" />
-          <Property Name="NumberOfCrawledLinks" Type="int" Nullable="false" />
+          <Property Name="NumberOfCrawledInternalLinks" Type="int" Nullable="false" />
+          <Property Name="NumberOfCrawledExternalLinks" Type="int" Nullable="false" />
           <Property Name="SeedId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Crawler Settings">
@@ -79,7 +86,9 @@
           <Property Name="IsProcessed" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Batches_ToCrawlerConnection">
-          <End Role="CrawlerConnections" Type="Self.CrawlerConnections" Multiplicity="1" />
+          <End Role="CrawlerConnections" Type="Self.CrawlerConnections" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Batches" Type="Self.Batches" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CrawlerConnections">
@@ -91,7 +100,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Batches_ToSeeds">
-          <End Role="Seeds" Type="Self.Seeds" Multiplicity="1" />
+          <End Role="Seeds" Type="Self.Seeds" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Batches" Type="Self.Batches" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Seeds">
@@ -102,7 +113,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CleanContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DCrawlerModelStoreContainer">
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BadLinks" EntityType="Self.BadLinks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Batches" EntityType="Self.Batches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Crawler Settings" EntityType="Self.Crawler Settings" Schema="dbo" store:Type="Tables" />
@@ -193,6 +206,8 @@
             <End Role="Seed" EntitySet="Seeds" />
             <End Role="Batch" EntitySet="Batches" />
           </AssociationSet>
+          <EntitySet Name="C__RefactorLog" EntityType="DCrawlerModel.C__RefactorLog" />
+          <FunctionImport Name="CleanContent" />
           </EntityContainer>
         <EntityType Name="Batch">
           <Key>
@@ -202,10 +217,11 @@
           <Property Name="CrawlerConnectionId" Type="Guid" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CrawlingTime" Type="Int32" Nullable="false" />
-          <Property Name="NumberOfCrawledLinks" Type="Int32" Nullable="false" />
           <Property Name="SeedId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CrawlerConnection" Relationship="DCrawlerModel.FK_Batches_ToCrawlerConnection" FromRole="Batch" ToRole="CrawlerConnection" />
           <NavigationProperty Name="Seed" Relationship="DCrawlerModel.FK_Batches_ToSeeds" FromRole="Batch" ToRole="Seed" />
+          <Property Name="NumberOfCrawledInternalLinks" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfCrawledExternalLinks" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CrawlerConnection">
           <Key>
@@ -241,6 +257,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -308,8 +330,9 @@
           <EntitySetMapping Name="Batches">
             <EntityTypeMapping TypeName="DCrawlerModel.Batch">
               <MappingFragment StoreEntitySet="Batches">
+                <ScalarProperty Name="NumberOfCrawledExternalLinks" ColumnName="NumberOfCrawledExternalLinks" />
+                <ScalarProperty Name="NumberOfCrawledInternalLinks" ColumnName="NumberOfCrawledInternalLinks" />
                 <ScalarProperty Name="SeedId" ColumnName="SeedId" />
-                <ScalarProperty Name="NumberOfCrawledLinks" ColumnName="NumberOfCrawledLinks" />
                 <ScalarProperty Name="CrawlingTime" ColumnName="CrawlingTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="CrawlerConnectionId" ColumnName="CrawlerConnectionId" />
@@ -327,6 +350,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="DCrawlerModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CleanContent" FunctionName="DCrawlerModel.Store.CleanContent" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

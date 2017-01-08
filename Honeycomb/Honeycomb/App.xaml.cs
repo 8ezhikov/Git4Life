@@ -26,7 +26,20 @@ namespace Honeycomb
               .WriteTo.Seq("http://193.124.113.235:5341")
               .CreateLogger();
 
-            Mapper.Initialize(cfg => cfg.CreateMap<Seed, SeedDTO>());
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Seed, SeedDTO>();
+                cfg.CreateMap<SeedDTO, Seed>();
+                cfg.CreateMap<Batch, BatchDTO>();
+                cfg.CreateMap<BatchDTO, Batch>();
+
+
+
+
+            });
+          
+           // Mapper.Initialize(cfg => cfg.CreateMap<Seed, SeedDTO>());
+
         }
 
         private static void MyHandler(object sender, UnhandledExceptionEventArgs args)
@@ -34,23 +47,5 @@ namespace Honeycomb
             var e = (Exception)args.ExceptionObject;
             Log.Error(e,"");
         }
-
-        //TODO: Fix global app error handling
-        public bool DoHandle { get; set; }
-        //private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        //{
-        //    if (this.DoHandle)
-        //    {
-        //        //Handling the exception within the UnhandledExcpeiton handler.
-        //        MessageBox.Show(e.Exception.Message, "Exception Caught", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        e.Handled = true;
-        //    }
-        //    else
-        //    {
-        //        //If you do not set e.Handled to true, the application will close due to crash.
-        //        MessageBox.Show("Application is going to close! ", "Uncaught Exception");
-        //        e.Handled = false;
-        //    }
-        //}
     }
 }

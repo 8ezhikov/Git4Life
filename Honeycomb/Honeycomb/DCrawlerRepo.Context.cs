@@ -12,6 +12,8 @@ namespace Honeycomb
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Crawler_DBEntities : DbContext
     {
@@ -32,5 +34,11 @@ namespace Honeycomb
         public virtual DbSet<Seed> Seeds { get; set; }
         public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<CrawlerConnection> CrawlerConnections { get; set; }
+        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
+    
+        public virtual int CleanContent()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CleanContent");
+        }
     }
 }

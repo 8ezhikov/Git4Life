@@ -5,15 +5,22 @@ using System.Linq;
 using System.ServiceModel;
 using AutoMapper;
 using Honeycomb.Interfaces;
+using Honeycomb.Services;
+using Honeycomb.ViewModel;
 
 namespace Honeycomb
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class RemoteCrawlerService : IRemoteCrawler
     {
+        public RemoteCrawlerService(MainViewModel modelLink)
+        {
+            modelReference = modelLink;
+        }
         //callback interface for clients
         ICrawlerClientCallback callback = null;
         private ConcurrentStack<Seed> globalSeedStack = new ConcurrentStack<Seed>();
+        private MainViewModel modelReference;
         //delegate used for BroadcastEvent
 
         public ObservableCollection<ClientCrawlerInfo> ConnectedClientCrawlers
@@ -29,6 +36,7 @@ namespace Honeycomb
             var dbContext = new Crawler_DBEntities();
 
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
+            var crawlerCounter = 0;
             foreach (var crawlerCallback in _connectedClientCrawlers)
             {
 
@@ -36,27 +44,7 @@ namespace Honeycomb
                 if (globalSeedStack.TryPop(out nextSeed))
                 {
                     crawlerCallback.SavedCallback.StartTestCrawl();
-                }
-                else
-                {
-                    throw new Exception("Couldn't pop from stack");
-                }
-
-            }
-        }
-
-        public void GiveInitialTasks()
-        {
-            var dbContext = new Crawler_DBEntities();
-          //  ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
-            globalSeedStack.PushRange(dbContext.Seeds.ToArray());
-            foreach (var crawlerCallback in _connectedClientCrawlers)
-            {
-
-                Seed nextSeed;
-                if (globalSeedStack.TryPop(out nextSeed))
-                {
-                    crawlerCallback.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
+                    crawlerCounter++;
                 }
                 else
                 {
@@ -64,6 +52,39 @@ namespace Honeycomb
                 }
 
             }
+            modelReference.AppendTextToConsole("Test Crawling started for "+ crawlerCounter+ " crawlers");
+        }
+
+        public void GiveInitialTasks()
+        {
+            var dbContext = new Crawler_DBEntities();
+          //  ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
+            if (!dbContext.Seeds.Any())
+            {
+                return;
+            }
+            
+            globalSeedStack.PushRange(dbContext.Seeds.ToArray());
+
+            var crawlerCounter = 0;
+
+            foreach (var crawlerCallback in _connectedClientCrawlers)
+            {
+
+                Seed nextSeed;
+                if (globalSeedStack.TryPop(out nextSeed))
+                {
+                    crawlerCallback.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
+                    crawlerCounter++;
+
+                }
+                else
+                {
+                    //throw new Exception("Couldn't pop from stack");
+                }
+            }
+            modelReference.AppendTextToConsole("Test Crawling started for " + crawlerCounter + " crawlers");
+
         }
 
         public ClientCrawlerInfo[] Join(ClientCrawlerInfo clientCrawlerNewInfo)
@@ -71,7 +92,13 @@ namespace Honeycomb
 
             clientCrawlerNewInfo.SavedCallback = OperationContext.Current.GetCallbackChannel<ICrawlerClientCallback>();
             ConnectedClientCrawlers.Add(clientCrawlerNewInfo);
+            var dbContext = new Crawler_DBEntities();
 
+            var dbConnInfo = SeedModel.DataAccessService.ConvertToCrawlerConnection(clientCrawlerNewInfo);
+            dbConnInfo.ConnectionTime = DateTime.Now;
+            dbContext.CrawlerConnections.Add(dbConnInfo);
+
+            dbContext.SaveChanges();
             return ConnectedClientCrawlers.ToArray();
 
         }
@@ -99,8 +126,19 @@ namespace Honeycomb
 
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
         {
+            modelReference.AppendTextToConsole("Crawling results from" + resultsDto.ProcessedSeed.SeedDomainName + " acquired. Saving onto DB...");
 
+
+            
             var dbContext = new Crawler_DBEntities();
+
+            var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
+            dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
+           
+            dbContext.Batches.Add(dbBatch);
+
+            
+
             if (resultsDto.InternalLinksList != null)
             {
                 foreach (var internalLink in resultsDto.InternalLinksList)
@@ -125,6 +163,7 @@ namespace Honeycomb
                     dbContext.BadLinks.Add(dbLink);
                 }
             }
+
             dbContext.SaveChanges();
 
            

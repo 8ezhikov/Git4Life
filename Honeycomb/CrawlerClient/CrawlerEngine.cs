@@ -78,13 +78,20 @@ namespace CrawlerClient
             var batchInfo = new BatchDTO();
             batchInfo.CrawlingTime = runingTime;
             batchInfo.StartTime = startTime;
-           
+            batchInfo.NumberOfCrawledExternalLinks = _externalLinksDictionary.Count;
+            batchInfo.NumberOfCrawledInternalLinks = _internalLinksIdCounter;
+            batchInfo.SeedId = seedsToCrawl.FirstOrDefault().SeedIndex;
+            
+
+
 
             var result = new CrawlerResultsDTO
             {
                 BadLinksList = _badLinksList.ToList(),
                 ExternalLinksList = _externalLinksDictionary.Select(pair => pair.Value).ToList(),
                 InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList(),
+                BatchInfo= batchInfo,
+                ProcessedSeed = seedsToCrawl.FirstOrDefault()
             };
 
             return result;

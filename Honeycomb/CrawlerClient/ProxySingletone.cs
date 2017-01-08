@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
+using CrawlerClient.ViewModel;
 
 namespace CrawlerClient
 {
@@ -19,7 +20,7 @@ namespace CrawlerClient
         private readonly Guid _singletoneId;
         private IRemoteCrawler proxy;
         public static ConnectionSingleton Instance => LazySingleton.Value;
-
+        private MainViewModel InjectedViewModel;
 
         private ConnectionSingleton()
         {
@@ -32,37 +33,59 @@ namespace CrawlerClient
 
             var result = new CrawlerResultsDTO();
             result.ExternalLinksList = new List<ExternalLinkDTO>();
-            result.ExternalLinksList.Add(new ExternalLinkDTO { LinkAnchor = "Test Run", LinkPath  = "",OriginalPageLink ="", PageSeedLink=""});
+            result.ExternalLinksList.Add(new ExternalLinkDTO
+            {
+                LinkAnchor = "Test Run",
+                LinkPath = "",
+                OriginalPageLink = "",
+                PageSeedLink = ""
+            });
             Task.Factory.StartNew(() =>
             {
                 proxy.ReturnCrawlingResults(result);
             });
         }
 
+        public void InjectViewModel(MainViewModel injectedViewModel)
+        {
+            InjectedViewModel = injectedViewModel;
+        }
         public void StartCrawling(SeedDTO seed)
         {
             var crawlerInstance = new CrawlerEngine();
             CrawlerResultsDTO result;
-
+            InjectedViewModel.CrawlerStatus = "Crawling Started";
             try
             {
-                result = crawlerInstance.StartCrawlingProcess(new[] { seed });
+                result = crawlerInstance.StartCrawlingProcess(new[] {seed});
+                result.ConnectionInfo = new ConnectionInfoDTO();
+                result.ConnectionInfo.Id = _singletoneId;
             }
             catch (Exception ex)
             {
-                
+
                 return;
             }
-
+            InjectedViewModel.CrawlerStatus = "Crawling finished returning results";
             Task.Factory.StartNew(() =>
             {
                 proxy.ReturnCrawlingResults(result);
             });
+            InjectedViewModel.CrawlerStatus = "All results returned to main server! Waiting for new task";
+
         }
 
         public void Disconnect()
         {
-            proxy?.Leave(_singletoneId);
+            try
+            {
+                proxy?.Leave(_singletoneId);
+
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         public bool Connect(ClientCrawlerInfo clientCrawlerInfo)
@@ -72,7 +95,9 @@ namespace CrawlerClient
                 var site = new InstanceContext(this);
 
                 var binding = new NetTcpBinding(SecurityMode.None);
-                var address = new EndpointAddress("net.tcp://193.124.113.235:22222/chatservice/");
+                var address = new EndpointAddress("net.tcp://localhost:22222/chatservice/");
+
+              //  var address = new EndpointAddress("net.tcp://193.124.113.235:22222/chatservice/");
                 var factory = new DuplexChannelFactory<IRemoteCrawler>(site, binding, address);
                 
                 proxy = factory.CreateChannel();

@@ -34,7 +34,8 @@ namespace CrawlerClient.ViewModel
             CloseWindowCommand = new RelayCommand(CloseWindow);
 
             ClientName = $"Denis Test Crawler {DateTime.Now}";
-
+            CrawlerStatus = "Waiting";
+            ConnectionSingleton.Instance.InjectViewModel(this);
         }
         private void ConnectToServer()
         {
@@ -48,7 +49,7 @@ namespace CrawlerClient.ViewModel
 
            var result =  singleTone.Connect(newPerson);
             if (result)
-                MessageBox.Show("Success!");
+                CrawlerStatus = "Connected";
 
         }
         private void CloseWindow()
@@ -77,6 +78,8 @@ namespace CrawlerClient.ViewModel
         }
 
         private string _localIpAdress;
+        private  string _crawlerStatus;
+
         public string LocalIpAddress
         {
             get
@@ -92,6 +95,10 @@ namespace CrawlerClient.ViewModel
 
         public string ClientName { get; set; }
 
-      
+        public  string CrawlerStatus
+        {
+            get { return _crawlerStatus; }
+            set { _crawlerStatus = value; RaisePropertyChanged("CrawlerStatus"); }
+        }
     }
 }

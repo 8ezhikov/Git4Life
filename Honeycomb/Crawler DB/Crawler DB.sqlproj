@@ -192,6 +192,7 @@
     </Build>
     <Build Include="Batches.sql" />
     <Build Include="CrawlerConnections.sql" />
+    <Build Include="CleanContent.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Debug.publish.xml" />
@@ -202,5 +203,8 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Post-deployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Crawler DB.refactorlog" />
   </ItemGroup>
 </Project>

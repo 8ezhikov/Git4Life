@@ -120,6 +120,9 @@
     <Compile Include="CrawlerConnection.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
+    <Compile Include="C__RefactorLog.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CrawlerDTO.cs" />
     <Compile Include="Models\ClientCrawlerInfo.cs" />
     <Compile Include="Models\CrawlRequest.cs" />

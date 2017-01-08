@@ -45,6 +45,17 @@ namespace Honeycomb.Services
                 context.SaveChanges();
             }
 
+            public static CrawlerConnection ConvertToCrawlerConnection(ClientCrawlerInfo connection)
+            {
+                var result = new CrawlerConnection();
+
+                result.CrawlerIP = connection.ServerIP;
+                result.CrawlerName = connection.ClientName;
+                result.Id = connection.ClientIdentifier;
+
+                return result;
+            }
+
         }
 
     }
