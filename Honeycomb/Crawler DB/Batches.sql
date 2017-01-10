@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Batches]
 (
-	[Id] INT NOT NULL PRIMARY KEY, 
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [CrawlerConnectionId] UNIQUEIDENTIFIER NOT NULL, 
     [StartTime] DATETIME NOT NULL, 
     [CrawlingTime] INT NOT NULL, 

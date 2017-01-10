@@ -14,7 +14,7 @@ namespace Honeycomb.ViewModel
         {
             dataAccessService = servPxy;
             AddSeedCommand = new RelayCommand(SaveSeed);
-            DeleteSeedCommand  = new RelayCommand<Seed>(DeleteSeed);
+            DeleteSeedCommand = new RelayCommand<Seed>(DeleteSeed);
             NewSeed = new Seed();
             SeedList = dataAccessService.GetSeeds();
         }
@@ -63,10 +63,10 @@ namespace Honeycomb.ViewModel
                 IsProcessed = NewSeed.IsProcessed,
                 SeedFullName = NewSeed.SeedFullName ?? "",
                 SeedIndex = NewSeed.SeedIndex,
-                SeedShortName = NewSeed.SeedShortName??""
+                SeedShortName = NewSeed.SeedShortName ?? ""
             };
 
-            if (dataAccessService.CreateSeed(clonedSeed) >0)
+            if (dataAccessService.CreateSeed(clonedSeed) > 0)
             {
                 SeedList.Add(clonedSeed);
                 MessageBox.Show("Successfully added new Seed!");
@@ -75,7 +75,7 @@ namespace Honeycomb.ViewModel
 
         private void DeleteSeed(Seed selectedSeed)
         {
-          // SeedList.Remove(SelectedSeed);
+            // SeedList.Remove(SelectedSeed);
             dataAccessService.DeleteSeed(selectedSeed);
         }
 

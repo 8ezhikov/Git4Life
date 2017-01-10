@@ -95,13 +95,14 @@ namespace CrawlerClient
                 var site = new InstanceContext(this);
 
                 var binding = new NetTcpBinding(SecurityMode.None);
-                var address = new EndpointAddress("net.tcp://localhost:22222/chatservice/");
+                //var address = new EndpointAddress("net.tcp://localhost:22222/chatservice/");
 
-              //  var address = new EndpointAddress("net.tcp://193.124.113.235:22222/chatservice/");
+                var address = new EndpointAddress("net.tcp://193.124.113.235:22222/chatservice/");
                 var factory = new DuplexChannelFactory<IRemoteCrawler>(site, binding, address);
                 
                 proxy = factory.CreateChannel();
                 ((IContextChannel)proxy).OperationTimeout = new TimeSpan(1, 0, 10);
+                
                 clientCrawlerInfo.ClientIdentifier = _singletoneId;
                 proxy.Join(clientCrawlerInfo);
 

@@ -52,18 +52,18 @@ namespace Honeycomb
                 }
 
             }
-            modelReference.AppendTextToConsole("Test Crawling started for "+ crawlerCounter+ " crawlers");
+            modelReference.AppendTextToConsole("Test Crawling started for " + crawlerCounter + " crawlers");
         }
 
         public void GiveInitialTasks()
         {
             var dbContext = new Crawler_DBEntities();
-          //  ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
+            //  ConvertSeedLinkDTOtoDB(dbContext.Seeds.FirstOrDefault());
             if (!dbContext.Seeds.Any())
             {
                 return;
             }
-            
+
             globalSeedStack.PushRange(dbContext.Seeds.ToArray());
 
             var crawlerCounter = 0;
@@ -115,7 +115,7 @@ namespace Honeycomb
             Seed nextSeed;
             if (globalSeedStack.TryPop(out nextSeed))
             {
-                var foundcallback = _connectedClientCrawlers.FirstOrDefault(crw =>crw.ClientIdentifier== resultsDto.ConnectionInfo.Id);
+                var foundcallback = _connectedClientCrawlers.FirstOrDefault(crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
                 foundcallback?.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
             }
             else
@@ -129,15 +129,15 @@ namespace Honeycomb
             modelReference.AppendTextToConsole("Crawling results from" + resultsDto.ProcessedSeed.SeedDomainName + " acquired. Saving onto DB...");
 
 
-            
+
             var dbContext = new Crawler_DBEntities();
 
             var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
             dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
-           
+
             dbContext.Batches.Add(dbBatch);
 
-            
+
 
             if (resultsDto.InternalLinksList != null)
             {
@@ -166,7 +166,7 @@ namespace Honeycomb
 
             dbContext.SaveChanges();
 
-           
+
         }
 
         private InternalLink ConvertInternalLinkDTOtoDB(InternalLinkDTO internalLinkDto)
