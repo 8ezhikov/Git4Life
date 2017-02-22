@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:z="http://schemas.microsoft.com/expression/2010/interactivity"
         DataContext="{Binding Main, Source={StaticResource Locator} }"
-        Title="MainWindow" Height="350" Width="525"
+        Title="BeeBot-EDG Client" Height="331.462" Width="525"
        >
     <z:Interaction.Triggers>
         <z:EventTrigger EventName="Closing">
@@ -11,19 +11,23 @@
         </z:EventTrigger>
     </z:Interaction.Triggers>
 
-    <Grid>
-        <Button x:Name="ConnectButton" Content="Connect to Server" HorizontalAlignment="Left" Margin="50,255,0,0"
-                VerticalAlignment="Top" Width="130" Height="39" Command="{Binding ConnectToServerCommand}" />
-        <Button x:Name="StartCrawlerButton" Content="Start test local crawl" HorizontalAlignment="Left" Margin="334,255,0,0"
-                VerticalAlignment="Top" Width="128" Height="39" Command="{Binding StartTestCrawlingCommand}" />
-        <Label x:Name="GlobalIpTextLabel" Content="Here is you global IP:" HorizontalAlignment="Left" Margin="32,30,0,0" VerticalAlignment="Top"/>
+    <Grid >
+        <Button x:Name="ConnectButton" Content="Connect to Server" HorizontalAlignment="Left" Margin="32,241,0,0"
+                VerticalAlignment="Top" Width="216" Height="39" Command="{Binding ConnectToServerCommand}" IsEnabled="{Binding IsConnectButtonActive}" />
+        <Button x:Name="StartCrawlerButton" Content="Start test local crawl"   HorizontalAlignment="Left" Margin="315,255,0,0"
+                VerticalAlignment="Top" Width="128" Height="39" Command="{Binding StartTestCrawlingCommand}" Visibility="Hidden" />
+        <Label x:Name="GlobalIpTextLabel" Content="Your global IP:" HorizontalAlignment="Left" Margin="32,30,0,0" VerticalAlignment="Top"/>
         <Label x:Name="GlobalIpDynamicLabel" Content="{Binding PublicIpAddress, Mode=OneWay}" HorizontalAlignment="Left" Margin="159,30,0,0" VerticalAlignment="Top" Height="26"/>
-        <Label x:Name="CurrentStatusLabel" Content="CurrentStatus:" HorizontalAlignment="Left" Margin="32,114,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="DynamicStatusLabel" Content="{Binding CrawlerStatus}" HorizontalAlignment="Left" Margin="121,114,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="CurrentStatusLabel" Content="Current Status:" HorizontalAlignment="Left" Margin="32,114,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="DynamicStatusLabel" Content="{Binding CrawlerStatus}" HorizontalAlignment="Left" Margin="159,114,0,0" VerticalAlignment="Top"/>
         <Label x:Name="LocalIpDynamicLabel" Content="{Binding LocalIpAddress, Mode=OneWay}" HorizontalAlignment="Left" Margin="159,72,0,0" VerticalAlignment="Top" Height="26" RenderTransformOrigin="0.775,3.808"/>
-        <Label x:Name="LocalIpTextLabel" Content="Here is Your local IP:" HorizontalAlignment="Left" Margin="32,72,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ClientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="159,153,0,0" TextWrapping="Wrap" Text="{Binding ClientName}" VerticalAlignment="Top" Width="247"/>
-        <Label x:Name="ClientNameLabel" Content="Client Name" HorizontalAlignment="Left" Margin="32,150,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LocalIpTextLabel" Content="Your local IP:" HorizontalAlignment="Left" Margin="32,72,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ClientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="196,153,0,0" TextWrapping="Wrap" Text="{Binding ClientName}" VerticalAlignment="Top" Width="247"/>
+        <Label x:Name="ClientNameLabel" Content="Choose connection name" HorizontalAlignment="Left" Margin="32,150,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="ServerIPLabel" Content="ServerIP and Port" HorizontalAlignment="Left" Margin="32,185,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ServerPortTextBox" HorizontalAlignment="Left" Height="23" Margin="159,189,0,0" TextWrapping="Wrap" Text="{Binding ServerAddress}" VerticalAlignment="Top" Width="247" IsEnabled="False"/>
+        <Button x:Name="TestPerformanceButton" Content="Test Crawler Performance" HorizontalAlignment="Left" Margin="273,241,0,0"
+            VerticalAlignment="Top" Width="216" Height="39" Command="{Binding StartTestCrawlingCommand}" IsEnabled="{Binding IsConnectButtonActive}" />
 
 
     </Grid>

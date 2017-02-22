@@ -199,24 +199,42 @@ namespace CrawlerClient
                 return null;
             if (url.Contains("javascript:"))
                 return null;
+            //try
+            //{
+            //    var uri = new Uri(url);
+            //    return uri.AbsoluteUri;
+            //}
+            //catch (Exception)
+            //{
+            //    try
+            //    {
+            //        url = "http://" + startingAddress + "/" + url;
+            //        var uri = new Uri(url);
+            //        return uri.AbsoluteUri;
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        LogException(e);
+            //        return null;
+            //    }
+            //}
             try
             {
+                Uri uriResult;
+                var result = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                if (result)
+                {
+                    return uriResult.AbsoluteUri;
+                }
+                url = "http://" + startingAddress + "/" + url;
                 var uri = new Uri(url);
                 return uri.AbsoluteUri;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                try
-                {
-                    url = "http://" + startingAddress + "/" + url;
-                    var uri = new Uri(url);
-                    return uri.AbsoluteUri;
-                }
-                catch (Exception e)
-                {
-                    LogException(e);
-                    return null;
-                }
+                LogException(e);
+                return null;
             }
         }
         void FilterLinks(IEnumerable<HtmlNode> linksList, Uri startingAdressUri, int currentPageLevel, string seedLink)

@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
 using GalaSoft.MvvmLight;
@@ -24,6 +25,12 @@ namespace CrawlerClient.ViewModel
         public RelayCommand ConnectToServerCommand { get; set; }
         public RelayCommand CloseWindowCommand { get; set; }
 
+        public bool IsConnectButtonActive
+        {
+            get { return _isConnectButtonActive; }
+            set { _isConnectButtonActive = value; RaisePropertyChanged("IsConnectButtonActive"); }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -32,13 +39,15 @@ namespace CrawlerClient.ViewModel
             ConnectToServerCommand = new RelayCommand(ConnectToServer);
             StartTestCrawlingCommand = new RelayCommand(TestCrawl);
             CloseWindowCommand = new RelayCommand(CloseWindow);
-
+            ServerAddress = "193.124.113.235:22222";
             ClientName = $"Denis Test Crawler {DateTime.Now}";
             CrawlerStatus = "Waiting";
             ConnectionSingleton.Instance.InjectViewModel(this);
+            IsConnectButtonActive = true;
         }
         private void ConnectToServer()
         {
+            IsConnectButtonActive = false;
             var singleTone = ConnectionSingleton.Instance;
 
             var newPerson = new ClientCrawlerInfo
@@ -47,7 +56,7 @@ namespace CrawlerClient.ViewModel
                 ServerIP = LocalIpAddress
             };
 
-           var result =  singleTone.Connect(newPerson);
+           var result =  singleTone.Connect(newPerson,ServerAddress);
             if (result)
                 CrawlerStatus = "Connected";
 
@@ -58,9 +67,20 @@ namespace CrawlerClient.ViewModel
         }
         private void TestCrawl()
         {
-            var crawlerInstance = new CrawlerEngine();
-            var seed = new SeedDTO {SeedDomainName = "http://webometrics.krc.karelia.ru/"};
-            crawlerInstance.StartCrawlingProcess(new[] {seed});
+            IsConnectButtonActive = false;
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var seed = new SeedDTO {SeedDomainName = "http://mathem.krc.karelia.ru/"};
+            for (var i = 0; i < 1; i++)
+            {
+                var crawlerInstance = new CrawlerEngine();
+
+                crawlerInstance.StartCrawlingProcess(new[] {seed});
+
+            }
+            stopWatch.Stop();
+            
         }
 
         private string _publicIpAdress;
@@ -79,6 +99,7 @@ namespace CrawlerClient.ViewModel
 
         private string _localIpAdress;
         private  string _crawlerStatus;
+        private bool _isConnectButtonActive;
 
         public string LocalIpAddress
         {
@@ -95,7 +116,9 @@ namespace CrawlerClient.ViewModel
 
         public string ClientName { get; set; }
 
-        public  string CrawlerStatus
+        public string ServerAddress { get; set; }
+
+        public string CrawlerStatus
         {
             get { return _crawlerStatus; }
             set { _crawlerStatus = value; RaisePropertyChanged("CrawlerStatus"); }

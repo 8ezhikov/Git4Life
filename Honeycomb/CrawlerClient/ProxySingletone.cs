@@ -88,7 +88,7 @@ namespace CrawlerClient
             }
         }
 
-        public bool Connect(ClientCrawlerInfo clientCrawlerInfo)
+        public bool Connect(ClientCrawlerInfo clientCrawlerInfo,string serverAddress)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace CrawlerClient
                 var binding = new NetTcpBinding(SecurityMode.None);
                 //var address = new EndpointAddress("net.tcp://localhost:22222/chatservice/");
 
-                var address = new EndpointAddress("net.tcp://193.124.113.235:22222/chatservice/");
+                var address = new EndpointAddress("net.tcp://"+serverAddress+ "/chatservice/");
                 var factory = new DuplexChannelFactory<IRemoteCrawler>(site, binding, address);
                 
                 proxy = factory.CreateChannel();

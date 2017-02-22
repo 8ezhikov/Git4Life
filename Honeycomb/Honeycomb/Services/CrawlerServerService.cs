@@ -74,6 +74,8 @@ namespace Honeycomb
                 Seed nextSeed;
                 if (globalSeedStack.TryPop(out nextSeed))
                 {
+                    modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName + " Seed name is " + nextSeed.SeedDomainName);
+
                     crawlerCallback.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
                     crawlerCounter++;
 
@@ -83,7 +85,6 @@ namespace Honeycomb
                     //throw new Exception("Couldn't pop from stack");
                 }
             }
-            modelReference.AppendTextToConsole("Test Crawling started for " + crawlerCounter + " crawlers");
 
         }
 
@@ -97,6 +98,7 @@ namespace Honeycomb
             var dbConnInfo = SeedModel.DataAccessService.ConvertToCrawlerConnection(clientCrawlerNewInfo);
             dbConnInfo.ConnectionTime = DateTime.Now;
             dbContext.CrawlerConnections.Add(dbConnInfo);
+            modelReference.AppendTextToConsole("New client-crawler added! Name is  " + clientCrawlerNewInfo.ClientName + " Connection time is" + DateTime.Now);
 
             dbContext.SaveChanges();
             return ConnectedClientCrawlers.ToArray();
@@ -132,6 +134,7 @@ namespace Honeycomb
 
             var dbContext = new Crawler_DBEntities();
 
+
             var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
             dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
 
@@ -164,6 +167,8 @@ namespace Honeycomb
                 }
             }
 
+            var seedFromDb = dbContext.Seeds.First(sd => sd.SeedIndex == resultsDto.ProcessedSeed.SeedIndex);
+            seedFromDb.IsProcessed = true;
             dbContext.SaveChanges();
 
 

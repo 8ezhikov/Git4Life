@@ -14,9 +14,9 @@
 
         <Grid  Grid.Row ="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  >
             <Button Command="{Binding StartCrawlingCommand}" Content="Start Crawling" HorizontalAlignment="Left" Margin="34,38,0,0" VerticalAlignment="Top" Width="124"  Height="67"/>
-            <Button Command="{Binding StartTestCrawlingCommand}" Content="Start Test Crawling" HorizontalAlignment="Left" Margin="216,38,0,0" VerticalAlignment="Top" Width="124"  Height="67"/>
+            <Button Command="{Binding StartTestCrawlingCommand}" Content="Start Test Crawling" HorizontalAlignment="Left" Margin="216,38,0,0" VerticalAlignment="Top" Width="124"  Height="67" Visibility="Hidden"/>
 
-            <Button Command="{Binding ReadAllCommand}" Content="Refresh Server List" HorizontalAlignment="Left" Margin="826,38,0,0" VerticalAlignment="Top" Width="142" Height="67"/>
+            <Button Command="{Binding ReadAllCommand}" Content="Refresh Server List" HorizontalAlignment="Left" Margin="826,38,0,0" VerticalAlignment="Top" Width="142" Height="67" Visibility="Hidden"/>
             <Button Command="{Binding ShowSeedWindowCommand}" Content="Manage Seeds" HorizontalAlignment="Left" Margin="498,38,0,0" VerticalAlignment="Top" Width="138" Height="67"/>
         </Grid>
         <TextBox x:Name="OutputTextBox" Grid.Row ="2" TextWrapping="Wrap" Text="{Binding TextBoxContent}" IsReadOnly="True" MinHeight="250" HorizontalScrollBarVisibility="Auto" FontFamily="Lucida Console" UseLayoutRounding="True" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" Grid.ColumnSpan="2"  />
