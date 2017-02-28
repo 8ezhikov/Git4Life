@@ -23,25 +23,10 @@ namespace CrawlerClient.CrawlerServer {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.BadLinkDTO> BadLinksListField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private CrawlerClient.CrawlerServer.BatchDTO BatchInfoField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private CrawlerClient.CrawlerServer.ConnectionInfoDTO ConnectionInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.ExternalLinkDTO> ExternalLinksListField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalLinksListField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.Stack<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalUnprocessedLinksField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private CrawlerClient.CrawlerServer.SeedDTO ProcessedSeedField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -50,19 +35,6 @@ namespace CrawlerClient.CrawlerServer {
             }
             set {
                 this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.BadLinkDTO> BadLinksList {
-            get {
-                return this.BadLinksListField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BadLinksListField, value) != true)) {
-                    this.BadLinksListField = value;
-                    this.RaisePropertyChanged("BadLinksList");
-                }
             }
         }
         
@@ -88,58 +60,6 @@ namespace CrawlerClient.CrawlerServer {
                 if ((object.ReferenceEquals(this.ConnectionInfoField, value) != true)) {
                     this.ConnectionInfoField = value;
                     this.RaisePropertyChanged("ConnectionInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.ExternalLinkDTO> ExternalLinksList {
-            get {
-                return this.ExternalLinksListField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ExternalLinksListField, value) != true)) {
-                    this.ExternalLinksListField = value;
-                    this.RaisePropertyChanged("ExternalLinksList");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalLinksList {
-            get {
-                return this.InternalLinksListField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalLinksListField, value) != true)) {
-                    this.InternalLinksListField = value;
-                    this.RaisePropertyChanged("InternalLinksList");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.Stack<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalUnprocessedLinks {
-            get {
-                return this.InternalUnprocessedLinksField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalUnprocessedLinksField, value) != true)) {
-                    this.InternalUnprocessedLinksField = value;
-                    this.RaisePropertyChanged("InternalUnprocessedLinks");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public CrawlerClient.CrawlerServer.SeedDTO ProcessedSeed {
-            get {
-                return this.ProcessedSeedField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ProcessedSeedField, value) != true)) {
-                    this.ProcessedSeedField = value;
-                    this.RaisePropertyChanged("ProcessedSeed");
                 }
             }
         }
@@ -183,6 +103,9 @@ namespace CrawlerClient.CrawlerServer {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime StartTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.SiteResults> resultCollectionField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -285,6 +208,19 @@ namespace CrawlerClient.CrawlerServer {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.SiteResults> resultCollection {
+            get {
+                return this.resultCollectionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.resultCollectionField, value) != true)) {
+                    this.resultCollectionField = value;
+                    this.RaisePropertyChanged("resultCollection");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -374,6 +310,115 @@ namespace CrawlerClient.CrawlerServer {
                 if ((this.IdField.Equals(value) != true)) {
                     this.IdField = value;
                     this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="SiteResults", Namespace="http://schemas.datacontract.org/2004/07/Honeycomb")]
+    [System.SerializableAttribute()]
+    public partial class SiteResults : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.BadLinkDTO> BadLinksListField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.ExternalLinkDTO> ExternalLinksListField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalLinksListField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.Stack<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalUnprocessedLinksField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private CrawlerClient.CrawlerServer.SeedDTO ProcessedSeedField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.BadLinkDTO> BadLinksList {
+            get {
+                return this.BadLinksListField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BadLinksListField, value) != true)) {
+                    this.BadLinksListField = value;
+                    this.RaisePropertyChanged("BadLinksList");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.ExternalLinkDTO> ExternalLinksList {
+            get {
+                return this.ExternalLinksListField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExternalLinksListField, value) != true)) {
+                    this.ExternalLinksListField = value;
+                    this.RaisePropertyChanged("ExternalLinksList");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalLinksList {
+            get {
+                return this.InternalLinksListField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InternalLinksListField, value) != true)) {
+                    this.InternalLinksListField = value;
+                    this.RaisePropertyChanged("InternalLinksList");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.Stack<CrawlerClient.CrawlerServer.InternalLinkDTO> InternalUnprocessedLinks {
+            get {
+                return this.InternalUnprocessedLinksField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InternalUnprocessedLinksField, value) != true)) {
+                    this.InternalUnprocessedLinksField = value;
+                    this.RaisePropertyChanged("InternalUnprocessedLinks");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public CrawlerClient.CrawlerServer.SeedDTO ProcessedSeed {
+            get {
+                return this.ProcessedSeedField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProcessedSeedField, value) != true)) {
+                    this.ProcessedSeedField = value;
+                    this.RaisePropertyChanged("ProcessedSeed");
                 }
             }
         }

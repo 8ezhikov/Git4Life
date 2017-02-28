@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
@@ -72,13 +73,26 @@ namespace CrawlerClient.ViewModel
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             var seed = new SeedDTO {SeedDomainName = "http://mathem.krc.karelia.ru/"};
-            for (var i = 0; i < 1; i++)
+            var totalElapsed = new TimeSpan();
+            var benchList = new List<ClientHelper.Benchmark>();
+            for (var i = 0; i < 3; i++)
             {
                 var crawlerInstance = new CrawlerEngine();
 
-                crawlerInstance.StartCrawlingProcess(new[] {seed});
+                var result = crawlerInstance.StartCrawlingProcess(new[] {seed});
+                var bench = new ClientHelper.Benchmark();
+                bench.BenchNumber = i + 1;
+                bench.WebSiteURL = seed.SeedDomainName;
 
+                bench.crawlingTime = stopWatch.Elapsed - totalElapsed;
+                totalElapsed = stopWatch.Elapsed;
+
+                bench.InternalLinksCount = result.BatchInfo..InternalLinksList.Count;
+                bench.ExternalLinksCount = result.ExternalLinksList.Count;
+                benchList.Add(bench);
             }
+
+            ClientHelper.CreateCSV(benchList);
             stopWatch.Stop();
             
         }

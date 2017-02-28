@@ -29,21 +29,21 @@ namespace CrawlerClient
 
         public void StartTestCrawl()
         {
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
 
-            var result = new CrawlerResultsDTO();
-            result.ExternalLinksList = new List<ExternalLinkDTO>();
-            result.ExternalLinksList.Add(new ExternalLinkDTO
-            {
-                LinkAnchor = "Test Run",
-                LinkPath = "",
-                OriginalPageLink = "",
-                PageSeedLink = ""
-            });
-            Task.Factory.StartNew(() =>
-            {
-                proxy.ReturnCrawlingResults(result);
-            });
+            //var result = new CrawlerResultsDTO();
+            //result.ExternalLinksList = new List<ExternalLinkDTO>();
+            //result.ExternalLinksList.Add(new ExternalLinkDTO
+            //{
+            //    LinkAnchor = "Test Run",
+            //    LinkPath = "",
+            //    OriginalPageLink = "",
+            //    PageSeedLink = ""
+            //});
+            //Task.Factory.StartNew(() =>
+            //{
+            //    proxy.ReturnCrawlingResults(result);
+            //});
         }
 
         public void InjectViewModel(MainViewModel injectedViewModel)

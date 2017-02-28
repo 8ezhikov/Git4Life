@@ -7,16 +7,7 @@ namespace Honeycomb
     [DataContract]
     public class CrawlerResultsDTO
     {
-        [DataMember]
-        public List<InternalLinkDTO> InternalLinksList;
-        [DataMember]
-        public List<ExternalLinkDTO> ExternalLinksList;
-        [DataMember]
-        public List<BadLinkDTO> BadLinksList;
-        [DataMember]
-        public Stack<InternalLinkDTO> InternalUnprocessedLinks;
-        [DataMember]
-        public SeedDTO ProcessedSeed;
+    
         [DataMember]
         public BatchDTO BatchInfo;
         [DataMember]
@@ -37,10 +28,29 @@ namespace Honeycomb
         [DataMember]
         public int NumberOfCrawledExternalLinks;
         [DataMember]
-        public int SeedId;
-        [DataMember]
         public int Id;
+        [DataMember]
+
+        public List<SiteResults> resultCollection;
+
+
     }
+
+    [DataContract]
+    public class SiteResults
+    {
+        [DataMember]
+        public List<InternalLinkDTO> InternalLinksList;
+        [DataMember]
+        public List<ExternalLinkDTO> ExternalLinksList;
+        [DataMember]
+        public List<BadLinkDTO> BadLinksList;
+        [DataMember]
+        public Stack<InternalLinkDTO> InternalUnprocessedLinks;
+        [DataMember]
+        public SeedDTO ProcessedSeed;
+    }
+
     [DataContract]
     public class ConnectionInfoDTO
     {

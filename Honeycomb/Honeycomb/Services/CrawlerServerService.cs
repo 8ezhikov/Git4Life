@@ -128,7 +128,6 @@ namespace Honeycomb
 
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
         {
-            modelReference.AppendTextToConsole("Crawling results from" + resultsDto.ProcessedSeed.SeedDomainName + " acquired. Saving onto DB...");
 
 
 
@@ -141,34 +140,39 @@ namespace Honeycomb
             dbContext.Batches.Add(dbBatch);
 
 
+            foreach (var siteResults in resultsDto.BatchInfo.resultCollection)
+            {
+                modelReference.AppendTextToConsole("Crawling results from" + siteResults.ProcessedSeed.SeedDomainName + " acquired. Saving onto DB...");
 
-            if (resultsDto.InternalLinksList != null)
-            {
-                foreach (var internalLink in resultsDto.InternalLinksList)
+                if (siteResults.InternalLinksList != null)
                 {
-                    var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
-                    dbContext.InternalLinks.Add(dbLink);
+                    foreach (var internalLink in siteResults.InternalLinksList)
+                    {
+                        var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
+                        dbContext.InternalLinks.Add(dbLink);
+                    }
                 }
-            }
-            if (resultsDto.ExternalLinksList != null)
-            {
-                foreach (var externalLink in resultsDto.ExternalLinksList)
+                if (siteResults.ExternalLinksList != null)
                 {
-                    var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
-                    dbContext.ExternalLinks.Add(dbLink);
+                    foreach (var externalLink in siteResults.ExternalLinksList)
+                    {
+                        var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
+                        dbContext.ExternalLinks.Add(dbLink);
+                    }
                 }
-            }
-            if (resultsDto.BadLinksList != null)
-            {
-                foreach (var badLink in resultsDto.BadLinksList)
+                if (siteResults.BadLinksList != null)
                 {
-                    var dbLink = ConvertBadLinkDTOtoDB(badLink);
-                    dbContext.BadLinks.Add(dbLink);
+                    foreach (var badLink in siteResults.BadLinksList)
+                    {
+                        var dbLink = ConvertBadLinkDTOtoDB(badLink);
+                        dbContext.BadLinks.Add(dbLink);
+                    }
                 }
+                var seedFromDb = dbContext.Seeds.First(sd => sd.SeedIndex == siteResults.ProcessedSeed.SeedIndex);
+                seedFromDb.IsProcessed = true;
             }
 
-            var seedFromDb = dbContext.Seeds.First(sd => sd.SeedIndex == resultsDto.ProcessedSeed.SeedIndex);
-            seedFromDb.IsProcessed = true;
+           
             dbContext.SaveChanges();
 
 

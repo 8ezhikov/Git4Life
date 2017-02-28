@@ -29,6 +29,14 @@ namespace CrawlerClient
             _forceStop = true;
         }
 
+        private  void CleanCrawler()
+        {
+            _internalLinksDictionary.Clear();
+            _externalLinksDictionary.Clear();
+            _badLinksList.Clear();
+            _internalUnprocessedLinks.Clear();
+        }
+
         public CrawlerResultsDTO StartCrawlingProcess(IEnumerable<SeedDTO> seedsToCrawl, int maxCrawlLevel = 2)
         {
             var timetracker = new Stopwatch();
@@ -39,6 +47,7 @@ namespace CrawlerClient
 
             _maxPageLevel = maxCrawlLevel;
             _forceStop = false;
+            var resultCollection = new List<SiteResults>();
             foreach (var seed in seedsToCrawl)
             {
                 var startingAddress = seed.SeedDomainName;
@@ -66,10 +75,18 @@ namespace CrawlerClient
                 }
 
                 //_allLinks.Clear();
-            }
-            if (_forceStop)
-            {
-                _forceStop = false;
+
+                if (_forceStop)
+                {
+                    _forceStop = false;
+                }
+                var siteResult = new SiteResults();
+                siteResult.ProcessedSeed = seed;
+                siteResult.BadLinksList = _badLinksList.ToList();
+                siteResult.ExternalLinksList = _externalLinksDictionary.Select(pair => pair.Value).ToList();
+                siteResult.InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList();
+
+                resultCollection.Add(siteResult);
             }
 
             timetracker.Stop();
@@ -78,20 +95,15 @@ namespace CrawlerClient
             var batchInfo = new BatchDTO();
             batchInfo.CrawlingTime = runingTime;
             batchInfo.StartTime = startTime;
-            batchInfo.NumberOfCrawledExternalLinks = _externalLinksDictionary.Count;
-            batchInfo.NumberOfCrawledInternalLinks = _internalLinksIdCounter;
-            batchInfo.SeedId = seedsToCrawl.FirstOrDefault().SeedIndex;
-            
+            //batchInfo.NumberOfCrawledExternalLinks = _externalLinksDictionary.Count;
+            //batchInfo.NumberOfCrawledInternalLinks = _internalLinksIdCounter;
+            batchInfo.resultCollection = resultCollection;
 
 
 
             var result = new CrawlerResultsDTO
             {
-                BadLinksList = _badLinksList.ToList(),
-                ExternalLinksList = _externalLinksDictionary.Select(pair => pair.Value).ToList(),
-                InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList(),
-                BatchInfo= batchInfo,
-                ProcessedSeed = seedsToCrawl.FirstOrDefault()
+                BatchInfo = batchInfo,
             };
 
             return result;
