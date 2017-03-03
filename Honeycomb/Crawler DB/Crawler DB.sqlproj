@@ -204,7 +204,4 @@
   <ItemGroup>
     <PostDeploy Include="Post-deployment.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Crawler DB.refactorlog" />
-  </ItemGroup>
 </Project>
