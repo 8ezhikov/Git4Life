@@ -16,7 +16,6 @@
       <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="NumberOfCrawledExternalLinks" type="xs:int" />
       <xs:element minOccurs="0" name="NumberOfCrawledInternalLinks" type="xs:int" />
-      <xs:element minOccurs="0" name="SeedId" type="xs:int" />
       <xs:element minOccurs="0" name="StartTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="resultCollection" nillable="true" type="tns:ArrayOfSiteResults" />
     </xs:sequence>
@@ -35,6 +34,7 @@
       <xs:element minOccurs="0" name="InternalLinksList" nillable="true" type="tns:ArrayOfInternalLinkDTO" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="InternalUnprocessedLinks" nillable="true" type="q1:StackOfInternalLinkDTOOvmpZAGU" />
       <xs:element minOccurs="0" name="ProcessedSeed" nillable="true" type="tns:SeedDTO" />
+      <xs:element minOccurs="0" name="SiteCrawlingTime" type="ser:duration" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SiteResults" nillable="true" type="tns:SiteResults" />
@@ -119,4 +119,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfClientCrawlerInfo" nillable="true" type="tns:ArrayOfClientCrawlerInfo" />
+  <xs:complexType name="ArrayOfSeedDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SeedDTO" nillable="true" type="tns:SeedDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSeedDTO" nillable="true" type="tns:ArrayOfSeedDTO" />
 </xs:schema>

@@ -50,20 +50,19 @@ namespace CrawlerClient
         {
             InjectedViewModel = injectedViewModel;
         }
-        public void StartCrawling(SeedDTO seed)
+        public void StartCrawling(List<SeedDTO> seedList)
         {
             var crawlerInstance = new CrawlerEngine();
             CrawlerResultsDTO result;
             InjectedViewModel.CrawlerStatus = "Crawling Started";
             try
             {
-                result = crawlerInstance.StartCrawlingProcess(new[] {seed});
+                result = crawlerInstance.StartCrawlingProcess(seedList);
                 result.ConnectionInfo = new ConnectionInfoDTO();
                 result.ConnectionInfo.Id = _singletoneId;
             }
             catch (Exception ex)
             {
-
                 return;
             }
             InjectedViewModel.CrawlerStatus = "Crawling finished returning results";

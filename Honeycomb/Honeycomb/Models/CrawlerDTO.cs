@@ -49,6 +49,8 @@ namespace Honeycomb
         public Stack<InternalLinkDTO> InternalUnprocessedLinks;
         [DataMember]
         public SeedDTO ProcessedSeed;
+        [DataMember]
+        public TimeSpan SiteCrawlingTime;
     }
 
     [DataContract]

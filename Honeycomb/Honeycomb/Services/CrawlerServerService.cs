@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
@@ -71,12 +72,13 @@ namespace Honeycomb
             foreach (var crawlerCallback in _connectedClientCrawlers)
             {
 
-                Seed nextSeed;
-                if (globalSeedStack.TryPop(out nextSeed))
+                Seed[] nextSeed1 = new Seed[2];
+                if (globalSeedStack.TryPopRange(nextSeed1, 0, 2) > 0)
                 {
-                    modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName + " Seed name is " + nextSeed.SeedDomainName);
-
-                    crawlerCallback.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
+                   // modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName + " Seed name is " + nextSeed.SeedDomainName);
+                    var seedList = new List<SeedDTO>();
+                    seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
+                    crawlerCallback.SavedCallback.StartCrawling(seedList);
                     crawlerCounter++;
 
                 }
@@ -113,12 +115,13 @@ namespace Honeycomb
         {
             SaveClientResultsToDatabase(resultsDto);
 
-
-            Seed nextSeed;
-            if (globalSeedStack.TryPop(out nextSeed))
+            Seed[] nextSeed1 = new Seed[2];
+            if (globalSeedStack.TryPopRange(nextSeed1,0,2)>0)
             {
                 var foundcallback = _connectedClientCrawlers.FirstOrDefault(crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
-                foundcallback?.SavedCallback.StartCrawling(Mapper.Map<SeedDTO>(nextSeed));
+                var seedList = new List<SeedDTO>();
+                seedList.AddRange(nextSeed1.Select(it=> Mapper.Map<SeedDTO>(it)));
+                foundcallback?.SavedCallback.StartCrawling(seedList);
             }
             else
             {

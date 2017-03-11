@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace Honeycomb.Interfaces
 {
@@ -8,6 +9,6 @@ namespace Honeycomb.Interfaces
         void StartTestCrawl();
 
         [OperationContract(IsOneWay = true)]
-        void StartCrawling(SeedDTO SelectedSeedDTO);
+        void StartCrawling(List<SeedDTO> SelectedSeedDTO);
     }
 }

@@ -57,7 +57,7 @@ namespace CrawlerClient.ViewModel
                 ServerIP = LocalIpAddress
             };
 
-           var result =  singleTone.Connect(newPerson,ServerAddress);
+            var result = singleTone.Connect(newPerson, ServerAddress);
             if (result)
                 CrawlerStatus = "Connected";
 
@@ -72,29 +72,36 @@ namespace CrawlerClient.ViewModel
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var seed = new SeedDTO {SeedDomainName = "http://mathem.krc.karelia.ru/"};
-            var totalElapsed = new TimeSpan();
-            var benchList = new List<ClientHelper.Benchmark>();
-            for (var i = 0; i < 3; i++)
-            {
-                var crawlerInstance = new CrawlerEngine();
+            var seed = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
+            var seed1 = new SeedDTO { SeedDomainName = "http://cluster.krc.karelia.ru/" };
+            var seed2 = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
 
-                var result = crawlerInstance.StartCrawlingProcess(new[] {seed});
+            var seedList = new List<SeedDTO>();
+            seedList.Add(seed);
+            seedList.Add(seed1);
+            seedList.Add(seed2);
+
+            var benchList = new List<ClientHelper.Benchmark>();
+            var crawlerInstance = new CrawlerEngine();
+
+            var result = crawlerInstance.StartCrawlingProcess(seedList);
+            var i = 0;
+            foreach (var batchResult in result.BatchInfo.resultCollection)
+            {
                 var bench = new ClientHelper.Benchmark();
                 bench.BenchNumber = i + 1;
-                bench.WebSiteURL = seed.SeedDomainName;
+                bench.WebSiteURL = batchResult.ProcessedSeed.SeedDomainName;
 
-                bench.crawlingTime = stopWatch.Elapsed - totalElapsed;
-                totalElapsed = stopWatch.Elapsed;
+                bench.crawlingTime = batchResult.SiteCrawlingTime;
 
-                bench.InternalLinksCount = result.BatchInfo..InternalLinksList.Count;
-                bench.ExternalLinksCount = result.ExternalLinksList.Count;
+                bench.InternalLinksCount = batchResult.InternalLinksList.Count;
+                bench.ExternalLinksCount = batchResult.ExternalLinksList.Count;
                 benchList.Add(bench);
             }
 
             ClientHelper.CreateCSV(benchList);
             stopWatch.Stop();
-            
+
         }
 
         private string _publicIpAdress;
@@ -106,13 +113,13 @@ namespace CrawlerClient.ViewModel
                 {
                     _publicIpAdress = ClientHelper.GetPublicIP();
                 }
-               
+
                 return _publicIpAdress;
             }
         }
 
         private string _localIpAdress;
-        private  string _crawlerStatus;
+        private string _crawlerStatus;
         private bool _isConnectButtonActive;
 
         public string LocalIpAddress

@@ -50,6 +50,9 @@ namespace CrawlerClient
             var resultCollection = new List<SiteResults>();
             foreach (var seed in seedsToCrawl)
             {
+                CleanCrawler();
+                var personalTracker = new Stopwatch();
+                personalTracker.Start();
                 var startingAddress = seed.SeedDomainName;
 
                 _internalLinksIdCounter = 1;
@@ -85,7 +88,8 @@ namespace CrawlerClient
                 siteResult.BadLinksList = _badLinksList.ToList();
                 siteResult.ExternalLinksList = _externalLinksDictionary.Select(pair => pair.Value).ToList();
                 siteResult.InternalLinksList = _internalLinksDictionary.Select(pair => pair.Value).ToList();
-
+               personalTracker.Stop();
+                siteResult.SiteCrawlingTime = personalTracker.Elapsed;
                 resultCollection.Add(siteResult);
             }
 
