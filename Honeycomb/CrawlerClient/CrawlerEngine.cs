@@ -352,7 +352,7 @@ namespace CrawlerClient
         public static void LogException(Exception e)
         {
             
-            MessageBox.Show(e.Message);
+            //MessageBox.Show(e.Message);
         }
     }
 }

@@ -25,7 +25,7 @@
         <TextBox x:Name="ClientNameTextBox" HorizontalAlignment="Left" Height="23" Margin="196,153,0,0" TextWrapping="Wrap" Text="{Binding ClientName}" VerticalAlignment="Top" Width="247"/>
         <Label x:Name="ClientNameLabel" Content="Choose connection name" HorizontalAlignment="Left" Margin="32,150,0,0" VerticalAlignment="Top"/>
         <Label x:Name="ServerIPLabel" Content="ServerIP and Port" HorizontalAlignment="Left" Margin="32,185,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ServerPortTextBox" HorizontalAlignment="Left" Height="23" Margin="159,189,0,0" TextWrapping="Wrap" Text="{Binding ServerAddress}" VerticalAlignment="Top" Width="247" IsEnabled="False"/>
+        <TextBox x:Name="ServerPortTextBox" HorizontalAlignment="Left" Height="23" Margin="159,189,0,0" TextWrapping="Wrap" Text="{Binding ServerAddress}" VerticalAlignment="Top" Width="247"/>
         <Button x:Name="TestPerformanceButton" Content="Test Crawler Performance" HorizontalAlignment="Left" Margin="273,241,0,0"
             VerticalAlignment="Top" Width="216" Height="39" Command="{Binding StartTestCrawlingCommand}" IsEnabled="{Binding IsConnectButtonActive}" />
 

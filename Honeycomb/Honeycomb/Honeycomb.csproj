@@ -114,18 +114,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BadLink.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Batch.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
     <Compile Include="CrawlerConnection.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
+    <Compile Include="Crawler_Setting.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
     <Compile Include="C__RefactorLog.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ExternalLink.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InternalLink.cs">
       <DependentUpon>DCrawlerRepo.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CrawlerDTO.cs" />
     <Compile Include="Models\ClientCrawlerInfo.cs" />
     <Compile Include="Models\CrawlRequest.cs" />
+    <Compile Include="Seed.cs">
+      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Services\DataAccessService.cs" />
     <Compile Include="SeedManagement.xaml.cs">
       <DependentUpon>SeedManagement.xaml</DependentUpon>
@@ -145,13 +160,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BadLink.cs">
-      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
-    </Compile>
     <Compile Include="Services\CrawlerServerService.cs" />
-    <Compile Include="Crawler_Setting.cs">
-      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
-    </Compile>
     <Compile Include="DCrawlerRepo.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -167,17 +176,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DCrawlerRepo.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ExternalLink.cs">
-      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
-    </Compile>
     <Compile Include="Interfaces\ICrawlerClientCallback.cs" />
     <Compile Include="Interfaces\IRemoteCrawler.cs" />
-    <Compile Include="InternalLink.cs">
-      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Seed.cs">
-      <DependentUpon>DCrawlerRepo.tt</DependentUpon>
-    </Compile>
     <Compile Include="ServerMainWindow.xaml.cs">
       <DependentUpon>ServerMainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

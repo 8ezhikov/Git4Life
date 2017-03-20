@@ -5,6 +5,7 @@ using System.Windows;
 using CrawlerClient.CrawlerServer;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
 
 namespace CrawlerClient.ViewModel
 {
@@ -68,12 +69,13 @@ namespace CrawlerClient.ViewModel
         }
         private void TestCrawl()
         {
+         
             IsConnectButtonActive = false;
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             var seed = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
-            var seed1 = new SeedDTO { SeedDomainName = "http://cluster.krc.karelia.ru/" };
+            var seed1 = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
             var seed2 = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
 
             var seedList = new List<SeedDTO>();

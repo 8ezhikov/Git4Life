@@ -29,7 +29,7 @@
           <Property Name="CrawlingTime" Type="int" Nullable="false" />
           <Property Name="NumberOfCrawledInternalLinks" Type="int" Nullable="false" />
           <Property Name="NumberOfCrawledExternalLinks" Type="int" Nullable="false" />
-          <Property Name="SeedId" Type="int" Nullable="false" />
+          <Property Name="SeedIds" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Crawler Settings">
           <Key>
@@ -99,20 +99,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Batches_ToSeeds">
-          <End Role="Seeds" Type="Self.Seeds" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Batches" Type="Self.Batches" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Seeds">
-              <PropertyRef Name="SeedIndex" />
-            </Principal>
-            <Dependent Role="Batches">
-              <PropertyRef Name="SeedId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Function Name="CleanContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DCrawlerModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
@@ -125,10 +111,6 @@
           <EntitySet Name="Seeds" EntityType="Self.Seeds" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Batches_ToCrawlerConnection" Association="Self.FK_Batches_ToCrawlerConnection">
             <End Role="CrawlerConnections" EntitySet="CrawlerConnections" />
-            <End Role="Batches" EntitySet="Batches" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Batches_ToSeeds" Association="Self.FK_Batches_ToSeeds">
-            <End Role="Seeds" EntitySet="Seeds" />
             <End Role="Batches" EntitySet="Batches" />
           </AssociationSet>
         </EntityContainer>
@@ -188,7 +170,6 @@
           <Property Name="SeedShortName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SeedFullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsProcessed" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Batches" Relationship="DCrawlerModel.FK_Batches_ToSeeds" FromRole="Seed" ToRole="Batch" />
         </EntityType>
         <EntityContainer Name="Crawler_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BadLinks" EntityType="Self.BadLink" />
@@ -202,10 +183,6 @@
             <End Role="CrawlerConnection" EntitySet="CrawlerConnections" />
             <End Role="Batch" EntitySet="Batches" />
           </AssociationSet>
-          <AssociationSet Name="FK_Batches_ToSeeds" Association="DCrawlerModel.FK_Batches_ToSeeds">
-            <End Role="Seed" EntitySet="Seeds" />
-            <End Role="Batch" EntitySet="Batches" />
-          </AssociationSet>
           <EntitySet Name="C__RefactorLog" EntityType="DCrawlerModel.C__RefactorLog" />
           <FunctionImport Name="CleanContent" />
           </EntityContainer>
@@ -217,11 +194,10 @@
           <Property Name="CrawlerConnectionId" Type="Guid" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CrawlingTime" Type="Int32" Nullable="false" />
-          <Property Name="SeedId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CrawlerConnection" Relationship="DCrawlerModel.FK_Batches_ToCrawlerConnection" FromRole="Batch" ToRole="CrawlerConnection" />
-          <NavigationProperty Name="Seed" Relationship="DCrawlerModel.FK_Batches_ToSeeds" FromRole="Batch" ToRole="Seed" />
           <Property Name="NumberOfCrawledInternalLinks" Type="Int32" Nullable="false" />
           <Property Name="NumberOfCrawledExternalLinks" Type="Int32" Nullable="false" />
+          <Property Name="SeedIds" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CrawlerConnection">
           <Key>
@@ -242,18 +218,6 @@
             </Principal>
             <Dependent Role="Batch">
               <PropertyRef Name="CrawlerConnectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Batches_ToSeeds">
-          <End Type="DCrawlerModel.Seed" Role="Seed" Multiplicity="1" />
-          <End Type="DCrawlerModel.Batch" Role="Batch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Seed">
-              <PropertyRef Name="SeedIndex" />
-            </Principal>
-            <Dependent Role="Batch">
-              <PropertyRef Name="SeedId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -330,9 +294,9 @@
           <EntitySetMapping Name="Batches">
             <EntityTypeMapping TypeName="DCrawlerModel.Batch">
               <MappingFragment StoreEntitySet="Batches">
+                <ScalarProperty Name="SeedIds" ColumnName="SeedIds" />
                 <ScalarProperty Name="NumberOfCrawledExternalLinks" ColumnName="NumberOfCrawledExternalLinks" />
                 <ScalarProperty Name="NumberOfCrawledInternalLinks" ColumnName="NumberOfCrawledInternalLinks" />
-                <ScalarProperty Name="SeedId" ColumnName="SeedId" />
                 <ScalarProperty Name="CrawlingTime" ColumnName="CrawlingTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="CrawlerConnectionId" ColumnName="CrawlerConnectionId" />

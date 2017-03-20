@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows;
 using CsvHelper;
+using Microsoft.Win32;
 
 namespace CrawlerClient
 {
@@ -34,7 +36,13 @@ namespace CrawlerClient
 
         public static void CreateCSV(List<Benchmark> benchList)
         {
-            using (TextWriter fileReader = File.CreateText(@"D:\1.csv"))
+
+            var save = new SaveFileDialog();
+            save.Filter = "CSV Files (*.csv)|*.csv";
+            save.DefaultExt = "csv";
+            save.AddExtension = true;
+            save.ShowDialog();
+            using (TextWriter fileReader = File.CreateText(save.FileName))
             {
                 var csv = new CsvWriter(fileReader);
                 csv.WriteField("Benchmark Number");

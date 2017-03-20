@@ -18,11 +18,10 @@ namespace Honeycomb
         public System.Guid CrawlerConnectionId { get; set; }
         public System.DateTime StartTime { get; set; }
         public int CrawlingTime { get; set; }
-        public int SeedId { get; set; }
         public int NumberOfCrawledInternalLinks { get; set; }
         public int NumberOfCrawledExternalLinks { get; set; }
+        public string SeedIds { get; set; }
     
         public virtual CrawlerConnection CrawlerConnection { get; set; }
-        public virtual Seed Seed { get; set; }
     }
 }

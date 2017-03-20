@@ -65,15 +65,16 @@ namespace Honeycomb
                 return;
             }
 
-            globalSeedStack.PushRange(dbContext.Seeds.ToArray());
+            globalSeedStack.PushRange(dbContext.Seeds.Where(sd=>sd.IsProcessed == false).ToArray());
 
             var crawlerCounter = 0;
 
             foreach (var crawlerCallback in _connectedClientCrawlers)
             {
+                int batchSize = 1;
 
-                Seed[] nextSeed1 = new Seed[2];
-                if (globalSeedStack.TryPopRange(nextSeed1, 0, 2) > 0)
+                Seed[] nextSeed1 = new Seed[batchSize];
+                if (globalSeedStack.TryPopRange(nextSeed1, 0, batchSize) > 0)
                 {
                    // modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName + " Seed name is " + nextSeed.SeedDomainName);
                     var seedList = new List<SeedDTO>();
@@ -114,9 +115,9 @@ namespace Honeycomb
         public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
         {
             SaveClientResultsToDatabase(resultsDto);
-
-            Seed[] nextSeed1 = new Seed[2];
-            if (globalSeedStack.TryPopRange(nextSeed1,0,2)>0)
+            int batchSize = 1;
+            Seed[] nextSeed1 = new Seed[batchSize];
+            if (globalSeedStack.TryPopRange(nextSeed1,0, batchSize) >0)
             {
                 var foundcallback = _connectedClientCrawlers.FirstOrDefault(crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
                 var seedList = new List<SeedDTO>();
@@ -125,6 +126,7 @@ namespace Honeycomb
             }
             else
             {
+                modelReference.AppendTextToConsole("All Seeds are processed!");
                 //throw new Exception("Couldn't pop from stack");
             }
         }
@@ -139,7 +141,18 @@ namespace Honeycomb
 
             var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
             dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
-
+            var seedInts = resultsDto.BatchInfo.resultCollection.Select(rs => rs.ProcessedSeed.SeedIndex);
+            var seedIds = seedInts.Aggregate("", (current, va) => current + (va + ","));
+            dbBatch.SeedIds = seedIds;
+            int internalLinks = 0;
+            int externalLinks = 0;
+            foreach (var result in resultsDto.BatchInfo.resultCollection)
+            {
+                internalLinks += result.InternalLinksList.Count;
+                externalLinks += result.ExternalLinksList.Count;
+            }
+            dbBatch.NumberOfCrawledExternalLinks = externalLinks;
+            dbBatch.NumberOfCrawledInternalLinks = internalLinks;
             dbContext.Batches.Add(dbBatch);
 
 
