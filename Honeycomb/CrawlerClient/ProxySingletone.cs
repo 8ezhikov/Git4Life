@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
 using CrawlerClient.ViewModel;
+using Serilog;
 
 namespace CrawlerClient
 {
@@ -63,6 +64,7 @@ namespace CrawlerClient
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "");
                 return;
             }
             InjectedViewModel.CrawlerStatus = "Crawling finished returning results";
@@ -81,9 +83,9 @@ namespace CrawlerClient
                 proxy?.Leave(_singletoneId);
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                
+                Log.Error(e, "");
             }
         }
 
@@ -100,7 +102,7 @@ namespace CrawlerClient
                 var factory = new DuplexChannelFactory<IRemoteCrawler>(site, binding, address);
                 
                 proxy = factory.CreateChannel();
-                ((IContextChannel)proxy).OperationTimeout = new TimeSpan(1, 0, 10);
+                ((IContextChannel)proxy).OperationTimeout = new TimeSpan(3, 0, 10);
                 
                 clientCrawlerInfo.ClientIdentifier = _singletoneId;
                 proxy.Join(clientCrawlerInfo);
@@ -111,6 +113,7 @@ namespace CrawlerClient
             catch (Exception ex)
             {
                 MessageBox.Show("Error happened" + ex.Message);
+                Log.Error(ex, "");
                 return false;
             }
 

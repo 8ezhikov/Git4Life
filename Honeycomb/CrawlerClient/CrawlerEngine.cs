@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using CrawlerClient.CrawlerServer;
 using HtmlAgilityPack;
+using Serilog;
 
 namespace CrawlerClient
 {
@@ -94,10 +95,10 @@ namespace CrawlerClient
             }
 
             timetracker.Stop();
-            var runingTime = timetracker.Elapsed.Seconds;
+            var runingTime = timetracker.Elapsed.TotalSeconds;
             //MessageBox.Show(RuningTime);
             var batchInfo = new BatchDTO();
-            batchInfo.CrawlingTime = runingTime;
+            batchInfo.CrawlingTime = (int) runingTime;
             batchInfo.StartTime = startTime;
             //batchInfo.NumberOfCrawledExternalLinks = _externalLinksDictionary.Count;
             //batchInfo.NumberOfCrawledInternalLinks = _internalLinksIdCounter;
@@ -351,7 +352,7 @@ namespace CrawlerClient
 
         public static void LogException(Exception e)
         {
-            
+            Log.Error(e, "");
             //MessageBox.Show(e.Message);
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using HtmlAgilityPack;
+using Serilog;
 
 namespace CrawlerClient
 {
@@ -88,6 +89,7 @@ namespace CrawlerClient
             }
             catch (Exception e)
             {
+                Log.Error(e, "");
                 throw;
                // return new HtmlDocument();
             }
