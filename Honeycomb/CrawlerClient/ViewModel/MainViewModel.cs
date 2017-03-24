@@ -74,14 +74,14 @@ namespace CrawlerClient.ViewModel
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var seed = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
+            var seed = new SeedDTO { SeedDomainName = "http://idg.chph.ras.ru" };
             var seed1 = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
             var seed2 = new SeedDTO { SeedDomainName = "http://mathem.krc.karelia.ru/" };
 
             var seedList = new List<SeedDTO>();
             seedList.Add(seed);
-            seedList.Add(seed1);
-            seedList.Add(seed2);
+            //seedList.Add(seed1);
+            //seedList.Add(seed2);
 
             var benchList = new List<ClientHelper.Benchmark>();
             var crawlerInstance = new CrawlerEngine();

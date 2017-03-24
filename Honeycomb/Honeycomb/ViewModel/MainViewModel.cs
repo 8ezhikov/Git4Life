@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -38,7 +39,7 @@ namespace Honeycomb.ViewModel
             ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
             ClientCrawlers = instance.ConnectedClientCrawlers;
             AppendTextToConsole("Starting Server...");
-            AppendTextToConsole( "Press ENTER to stop chat service...");
+          
         }
 
         private string _textBoxContent;
@@ -67,7 +68,8 @@ namespace Honeycomb.ViewModel
 
         public void AppendTextToConsole(string messageToAppend)
         {
-            TextBoxContent += messageToAppend + '\n';
+            TextBoxContent = TextBoxContent + messageToAppend;
+            TextBoxContent += Environment.NewLine;
         }
         private void StartTestCrawling()
         {
@@ -78,7 +80,9 @@ namespace Honeycomb.ViewModel
         private void StartCrawling()
         {
             var hoster = ((RemoteCrawlerService)host.SingletonInstance);
-            hoster.GiveInitialTasks();
+
+             Task.Run(() => hoster.GiveInitialTasks());
+            
         }
 
         void ShowSeedWindow()
@@ -89,8 +93,7 @@ namespace Honeycomb.ViewModel
 
         void GetEmployees()
         {
-            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
-            hoster.GiveInitialTasks();
+            AppendTextToConsole("TTTT");
         }
     }
 }

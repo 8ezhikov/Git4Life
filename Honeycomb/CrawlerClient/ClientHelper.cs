@@ -42,6 +42,10 @@ namespace CrawlerClient
             save.DefaultExt = "csv";
             save.AddExtension = true;
             save.ShowDialog();
+            if (string.IsNullOrEmpty(save.FileName))
+            {
+                return;
+            }
             using (TextWriter fileReader = File.CreateText(save.FileName))
             {
                 var csv = new CsvWriter(fileReader);
