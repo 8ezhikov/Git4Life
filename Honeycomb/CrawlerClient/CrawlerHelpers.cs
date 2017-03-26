@@ -41,7 +41,7 @@ namespace CrawlerClient
             Stream resultingStream = new MemoryStream();
             try
             {
-                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var response = (HttpWebResponse) request.GetResponse())
                 {
                     if (response.Headers["transfer-encoding"] == "chunked")
                     {
@@ -86,6 +86,10 @@ namespace CrawlerClient
                     }
                 }
                 return resultingDocument;
+            }
+            catch (WebException e)
+            {
+                throw;
             }
             catch (Exception e)
             {
