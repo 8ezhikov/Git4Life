@@ -10,6 +10,7 @@ using AutoMapper;
 using Honeycomb.Interfaces;
 using Honeycomb.Services;
 using Honeycomb.ViewModel;
+using Serilog;
 
 namespace Honeycomb
 {
@@ -19,12 +20,17 @@ namespace Honeycomb
         public RemoteCrawlerService(MainViewModel modelLink)
         {
             modelReference = modelLink;
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Seq("http://193.124.113.235:5341")
+                .CreateLogger();
         }
+
         //callback interface for clients
         ICrawlerClientCallback callback = null;
         private ConcurrentStack<Seed> globalSeedStack = new ConcurrentStack<Seed>();
         private MainViewModel modelReference;
-        private Stopwatch timeTracker = new Stopwatch(); 
+        private Stopwatch timeTracker = new Stopwatch();
         //delegate used for BroadcastEvent
 
         public ObservableCollection<ClientCrawlerInfo> ConnectedClientCrawlers
@@ -33,7 +39,8 @@ namespace Honeycomb
             set { _connectedClientCrawlers = value; }
         }
 
-        private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
+        private ObservableCollection<ClientCrawlerInfo> _connectedClientCrawlers =
+            new ObservableCollection<ClientCrawlerInfo>();
 
         public void GiveTestInitialTasks()
         {
@@ -72,7 +79,7 @@ namespace Honeycomb
                 return;
             }
 
-            globalSeedStack.PushRange(dbContext.Seeds.Where(sd=>sd.IsProcessed == false).ToArray());
+            globalSeedStack.PushRange(dbContext.Seeds.Where(sd => sd.IsProcessed == false).ToArray());
 
             var crawlerCounter = 0;
 
@@ -83,7 +90,8 @@ namespace Honeycomb
                 Seed[] nextSeed1 = new Seed[batchSize];
                 if (globalSeedStack.TryPopRange(nextSeed1, 0, batchSize) > 0)
                 {
-                    modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName + " Seed URL is " + nextSeed1.FirstOrDefault().SeedDomainName);
+                    modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName +
+                                                       " Seed URL is " + nextSeed1.FirstOrDefault().SeedDomainName);
                     var seedList = new List<SeedDTO>();
                     seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
                     crawlerCallback.SavedCallback.StartCrawling(seedList);
@@ -108,7 +116,8 @@ namespace Honeycomb
             var dbConnInfo = SeedModel.DataAccessService.ConvertToCrawlerConnection(clientCrawlerNewInfo);
             dbConnInfo.ConnectionTime = DateTime.Now;
             dbContext.CrawlerConnections.Add(dbConnInfo);
-            modelReference.AppendTextToConsole("New client-crawler added! Name is  " + clientCrawlerNewInfo.ClientName + " Connection time is" + DateTime.Now);
+            modelReference.AppendTextToConsole("New client-crawler added! Name is  " + clientCrawlerNewInfo.ClientName +
+                                               " Connection time is" + DateTime.Now);
 
             dbContext.SaveChanges();
             return ConnectedClientCrawlers.ToArray();
@@ -124,17 +133,18 @@ namespace Honeycomb
             SaveClientResultsToDatabase(resultsDto);
             int batchSize = 1;
             Seed[] nextSeed1 = new Seed[batchSize];
-            if (globalSeedStack.TryPopRange(nextSeed1,0, batchSize) >0)
+            if (globalSeedStack.TryPopRange(nextSeed1, 0, batchSize) > 0)
             {
-                var foundcallback = _connectedClientCrawlers.FirstOrDefault(crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
+                var foundcallback =
+                    _connectedClientCrawlers.FirstOrDefault(crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
                 var seedList = new List<SeedDTO>();
-                seedList.AddRange(nextSeed1.Select(it=> Mapper.Map<SeedDTO>(it)));
+                seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
                 foundcallback?.SavedCallback.StartCrawling(seedList);
             }
             else
             {
                 modelReference.AppendTextToConsole("All Seeds are processed!");
-               
+
                 modelReference.AppendTextToConsole("Time now is" + DateTime.Now);
                 timeTracker.Stop();
                 modelReference.AppendTextToConsole("Time elapsed" + timeTracker.ElapsedTicks);
@@ -168,10 +178,20 @@ namespace Honeycomb
             dbBatch.NumberOfCrawledInternalLinks = internalLinks;
             dbContext.Batches.Add(dbBatch);
 
+            try
+            {
+                dbContext.SaveChanges();
 
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "");
+                throw;
+            }
             foreach (var siteResults in resultsDto.BatchInfo.resultCollection)
             {
-                modelReference.AppendTextToConsole("Crawling results from" + siteResults.ProcessedSeed.SeedDomainName + " acquired. Saving onto DB...");
+                modelReference.AppendTextToConsole("Crawling results from" + siteResults.ProcessedSeed.SeedDomainName +
+                                                   " acquired. Saving onto DB...");
 
                 if (siteResults.InternalLinksList != null)
                 {
@@ -201,9 +221,16 @@ namespace Honeycomb
                 seedFromDb.IsProcessed = true;
             }
 
-           
-            dbContext.SaveChanges();
+            try
+            {
 
+                dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "");
+                throw;
+            }
 
         }
 

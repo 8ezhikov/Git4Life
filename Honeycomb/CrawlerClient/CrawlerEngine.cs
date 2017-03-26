@@ -352,8 +352,10 @@ namespace CrawlerClient
 
         public static void LogException(Exception e)
         {
-            Log.Error(e, "");
+            Serilog.Log.Logger.Error(e, "");
+            //    Log.Error(e, "");
             //MessageBox.Show(e.Message);
+            Log.CloseAndFlush();
         }
     }
 }

@@ -65,6 +65,7 @@ namespace CrawlerClient
             catch (Exception ex)
             {
                 Log.Error(ex, "");
+                Log.CloseAndFlush();
                 return;
             }
             InjectedViewModel.CrawlerStatus = "Crawling finished returning results";
@@ -86,6 +87,7 @@ namespace CrawlerClient
             catch (Exception e)
             {
                 Log.Error(e, "");
+                Log.CloseAndFlush();
             }
         }
 

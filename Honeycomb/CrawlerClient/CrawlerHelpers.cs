@@ -91,6 +91,7 @@ namespace CrawlerClient
             {
                 Log.Error(e, "");
                 throw;
+
                // return new HtmlDocument();
             }
         }

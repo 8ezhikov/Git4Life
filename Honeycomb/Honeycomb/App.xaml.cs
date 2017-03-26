@@ -46,6 +46,7 @@ namespace Honeycomb
         {
             var e = (Exception)args.ExceptionObject;
             Log.Error(e,"");
+            Log.CloseAndFlush();
         }
     }
 }

@@ -18,9 +18,10 @@ namespace CrawlerClient
             Log.Logger = new LoggerConfiguration()
               .MinimumLevel.Debug()
               .WriteTo.Seq("http://193.124.113.235:5341")
+              .WriteTo.RollingFile(@"D:\1.txt")
               .CreateLogger();
 
-            
+           
 
         }
 
@@ -28,6 +29,7 @@ namespace CrawlerClient
         {
             var e = (Exception)args.ExceptionObject;
             Log.Error(e, "");
+            Log.CloseAndFlush();
         }
     }
 }

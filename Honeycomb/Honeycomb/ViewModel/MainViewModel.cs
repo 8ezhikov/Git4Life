@@ -93,7 +93,8 @@ namespace Honeycomb.ViewModel
 
         void GetEmployees()
         {
-            AppendTextToConsole("TTTT");
+           Log.Error(new Exception(), "hey Seq");
+            Log.CloseAndFlush();
         }
     }
 }

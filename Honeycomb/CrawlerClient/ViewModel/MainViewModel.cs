@@ -69,7 +69,6 @@ namespace CrawlerClient.ViewModel
         }
         private void TestCrawl()
         {
-         
             IsConnectButtonActive = false;
 
             var stopWatch = new Stopwatch();
@@ -103,7 +102,7 @@ namespace CrawlerClient.ViewModel
 
             ClientHelper.CreateCSV(benchList);
             stopWatch.Stop();
-
+            
         }
 
         private string _publicIpAdress;
