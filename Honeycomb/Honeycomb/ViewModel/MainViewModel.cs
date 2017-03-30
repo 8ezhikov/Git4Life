@@ -8,6 +8,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Honeycomb.Models;
+using Microsoft.Win32;
 using Serilog;
 
 namespace Honeycomb.ViewModel
@@ -30,7 +31,7 @@ namespace Honeycomb.ViewModel
             StartCrawlingCommand = new RelayCommand(StartCrawling, () => true);
             StartTestCrawlingCommand = new RelayCommand(StartTestCrawling, () => true);
 
-            ReadAllCommand = new RelayCommand(GetEmployees);
+            ReadAllCommand = new RelayCommand(LoadBatchAllocation);
             ShowSeedWindowCommand = new RelayCommand(ShowSeedWindow);
             var uri = new Uri(ConfigurationManager.AppSettings["addr"]);
             instance = new RemoteCrawlerService(this);
@@ -91,9 +92,14 @@ namespace Honeycomb.ViewModel
             window.Show();
         }
 
-        void GetEmployees()
+        void LoadBatchAllocation()
         {
-           Log.Error(new Exception(), "hey Seq");
+            var file = new OpenFileDialog();
+            file.InitialDirectory = "c:\\";
+            file.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            file.FilterIndex = 2;
+            file.RestoreDirectory = true;
+            Log.Error(new Exception(), "hey Seq");
             Log.CloseAndFlush();
         }
     }
