@@ -7,6 +7,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using AutoMapper;
+using EntityFramework.Utilities;
 using Honeycomb.Interfaces;
 using Honeycomb.Services;
 using Honeycomb.ViewModel;
@@ -31,6 +32,7 @@ namespace Honeycomb
         private ConcurrentStack<Seed> globalSeedStack = new ConcurrentStack<Seed>();
         private MainViewModel modelReference;
         private Stopwatch timeTracker = new Stopwatch();
+        public CrawlingMethod CrawlMode;
         //delegate used for BroadcastEvent
 
         public ObservableCollection<ClientCrawlerInfo> ConnectedClientCrawlers
@@ -130,7 +132,10 @@ namespace Honeycomb
 
         public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
         {
+           var stopWatT = new Stopwatch();
+            stopWatT.Start();
             SaveClientResultsToDatabase(resultsDto);
+            stopWatT.Stop();
             int batchSize = 1;
             Seed[] nextSeed1 = new Seed[batchSize];
             if (globalSeedStack.TryPopRange(nextSeed1, 0, batchSize) > 0)
@@ -160,7 +165,7 @@ namespace Honeycomb
 
 
             var dbContext = new Crawler_DBEntities();
-
+            dbContext.Configuration.AutoDetectChangesEnabled = false;
 
             var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
             dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
@@ -195,27 +200,46 @@ namespace Honeycomb
 
                 if (siteResults.InternalLinksList != null)
                 {
+                    var intLinks = new List<InternalLink>();
                     foreach (var internalLink in siteResults.InternalLinksList)
                     {
                         var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
-                        dbContext.InternalLinks.Add(dbLink);
+                        intLinks.Add(dbLink);
                     }
+                    using (var db = new Crawler_DBEntities())
+                    {
+                        EFBatchOperation.For(db, db.InternalLinks).InsertAll(intLinks);
+                    }
+                    
+                    //dbContext.InternalLinks.AddRange(intLinks);
                 }
                 if (siteResults.ExternalLinksList != null)
                 {
+                    var extLinks = new List<ExternalLink>();
                     foreach (var externalLink in siteResults.ExternalLinksList)
                     {
                         var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
-                        dbContext.ExternalLinks.Add(dbLink);
+                        extLinks.Add(dbLink);
                     }
+                    using (var db = new Crawler_DBEntities())
+                    {
+                        EFBatchOperation.For(db, db.ExternalLinks).InsertAll(extLinks);
+                    }
+                    //dbContext.ExternalLinks.AddRange(extLinks);
                 }
                 if (siteResults.BadLinksList != null)
                 {
+                    var badLinks = new List<BadLink>();
                     foreach (var badLink in siteResults.BadLinksList)
                     {
                         var dbLink = ConvertBadLinkDTOtoDB(badLink);
-                        dbContext.BadLinks.Add(dbLink);
+                        badLinks.Add(dbLink);
                     }
+                    using (var db = new Crawler_DBEntities())
+                    {
+                        EFBatchOperation.For(db, db.BadLinks).InsertAll(badLinks);
+                    }
+                    //dbContext.BadLinks.AddRange(badLinks);
                 }
                 var seedFromDb = dbContext.Seeds.First(sd => sd.SeedIndex == siteResults.ProcessedSeed.SeedIndex);
                 seedFromDb.IsProcessed = true;
@@ -285,6 +309,12 @@ namespace Honeycomb
                 _connectedClientCrawlers.Remove(clientToRemove);
             }
         }
+    }
+
+    public enum CrawlingMethod
+    {
+        RoundRobin,
+        BatchMode
     }
 }
 

@@ -13,6 +13,8 @@ namespace Honeycomb
         private string _clientName;
         private Guid _clientIdentifier;
 
+        private int _batchNumber;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICrawlerClientCallback SavedCallback;
@@ -58,6 +60,16 @@ namespace Honeycomb
                 _clientIdentifier = value;
                 // Call OnPropertyChanged whenever the property is updated
                 OnPropertyChanged("ClientName");
+            }
+        }
+
+        public int BatchNumber
+        {
+            get { return _batchNumber; }
+            set
+            {
+                _batchNumber = value;
+                OnPropertyChanged("BatchNumber");
             }
         }
 
