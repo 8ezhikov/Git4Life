@@ -7,6 +7,7 @@
     [NumberOfCrawledInternalLinks] INT NOT NULL, 
 	[NumberOfCrawledExternalLinks] INT NOT NULL, 
     [SeedIds] NVARCHAR(50) NOT NULL, 
+    [EndTime] DATETIME NOT NULL, 
     CONSTRAINT [FK_Batches_ToCrawlerConnection] FOREIGN KEY ([CrawlerConnectionId]) REFERENCES [CrawlerConnections]([Id]) ON DELETE CASCADE, 
   
 )

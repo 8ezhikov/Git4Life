@@ -25,6 +25,9 @@ namespace Honeycomb.ViewModel
         public RelayCommand StartCrawlingCommand { get; private set; }
         public RelayCommand StartTestCrawlingCommand { get; private set; }
 
+        public bool IsRobin { get; set; }
+        public bool IsBatch { get; set; }
+
         public MainViewModel()
         {
             StartCrawlingCommand = new RelayCommand(StartCrawling, () => true);
@@ -39,7 +42,8 @@ namespace Honeycomb.ViewModel
             ClientCrawlers = new ObservableCollection<ClientCrawlerInfo>();
             ClientCrawlers = instance.ConnectedClientCrawlers;
             AppendTextToConsole("Starting Server...");
-          
+            IsRobin = true;
+
         }
 
         private string _textBoxContent;
@@ -79,10 +83,18 @@ namespace Honeycomb.ViewModel
 
         private void StartCrawling()
         {
-            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
 
-             Task.Run(() => hoster.GiveInitialTasks());
-            
+            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
+            if (IsRobin)
+            {
+                hoster.CrawlMode = CrawlingMethod.RoundRobin;
+            }
+            if (IsBatch)
+            {
+                hoster.CrawlMode = CrawlingMethod.BatchMode;
+            }
+            Task.Run(() => hoster.GiveInitialTasks());
+
         }
 
         void ShowSeedWindow()
