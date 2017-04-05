@@ -21,6 +21,7 @@ namespace Honeycomb
         public int NumberOfCrawledInternalLinks { get; set; }
         public int NumberOfCrawledExternalLinks { get; set; }
         public string SeedIds { get; set; }
+        public Nullable<System.DateTime> EndTime { get; set; }
     
         public virtual CrawlerConnection CrawlerConnection { get; set; }
     }

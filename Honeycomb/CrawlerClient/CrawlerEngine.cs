@@ -100,6 +100,7 @@ namespace CrawlerClient
             var batchInfo = new BatchDTO();
             batchInfo.CrawlingTime = (int) runingTime;
             batchInfo.StartTime = startTime;
+            batchInfo.EndTime = DateTime.Now;
             //batchInfo.NumberOfCrawledExternalLinks = _externalLinksDictionary.Count;
             //batchInfo.NumberOfCrawledInternalLinks = _internalLinksIdCounter;
             batchInfo.resultCollection = resultCollection;

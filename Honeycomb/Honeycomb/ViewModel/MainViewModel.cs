@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.IO;
+using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using CsvHelper;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Honeycomb.Models;
@@ -20,6 +25,7 @@ namespace Honeycomb.ViewModel
         /// </summary>
         /// 
         private ServiceHost host;
+
         private RemoteCrawlerService instance;
         public RelayCommand ReadAllCommand { get; set; }
         public RelayCommand ShowSeedWindowCommand { get; set; }
@@ -28,7 +34,8 @@ namespace Honeycomb.ViewModel
 
         public bool IsRobin { get; set; }
         public bool IsBatch { get; set; }
-
+        public int SeedNumber { get; set; }
+     
         public MainViewModel()
         {
             StartCrawlingCommand = new RelayCommand(StartCrawling, () => true);
@@ -44,6 +51,7 @@ namespace Honeycomb.ViewModel
             ClientCrawlers = instance.ConnectedClientCrawlers;
             AppendTextToConsole("Starting Server...");
             IsRobin = true;
+            SeedNumber = 99;
 
         }
 
@@ -76,24 +84,34 @@ namespace Honeycomb.ViewModel
             TextBoxContent = TextBoxContent + messageToAppend;
             TextBoxContent += Environment.NewLine;
         }
+
         private void StartTestCrawling()
         {
-            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
+            var hoster = ((RemoteCrawlerService) host.SingletonInstance);
             hoster.GiveTestInitialTasks();
         }
 
         private void StartCrawling()
         {
 
-            var hoster = ((RemoteCrawlerService)host.SingletonInstance);
+            var hoster = ((RemoteCrawlerService) host.SingletonInstance);
             if (IsRobin)
             {
                 hoster.CrawlMode = CrawlingMethod.RoundRobin;
             }
             if (IsBatch)
             {
+                var alloc = TestForBatch();
+                if (alloc == null)
+                {
+                    MessageBox.Show("Seed to batch allocation is wrong!");
+                    return;
+                }
+
                 hoster.CrawlMode = CrawlingMethod.BatchMode;
+                hoster.SeedsByBatchAllocation = alloc;
             }
+
             Task.Run(() => hoster.GiveInitialTasks());
 
         }
@@ -104,13 +122,71 @@ namespace Honeycomb.ViewModel
             window.Show();
         }
 
+        private Dictionary<int, ConcurrentStack<int>> TestForBatch()
+        {
+            try
+            {
+                var dbCont = new Crawler_DBEntities();
+               var seedsByBatch = new Dictionary<int, ConcurrentStack<int>>();
+                var seedCounter = 0;
+                foreach (var uiCrawler in ClientCrawlers)
+                {
+                    var crawlerNum = uiCrawler.BatchNumber;
+                    var dbAlloc = dbCont.PredefinedJobs.FirstOrDefault(_ => _.ClientId == crawlerNum);
+                    if (dbAlloc == null)
+                    {
+                        return null;
+                    }
+                    var batchSeeds = dbAlloc.SeedIds.Split(',').Select(int.Parse).ToList();
+                    var seedStack = new ConcurrentStack<int>(batchSeeds);
+                    seedCounter += batchSeeds.Count;
+                    seedsByBatch.Add(crawlerNum, seedStack);
+                }
+
+                if (seedCounter != SeedNumber)
+                {
+                    return null;
+                }
+                return seedsByBatch;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
+        }
         void LoadBatchAllocation()
         {
-            var file = new OpenFileDialog();
-            file.InitialDirectory = "c:\\";
-            file.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            file.FilterIndex = 2;
-            file.RestoreDirectory = true;
+            TestForBatch();
+            //var file = new OpenFileDialog();
+            //file.InitialDirectory = "c:\\";
+            //file.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            //file.FilterIndex = 2;
+            //file.RestoreDirectory = true;
+
+            //if (file.ShowDialog() == true)
+            //{
+            //    using (TextReader textReader = File.OpenText(file.FileName))
+            //    {
+            //        var csv = new CsvReader(textReader);
+            //        while (csv.Read())
+            //        {
+            //            var ClientNumber = csv.GetField<int>(0);
+            //            for (int i = 0; i < 100; i++)
+            //            {
+            //                int intField;
+            //                if (!csv.TryGetField(0, out intField))
+            //                {
+            //                    // Do something when it can't convert.
+            //                }
+            //            }
+            //            var stringField = csv.GetField<string>(1);
+            //            var boolField = csv.GetField<bool>("HeaderName");
+            //        }
+            //    }
+
+            //}
             Log.Error(new Exception(), "hey Seq");
             Log.CloseAndFlush();
         }

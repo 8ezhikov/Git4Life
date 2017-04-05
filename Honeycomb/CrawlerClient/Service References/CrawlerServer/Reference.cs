@@ -90,6 +90,9 @@ namespace CrawlerClient.CrawlerServer {
         private int CrawlingTimeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime EndTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -136,6 +139,19 @@ namespace CrawlerClient.CrawlerServer {
                 if ((this.CrawlingTimeField.Equals(value) != true)) {
                     this.CrawlingTimeField = value;
                     this.RaisePropertyChanged("CrawlingTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime EndTime {
+            get {
+                return this.EndTimeField;
+            }
+            set {
+                if ((this.EndTimeField.Equals(value) != true)) {
+                    this.EndTimeField = value;
+                    this.RaisePropertyChanged("EndTime");
                 }
             }
         }

@@ -30,6 +30,10 @@ namespace Honeycomb
         [DataMember]
         public int Id;
         [DataMember]
+        public DateTime EndTime;
+
+
+        [DataMember]
 
         public List<SiteResults> resultCollection;
 

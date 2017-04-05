@@ -17,11 +17,12 @@
             <Button Command="{Binding StartTestCrawlingCommand}" Content="Start Test Crawling" HorizontalAlignment="Left" Margin="216,38,0,0" VerticalAlignment="Top" Width="124"  Height="67" Visibility="Hidden"/>
 
             <Button Command="{Binding ReadAllCommand}" Content="Refresh Server List" HorizontalAlignment="Left" Margin="826,38,0,0" VerticalAlignment="Top" Width="142" Height="67" />
-            <Button Command="{Binding ShowSeedWindowCommand}" Content="Manage Seeds" HorizontalAlignment="Left" Margin="498,38,0,0" VerticalAlignment="Top" Width="138" Height="67"/>
-            <StackPanel Margin="269,29,604,36">
+            <Button Command="{Binding ShowSeedWindowCommand}" Content="Manage Seeds" HorizontalAlignment="Left" Margin="245,38,0,0" VerticalAlignment="Top" Width="138" Height="67"/>
+            <StackPanel Margin="572,38,301,23">
                 <Label FontWeight="Bold" Content="Crawling mode"/>
                 <RadioButton x:Name="RobinChecker" Content="Round Robin" IsChecked="{Binding IsRobin}"/>
                 <RadioButton x:Name="BatchCheck" Content="Batch Mode" IsChecked="{Binding IsBatch}"/>
+                <TextBox x:Name="SeedNumberTextBox" Text="{Binding SeedNumber}"></TextBox>
             </StackPanel>
 
         </Grid>
