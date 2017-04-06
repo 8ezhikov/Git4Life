@@ -9,6 +9,6 @@ namespace Honeycomb.Interfaces
         void StartTestCrawl();
 
         [OperationContract(IsOneWay = true)]
-        void StartCrawling(List<SeedDTO> SelectedSeedDTO);
+        void StartCrawling(List<SeedDTO> SelectedSeedDTO, int maxLevel);
     }
 }

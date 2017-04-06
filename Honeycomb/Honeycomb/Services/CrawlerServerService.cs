@@ -28,12 +28,13 @@ namespace Honeycomb
         }
 
         //callback interface for clients
-        ICrawlerClientCallback callback = null;
+        //ICrawlerClientCallback callback = null;
         private ConcurrentStack<Seed> globalSeedStack = new ConcurrentStack<Seed>();
         private MainViewModel modelReference;
         private Stopwatch timeTracker = new Stopwatch();
         public CrawlingMethod CrawlMode;
         public Dictionary<int, ConcurrentStack<int>> SeedsByBatchAllocation;
+        private int maxLevel = 1;
         //delegate used for BroadcastEvent
 
         public ObservableCollection<ClientCrawlerInfo> ConnectedClientCrawlers
@@ -99,7 +100,7 @@ namespace Honeycomb
                                                            " Seed URL is " + nextSeed1.FirstOrDefault().SeedDomainName);
                         var seedList = new List<SeedDTO>();
                         seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
-                        crawlerCallback.SavedCallback.StartCrawling(seedList);
+                        crawlerCallback.SavedCallback.StartCrawling(seedList, maxLevel);
                         crawlerCounter++;
 
                     }
@@ -112,7 +113,7 @@ namespace Honeycomb
                 {
                     int batchSize = 1;
 
-                    int[] seedNumToCrawl = { };
+                    int[] seedNumToCrawl = new int[batchSize];
                     if (SeedsByBatchAllocation[crawlerCallback.BatchNumber].TryPopRange(seedNumToCrawl, 0, batchSize) > 0)
                     {
                         var seedList = new List<SeedDTO>();
@@ -125,7 +126,7 @@ namespace Honeycomb
                             seedList.Add(Mapper.Map<SeedDTO>(dbSeed));
 
                         }
-                        crawlerCallback.SavedCallback.StartCrawling(seedList);
+                        crawlerCallback.SavedCallback.StartCrawling(seedList, maxLevel);
                         crawlerCounter++;
 
                     }
@@ -158,7 +159,7 @@ namespace Honeycomb
 
         public void ReturnCrawlingResults(CrawlerResultsDTO resultsDto)
         {
-           var stopWatT = new Stopwatch();
+            var stopWatT = new Stopwatch();
             stopWatT.Start();
             SaveClientResultsToDatabase(resultsDto);
             stopWatT.Stop();
@@ -173,7 +174,7 @@ namespace Honeycomb
                             crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
                     var seedList = new List<SeedDTO>();
                     seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
-                    foundcallback?.SavedCallback.StartCrawling(seedList);
+                    foundcallback?.SavedCallback.StartCrawling(seedList, maxLevel);
                 }
                 else
                 {
@@ -192,7 +193,7 @@ namespace Honeycomb
                 var foundcallback =
                     _connectedClientCrawlers.FirstOrDefault(
                         crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
-                int[] seedNumToCrawl = { };
+                int[] seedNumToCrawl = new int[batchSize];
                 if (SeedsByBatchAllocation[foundcallback.BatchNumber].TryPopRange(seedNumToCrawl, 0, batchSize) > 0)
                 {
                     var seedList = new List<SeedDTO>();
@@ -205,109 +206,132 @@ namespace Honeycomb
                         seedList.Add(Mapper.Map<SeedDTO>(dbSeed));
 
                     }
-                    foundcallback.SavedCallback.StartCrawling(seedList);
+                    foundcallback.SavedCallback.StartCrawling(seedList, maxLevel);
 
+                }
+                else
+                {
+                    modelReference.AppendTextToConsole("All Seeds are processed!");
+
+                    modelReference.AppendTextToConsole("Time now is" + DateTime.Now);
+                    //  timeTracker.Stop();
+                    modelReference.AppendTextToConsole("Time elapsed" + timeTracker.ElapsedTicks);
+                    modelReference.AppendTextToConsole("Time elapsed" + timeTracker.Elapsed);
+
+                    //throw new Exception("Couldn't pop from stack");
                 }
             }
         }
 
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
         {
-
-
-
-            var dbContext = new Crawler_DBEntities();
-            dbContext.Configuration.AutoDetectChangesEnabled = false;
-
-            var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
-            dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
-            var seedInts = resultsDto.BatchInfo.resultCollection.Select(rs => rs.ProcessedSeed.SeedIndex);
-            var seedIds = seedInts.Aggregate("", (current, va) => current + (va + ","));
-            dbBatch.SeedIds = seedIds;
-            int internalLinks = 0;
-            int externalLinks = 0;
-            foreach (var result in resultsDto.BatchInfo.resultCollection)
+            using (var dbContext = new Crawler_DBEntities())
             {
-                internalLinks += result.InternalLinksList.Count;
-                externalLinks += result.ExternalLinksList.Count;
-            }
-            dbBatch.NumberOfCrawledExternalLinks = externalLinks;
-            dbBatch.NumberOfCrawledInternalLinks = internalLinks;
-            dbContext.Batches.Add(dbBatch);
-
-            try
-            {
-                dbContext.SaveChanges();
-
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "");
-                throw;
-            }
-            foreach (var siteResults in resultsDto.BatchInfo.resultCollection)
-            {
-                modelReference.AppendTextToConsole("Crawling results from" + siteResults.ProcessedSeed.SeedDomainName +
-                                                   " acquired. Saving onto DB...");
-
-                if (siteResults.InternalLinksList != null)
+                var dbBatch = Mapper.Map<Batch>(resultsDto.BatchInfo);
+                dbBatch.CrawlerConnectionId = resultsDto.ConnectionInfo.Id;
+                var seedInts = resultsDto.BatchInfo.resultCollection.Select(rs => rs.ProcessedSeed.SeedIndex);
+                var seedIds = seedInts.Aggregate("", (current, va) => current + (va + ","));
+                dbBatch.SeedIds = seedIds;
+                int internalLinks = 0;
+                int externalLinks = 0;
+                foreach (var result in resultsDto.BatchInfo.resultCollection)
                 {
-                    var intLinks = new List<InternalLink>();
-                    foreach (var internalLink in siteResults.InternalLinksList)
-                    {
-                        var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
-                        intLinks.Add(dbLink);
-                    }
-                    using (var db = new Crawler_DBEntities())
-                    {
-                        EFBatchOperation.For(db, db.InternalLinks).InsertAll(intLinks);
-                    }
-                    
-                    //dbContext.InternalLinks.AddRange(intLinks);
+                    internalLinks += result.InternalLinksList.Count;
+                    externalLinks += result.ExternalLinksList.Count;
                 }
-                if (siteResults.ExternalLinksList != null)
+                dbBatch.NumberOfCrawledExternalLinks = externalLinks;
+                dbBatch.NumberOfCrawledInternalLinks = internalLinks;
+                dbContext.Batches.Add(dbBatch);
+
+                try
                 {
-                    var extLinks = new List<ExternalLink>();
-                    foreach (var externalLink in siteResults.ExternalLinksList)
-                    {
-                        var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
-                        extLinks.Add(dbLink);
-                    }
-                    using (var db = new Crawler_DBEntities())
-                    {
-                        EFBatchOperation.For(db, db.ExternalLinks).InsertAll(extLinks);
-                    }
-                    //dbContext.ExternalLinks.AddRange(extLinks);
+                    dbContext.SaveChanges();
+
                 }
-                if (siteResults.BadLinksList != null)
+                catch (Exception e)
                 {
-                    var badLinks = new List<BadLink>();
-                    foreach (var badLink in siteResults.BadLinksList)
-                    {
-                        var dbLink = ConvertBadLinkDTOtoDB(badLink);
-                        badLinks.Add(dbLink);
-                    }
-                    using (var db = new Crawler_DBEntities())
-                    {
-                        EFBatchOperation.For(db, db.BadLinks).InsertAll(badLinks);
-                    }
-                    //dbContext.BadLinks.AddRange(badLinks);
+                    Log.Error(e, "");
+                    throw;
                 }
-                var seedFromDb = dbContext.Seeds.First(sd => sd.SeedIndex == siteResults.ProcessedSeed.SeedIndex);
-                seedFromDb.IsProcessed = true;
-            }
+                foreach (var siteResults in resultsDto.BatchInfo.resultCollection)
+                {
+                    var saveStopWatch = new Stopwatch();
+                    Stopwatch.StartNew();
+                    modelReference.AppendTextToConsole("Crawling results from" + siteResults.ProcessedSeed.SeedDomainName +
+                                                       " acquired. Saving onto DB...");
+                    var seedFromDb = dbContext.Seeds.First(sd => sd.SeedIndex == siteResults.ProcessedSeed.SeedIndex);
+                    seedFromDb.IsProcessed = true;
 
-            try
-            {
+                    try
+                    {
+                        dbContext.SaveChanges();
 
-                dbContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "");
-                throw;
-            }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e, "");
+                        throw;
+                    }
 
+                    if (siteResults.InternalLinksList != null)
+                    {
+                        var intLinks = new List<InternalLink>();
+                        foreach (var internalLink in siteResults.InternalLinksList)
+                        {
+                            var dbLink = ConvertInternalLinkDTOtoDB(internalLink);
+                            intLinks.Add(dbLink);
+                        }
+                        using (var db = new Crawler_DBEntities())
+                        {
+                            EFBatchOperation.For(db, db.InternalLinks).InsertAll(intLinks);
+                        }
+
+                        //dbContext.InternalLinks.AddRange(intLinks);
+                    }
+                    if (siteResults.ExternalLinksList != null)
+                    {
+                        var extLinks = new List<ExternalLink>();
+                        foreach (var externalLink in siteResults.ExternalLinksList)
+                        {
+                            var dbLink = ConvertExternalLinkDTOtoDB(externalLink);
+                            extLinks.Add(dbLink);
+                        }
+                        using (var db = new Crawler_DBEntities())
+                        {
+                            EFBatchOperation.For(db, db.ExternalLinks).InsertAll(extLinks);
+                        }
+                        //dbContext.ExternalLinks.AddRange(extLinks);
+                    }
+                    if (siteResults.BadLinksList != null)
+                    {
+                        var badLinks = new List<BadLink>();
+                        foreach (var badLink in siteResults.BadLinksList)
+                        {
+                            var dbLink = ConvertBadLinkDTOtoDB(badLink);
+                            badLinks.Add(dbLink);
+                        }
+                        using (var db = new Crawler_DBEntities())
+                        {
+                            EFBatchOperation.For(db, db.BadLinks).InsertAll(badLinks);
+                        }
+                        //dbContext.BadLinks.AddRange(badLinks);
+                    }
+                    modelReference.AppendTextToConsole("Save finished for " + siteResults.ProcessedSeed.SeedDomainName +
+                                                     "  time spend " + saveStopWatch.Elapsed);
+
+                }
+
+                try
+                {
+
+                    dbContext.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "");
+                    throw;
+                }
+            }
         }
 
         private InternalLink ConvertInternalLinkDTOtoDB(InternalLinkDTO internalLinkDto)

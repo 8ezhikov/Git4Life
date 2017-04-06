@@ -998,7 +998,7 @@ namespace CrawlerClient.CrawlerServer {
         void StartTestCrawl();
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IRemoteCrawler/StartCrawling")]
-        void StartCrawling(System.Collections.Generic.List<CrawlerClient.CrawlerServer.SeedDTO> SelectedSeedDTO);
+        void StartCrawling(System.Collections.Generic.List<CrawlerClient.CrawlerServer.SeedDTO> SelectedSeedDTO, int maxLevel);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

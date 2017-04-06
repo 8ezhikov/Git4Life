@@ -51,14 +51,14 @@ namespace CrawlerClient
         {
             InjectedViewModel = injectedViewModel;
         }
-        public void StartCrawling(List<SeedDTO> seedList)
+        public void StartCrawling(List<SeedDTO> seedList, int maxLevel)
         {
             var crawlerInstance = new CrawlerEngine();
             CrawlerResultsDTO result;
             InjectedViewModel.CrawlerStatus = "Crawling Started";
             try
             {
-                result = crawlerInstance.StartCrawlingProcess(seedList);
+                result = crawlerInstance.StartCrawlingProcess(seedList, maxLevel);
                 result.ConnectionInfo = new ConnectionInfoDTO();
                 result.ConnectionInfo.Id = _singletoneId;
             }

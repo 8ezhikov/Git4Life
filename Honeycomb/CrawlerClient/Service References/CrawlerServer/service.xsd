@@ -51,6 +51,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Honeycomb" minOccurs="0" name="SelectedSeedDTO" nillable="true" type="q5:ArrayOfSeedDTO" />
+        <xs:element minOccurs="0" name="maxLevel" type="xs:int" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
