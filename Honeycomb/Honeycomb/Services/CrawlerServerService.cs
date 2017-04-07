@@ -34,7 +34,7 @@ namespace Honeycomb
         private Stopwatch timeTracker = new Stopwatch();
         public CrawlingMethod CrawlMode;
         public Dictionary<int, ConcurrentStack<int>> SeedsByBatchAllocation;
-        private int maxLevel = 1;
+        private const int MaxLevel = 2;
         //delegate used for BroadcastEvent
 
         public ObservableCollection<ClientCrawlerInfo> ConnectedClientCrawlers
@@ -100,7 +100,7 @@ namespace Honeycomb
                                                            " Seed URL is " + nextSeed1.FirstOrDefault().SeedDomainName);
                         var seedList = new List<SeedDTO>();
                         seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
-                        crawlerCallback.SavedCallback.StartCrawling(seedList, maxLevel);
+                        crawlerCallback.SavedCallback.StartCrawling(seedList, MaxLevel);
                         crawlerCounter++;
 
                     }
@@ -126,7 +126,7 @@ namespace Honeycomb
                             seedList.Add(Mapper.Map<SeedDTO>(dbSeed));
 
                         }
-                        crawlerCallback.SavedCallback.StartCrawling(seedList, maxLevel);
+                        crawlerCallback.SavedCallback.StartCrawling(seedList, MaxLevel);
                         crawlerCounter++;
 
                     }
@@ -163,6 +163,7 @@ namespace Honeycomb
             stopWatT.Start();
             SaveClientResultsToDatabase(resultsDto);
             stopWatT.Stop();
+            modelReference.AppendTextToConsole("Time spend " + stopWatT.Elapsed);
             int batchSize = 1;
             Seed[] nextSeed1 = new Seed[batchSize];
             if (CrawlMode == CrawlingMethod.RoundRobin)
@@ -174,7 +175,7 @@ namespace Honeycomb
                             crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
                     var seedList = new List<SeedDTO>();
                     seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
-                    foundcallback?.SavedCallback.StartCrawling(seedList, maxLevel);
+                    foundcallback?.SavedCallback.StartCrawling(seedList, MaxLevel);
                 }
                 else
                 {
@@ -206,7 +207,7 @@ namespace Honeycomb
                         seedList.Add(Mapper.Map<SeedDTO>(dbSeed));
 
                     }
-                    foundcallback.SavedCallback.StartCrawling(seedList, maxLevel);
+                    foundcallback.SavedCallback.StartCrawling(seedList, MaxLevel);
 
                 }
                 else
@@ -253,6 +254,8 @@ namespace Honeycomb
                     Log.Error(e, "");
                     throw;
                 }
+
+                //dbContext.Configuration.AutoDetectChangesEnabled = false;
                 foreach (var siteResults in resultsDto.BatchInfo.resultCollection)
                 {
                     var saveStopWatch = new Stopwatch();
@@ -316,8 +319,7 @@ namespace Honeycomb
                         }
                         //dbContext.BadLinks.AddRange(badLinks);
                     }
-                    modelReference.AppendTextToConsole("Save finished for " + siteResults.ProcessedSeed.SeedDomainName +
-                                                     "  time spend " + saveStopWatch.Elapsed);
+                  
 
                 }
 

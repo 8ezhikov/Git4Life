@@ -137,7 +137,7 @@ namespace Honeycomb.ViewModel
                     {
                         return null;
                     }
-                    var batchSeeds = dbAlloc.SeedIds.Split(',').Select(int.Parse).ToList();
+                    var batchSeeds = dbAlloc.SeedIds.Split(',').Select(int.Parse).Reverse().ToList();
                     var seedStack = new ConcurrentStack<int>(batchSeeds);
                     seedCounter += batchSeeds.Count;
                     seedsByBatch.Add(crawlerNum, seedStack);
