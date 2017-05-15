@@ -4,5 +4,6 @@
 	SeedDomainName nvarchar(MAX) NOT NULL,
 	SeedShortName nvarchar(MAX),
 	SeedFullName nvarchar(MAX) NOT NULL,
-	IsProcessed bit NOT NULL
+	IsProcessed bit NOT NULL, 
+    [SortingOrder] INT NULL
 )

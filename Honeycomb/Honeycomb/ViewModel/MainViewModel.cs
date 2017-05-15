@@ -34,6 +34,8 @@ namespace Honeycomb.ViewModel
 
         public bool IsRobin { get; set; }
         public bool IsBatch { get; set; }
+        public bool IsMixed { get; set; }
+
         public int SeedNumber { get; set; }
      
         public MainViewModel()
@@ -99,7 +101,7 @@ namespace Honeycomb.ViewModel
             {
                 hoster.CrawlMode = CrawlingMethod.RoundRobin;
             }
-            if (IsBatch)
+            else if (IsBatch)
             {
                 var alloc = TestForBatch();
                 if (alloc == null)
@@ -109,6 +111,18 @@ namespace Honeycomb.ViewModel
                 }
 
                 hoster.CrawlMode = CrawlingMethod.BatchMode;
+                hoster.SeedsByBatchAllocation = alloc;
+            }
+            else if (IsMixed)
+            {
+                var alloc = TestForBatch();
+                if (alloc == null)
+                {
+                    MessageBox.Show("Seed to batch allocation is wrong!");
+                    return;
+                }
+
+                hoster.CrawlMode = CrawlingMethod.MixedMode;
                 hoster.SeedsByBatchAllocation = alloc;
             }
 

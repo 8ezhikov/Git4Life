@@ -50,7 +50,7 @@ namespace Honeycomb
         {
             var dbContext = new Crawler_DBEntities();
             timeTracker.Start();
-            globalSeedStack.PushRange(dbContext.Seeds.ToArray());
+            globalSeedStack.PushRange(dbContext.Seeds.Reverse().ToArray());
             var crawlerCounter = 0;
             foreach (var crawlerCallback in _connectedClientCrawlers)
             {
@@ -83,7 +83,14 @@ namespace Honeycomb
                 return;
             }
 
-            globalSeedStack.PushRange(dbContext.Seeds.Where(sd => sd.IsProcessed == false).ToArray());
+            if (CrawlMode == CrawlingMethod.RoundRobin)
+            {
+                globalSeedStack.PushRange(dbContext.Seeds.Where(sd => sd.IsProcessed == false).ToArray().Reverse().ToArray());
+            }
+            else
+            {
+                globalSeedStack.PushRange(dbContext.Seeds.Where(sd => sd.IsProcessed == false &&sd.SortingOrder!= null).ToArray().OrderBy(sd=>sd.SortingOrder).Reverse().ToArray());
+            }
 
             var crawlerCounter = 0;
 
@@ -109,7 +116,7 @@ namespace Honeycomb
                         //throw new Exception("Couldn't pop from stack");
                     }
                 }
-                else
+                else if(CrawlMode == CrawlingMethod.BatchMode)
                 {
                     int batchSize = 1;
 
@@ -131,6 +138,29 @@ namespace Honeycomb
 
                     }
                 }
+                else if (CrawlMode == CrawlingMethod.MixedMode)
+                {
+                    int batchSize = 1;
+
+                    int[] seedNumToCrawl = new int[batchSize];
+                    if (SeedsByBatchAllocation[crawlerCallback.BatchNumber].TryPopRange(seedNumToCrawl, 0, batchSize) >
+                        0)
+                    {
+                        var seedList = new List<SeedDTO>();
+
+                        foreach (var seedNum in seedNumToCrawl)
+                        {
+                            var dbSeed = dbContext.Seeds.First(_ => _.SeedIndex == seedNum);
+                            modelReference.AppendTextToConsole("Crawling started for " + crawlerCallback.ClientName +
+                                                               " Seed URL is " + dbSeed.SeedDomainName);
+                            seedList.Add(Mapper.Map<SeedDTO>(dbSeed));
+
+                        }
+                        crawlerCallback.SavedCallback.StartCrawling(seedList, MaxLevel);
+                        crawlerCounter++;
+                    }
+                }
+
             }
 
         }
@@ -174,6 +204,8 @@ namespace Honeycomb
                         _connectedClientCrawlers.FirstOrDefault(
                             crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
                     var seedList = new List<SeedDTO>();
+                    modelReference.AppendTextToConsole("Crawling started for " + foundcallback.ClientName +
+                                                 " Seed URL is " + nextSeed1.First().SeedDomainName);
                     seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
                     foundcallback?.SavedCallback.StartCrawling(seedList, MaxLevel);
                 }
@@ -182,14 +214,13 @@ namespace Honeycomb
                     modelReference.AppendTextToConsole("All Seeds are processed!");
 
                     modelReference.AppendTextToConsole("Time now is" + DateTime.Now);
-                    timeTracker.Stop();
                     modelReference.AppendTextToConsole("Time elapsed" + timeTracker.ElapsedTicks);
                     modelReference.AppendTextToConsole("Time elapsed" + timeTracker.Elapsed);
 
                     //throw new Exception("Couldn't pop from stack");
                 }
             }
-            else
+            else if(CrawlMode == CrawlingMethod.BatchMode)
             {
                 var foundcallback =
                     _connectedClientCrawlers.FirstOrDefault(
@@ -222,6 +253,49 @@ namespace Honeycomb
                     //throw new Exception("Couldn't pop from stack");
                 }
             }
+            else if (CrawlMode == CrawlingMethod.MixedMode)
+            {
+                var foundcallback =
+                  _connectedClientCrawlers.FirstOrDefault(
+                      crw => crw.ClientIdentifier == resultsDto.ConnectionInfo.Id);
+                int[] seedNumToCrawl = new int[batchSize];
+                if (SeedsByBatchAllocation[foundcallback.BatchNumber].TryPopRange(seedNumToCrawl, 0, batchSize) > 0)
+                {
+                    var seedList = new List<SeedDTO>();
+                    var dbContext = new Crawler_DBEntities();
+                    foreach (var seedNum in seedNumToCrawl)
+                    {
+                        var dbSeed = dbContext.Seeds.First(_ => _.SeedIndex == seedNum);
+                        modelReference.AppendTextToConsole("Crawling started for " + foundcallback.ClientName +
+                                                  " Seed URL is " + dbSeed.SeedDomainName);
+                        seedList.Add(Mapper.Map<SeedDTO>(dbSeed));
+
+                    }
+                    foundcallback.SavedCallback.StartCrawling(seedList, MaxLevel);
+
+                }
+                else if (globalSeedStack.TryPopRange(nextSeed1, 0, batchSize) > 0)
+                {
+                 
+                     var seedList = new List<SeedDTO>();
+                    modelReference.AppendTextToConsole("Crawling started for " + foundcallback.ClientName +
+                                                 " Seed URL is " + nextSeed1.First().SeedDomainName);
+                    seedList.AddRange(nextSeed1.Select(it => Mapper.Map<SeedDTO>(it)));
+                    foundcallback?.SavedCallback.StartCrawling(seedList, MaxLevel);
+                }
+                else
+                {
+                    modelReference.AppendTextToConsole("All Seeds are processed!");
+
+                    modelReference.AppendTextToConsole("Time now is" + DateTime.Now);
+                    //  timeTracker.Stop();
+                    modelReference.AppendTextToConsole("Time elapsed" + timeTracker.ElapsedTicks);
+                    modelReference.AppendTextToConsole("Time elapsed" + timeTracker.Elapsed);
+
+                    //throw new Exception("Couldn't pop from stack");
+                }
+            }
+                
         }
 
         private void SaveClientResultsToDatabase(CrawlerResultsDTO resultsDto)
@@ -392,7 +466,8 @@ namespace Honeycomb
     public enum CrawlingMethod
     {
         RoundRobin,
-        BatchMode
+        BatchMode,
+        MixedMode
     }
 }
 

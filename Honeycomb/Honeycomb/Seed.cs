@@ -19,5 +19,6 @@ namespace Honeycomb
         public string SeedShortName { get; set; }
         public string SeedFullName { get; set; }
         public bool IsProcessed { get; set; }
+        public Nullable<int> SortingOrder { get; set; }
     }
 }

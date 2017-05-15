@@ -5,12 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DCrawlerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__RefactorLog">
-          <Key>
-            <PropertyRef Name="OperationKey" />
-          </Key>
-          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
         <EntityType Name="BadLinks">
           <Key>
             <PropertyRef Name="LinkId" />
@@ -30,7 +24,7 @@
           <Property Name="NumberOfCrawledInternalLinks" Type="int" Nullable="false" />
           <Property Name="NumberOfCrawledExternalLinks" Type="int" Nullable="false" />
           <Property Name="SeedIds" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="EndTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Crawler Settings">
           <Key>
@@ -81,7 +75,7 @@
             <PropertyRef Name="ClientId" />
           </Key>
           <Property Name="ClientId" Type="int" Nullable="false" />
-          <Property Name="SeedIds" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SeedIds" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Seeds">
           <Key>
@@ -92,6 +86,7 @@
           <Property Name="SeedShortName" Type="nvarchar(max)" />
           <Property Name="SeedFullName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsProcessed" Type="bit" Nullable="false" />
+          <Property Name="SortingOrder" Type="int" />
         </EntityType>
         <Association Name="FK_Batches_ToCrawlerConnection">
           <End Role="CrawlerConnections" Type="Self.CrawlerConnections" Multiplicity="1">
@@ -109,7 +104,6 @@
         </Association>
         <Function Name="CleanContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DCrawlerModelStoreContainer">
-          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BadLinks" EntityType="Self.BadLinks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Batches" EntityType="Self.Batches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Crawler Settings" EntityType="Self.Crawler Settings" Schema="dbo" store:Type="Tables" />
@@ -179,6 +173,7 @@
           <Property Name="SeedShortName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SeedFullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsProcessed" Type="Boolean" Nullable="false" />
+          <Property Name="SortingOrder" Type="Int32" />
         </EntityType>
         <EntityContainer Name="Crawler_DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BadLinks" EntityType="Self.BadLink" />
@@ -192,7 +187,6 @@
             <End Role="CrawlerConnection" EntitySet="CrawlerConnections" />
             <End Role="Batch" EntitySet="Batches" />
           </AssociationSet>
-          <EntitySet Name="C__RefactorLog" EntityType="DCrawlerModel.C__RefactorLog" />
           <FunctionImport Name="CleanContent" />
           <EntitySet Name="PredefinedJobs" EntityType="DCrawlerModel.PredefinedJob" />
           </EntityContainer>
@@ -208,7 +202,7 @@
           <Property Name="NumberOfCrawledInternalLinks" Type="Int32" Nullable="false" />
           <Property Name="NumberOfCrawledExternalLinks" Type="Int32" Nullable="false" />
           <Property Name="SeedIds" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" Nullable="false" />
         </EntityType>
         <EntityType Name="CrawlerConnection">
           <Key>
@@ -232,18 +226,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="C__RefactorLog">
-          <Key>
-            <PropertyRef Name="OperationKey" />
-          </Key>
-          <Property Name="OperationKey" Type="Guid" Nullable="false" />
-        </EntityType>
         <EntityType Name="PredefinedJob">
           <Key>
             <PropertyRef Name="ClientId" />
           </Key>
           <Property Name="ClientId" Type="Int32" Nullable="false" />
-          <Property Name="SeedIds" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SeedIds" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -301,6 +289,7 @@
           <EntitySetMapping Name="Seeds">
             <EntityTypeMapping TypeName="DCrawlerModel.Seed">
               <MappingFragment StoreEntitySet="Seeds">
+                <ScalarProperty Name="SortingOrder" ColumnName="SortingOrder" />
                 <ScalarProperty Name="SeedIndex" ColumnName="SeedIndex" />
                 <ScalarProperty Name="SeedDomainName" ColumnName="SeedDomainName" />
                 <ScalarProperty Name="SeedShortName" ColumnName="SeedShortName" />
@@ -330,13 +319,6 @@
                 <ScalarProperty Name="CrawlerName" ColumnName="CrawlerName" />
                 <ScalarProperty Name="ConnectionTime" ColumnName="ConnectionTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="C__RefactorLog">
-            <EntityTypeMapping TypeName="DCrawlerModel.C__RefactorLog">
-              <MappingFragment StoreEntitySet="__RefactorLog">
-                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

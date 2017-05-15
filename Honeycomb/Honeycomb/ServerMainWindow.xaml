@@ -22,7 +22,8 @@
                 <Label FontWeight="Bold" Content="Crawling mode"/>
                 <RadioButton x:Name="RobinChecker" Content="Round Robin" IsChecked="{Binding IsRobin}"/>
                 <RadioButton x:Name="BatchCheck" Content="Batch Mode" IsChecked="{Binding IsBatch}"/>
-                <TextBox x:Name="SeedNumberTextBox" Text="{Binding SeedNumber}"></TextBox>
+                <RadioButton x:Name="MixedCheck" Content="Batch Mode" IsChecked="{Binding IsMixed}"/>
+                <TextBox x:Name="SeedNumberTextBox" Text="{Binding SeedNumber}" ></TextBox>
             </StackPanel>
 
         </Grid>

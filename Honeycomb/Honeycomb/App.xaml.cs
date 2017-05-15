@@ -32,10 +32,6 @@ namespace Honeycomb
                 cfg.CreateMap<SeedDTO, Seed>();
                 cfg.CreateMap<Batch, BatchDTO>();
                 cfg.CreateMap<BatchDTO, Batch>();
-
-
-
-
             });
           
            // Mapper.Initialize(cfg => cfg.CreateMap<Seed, SeedDTO>());

@@ -34,7 +34,6 @@ namespace Honeycomb
         public virtual DbSet<Seed> Seeds { get; set; }
         public virtual DbSet<Batch> Batches { get; set; }
         public virtual DbSet<CrawlerConnection> CrawlerConnections { get; set; }
-        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
         public virtual DbSet<PredefinedJob> PredefinedJobs { get; set; }
     
         public virtual int CleanContent()
