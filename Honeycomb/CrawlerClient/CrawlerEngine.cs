@@ -129,6 +129,8 @@ namespace CrawlerClient
 
 
                 var doc = CrawlerHelpers.LoadDocumentByUrl(startingAddress);
+                if (doc == null)
+                    return;
                 var startingAddressUri = new Uri(startingAddress);
 
 
@@ -216,6 +218,8 @@ namespace CrawlerClient
             if (url.Length > 7 && url.Substring(0, 7) == "mailto:")
                 return null;
             if (url.Contains("javascript:"))
+                return null;
+            if (url.Contains(".pdf"))
                 return null;
             //try
             //{

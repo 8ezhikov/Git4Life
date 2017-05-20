@@ -89,7 +89,7 @@ namespace Honeycomb
             }
             else
             {
-                globalSeedStack.PushRange(dbContext.Seeds.Where(sd => sd.IsProcessed == false &&sd.SortingOrder!= null).ToArray().OrderBy(sd=>sd.SortingOrder).Reverse().ToArray());
+                globalSeedStack.PushRange(dbContext.Seeds.Where(sd => sd.IsProcessed == false &&sd.SortingOrder!= null).ToArray().Reverse().ToArray());
             }
 
             var crawlerCounter = 0;

@@ -89,6 +89,10 @@ namespace CrawlerClient
             }
             catch (WebException e)
             {
+                if (e.Message.Contains("404"))
+                {
+                    return null;
+                }
                 throw;
             }
             catch (Exception e)
